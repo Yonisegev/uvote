@@ -3,22 +3,31 @@
 }
 
 ::selection {
-  background-color: #2196f3;
+  background-color: $secondary-color;
 }
 
 html {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Quicksand, sans-serif;
   line-height: normal;
   font-size: 14px;
   scroll-behavior: smooth;
   color: $txt;
-  background-color: $primary-color;
+  background-color: $bg-color;
 }
 
 body {
+  font-family: Quicksand, sans-serif;
   margin: 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
 img {
   width: 100%;
 }
@@ -29,6 +38,9 @@ a {
   &:visited {
     color: inherit;
   }
+}
+ul {
+  margin: 0;
 }
 li {
   list-style-type: none;
@@ -64,7 +76,4 @@ select {
 }
 pre {
   margin: 0;
-}
-.app {
-  background-color: $primary-color;
 }

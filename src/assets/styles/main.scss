@@ -1,5 +1,5 @@
 // Setup
-@import "setup/variables.scss";
+@import "setup/variables";
 @import "setup/functions.scss";
 @import "setup/mixins.scss";
 @import "setup/typography";
@@ -11,5 +11,6 @@
 @import "basics/buttons.scss";
 
 // Components
-
+@import "../../app/cmps/app-header/app-header.component.scss";
+@import "../../app/cmps/poll-preview/poll-preview.component.scss";
 // Views

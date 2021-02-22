@@ -1,0 +1,89 @@
+.poll-details {
+  .main-poll-info {
+    h2 {
+      font-size: 3rem;
+    }
+    .poll-description {
+      font-size: 1.1rem;
+    }
+
+    .actions {
+      .toggle {
+        position: relative;
+        span {
+          margin-left: 8px;
+          position: relative;
+          top: -2px;
+        }
+      }
+    }
+
+    form {
+      margin-top: 15px;
+      .burmanRadio {
+        margin-bottom: 10px;
+        border-radius: 3px;
+        padding: 5px 10px;
+        background-color: #eee;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+        &__input {
+          display: none;
+
+          &:checked ~ .burmanRadio__label::after {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        &__label {
+          cursor: pointer;
+          line-height: 30px;
+          position: relative;
+          margin-left: 35px;
+          display: inline-block;
+          width: 100%;
+          font-size: 1.1rem;
+
+          &::before,
+          &::after {
+            border-radius: 50%;
+            position: absolute;
+            top: 4px;
+            left: -35px;
+            transition: all 0.3s ease-out;
+            z-index: 2;
+          }
+
+          &::before {
+            content: "";
+            border: 1.5px solid #4faaf8;
+            width: 20px;
+            height: 20px;
+          }
+
+          &::after {
+            content: "\f26b";
+            background: #007eff;
+            border: 1.5px solid #007eff;
+            color: #fff;
+            font-family: "Material-Design-Iconic-Font";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            width: 20px;
+            height: 20px;
+            transform: scale(0);
+          }
+
+          &:hover {
+            &::before {
+              border-color: #007eff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

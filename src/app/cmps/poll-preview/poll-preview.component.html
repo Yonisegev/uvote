@@ -1,0 +1,12 @@
+<div
+  (click)="onPreviewClick()"
+  *ngIf="!poll.isPrivate"
+  class="poll-preview flex column"
+>
+  <div class="votes">
+    <span>{{ poll.totalVotes }} votes</span>
+  </div>
+  <h2>{{ poll.title }}</h2>
+  <p *ngIf="poll.description">{{ poll.description }}</p>
+  <small>{{ getCreatedTime() }}</small>
+</div>

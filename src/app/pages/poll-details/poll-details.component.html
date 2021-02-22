@@ -1,0 +1,38 @@
+<div class="poll-details flex justify-center">
+  <div class="main-poll-info">
+    <h2>{{ poll.title }}</h2>
+    <p *ngIf="poll.description" class="poll-description">
+      {{ poll.description }}
+    </p>
+    <small>{{ getCreatedTime() }}</small>
+    <form
+      #form="ngForm"
+      (ngSubmit)="onSubmitVote(form.value)"
+      class="poll-options"
+    >
+      <div *ngFor="let option of poll.options" class="burmanRadio">
+        <input
+          type="radio"
+          class="burmanRadio__input"
+          [id]="option._id"
+          name="option"
+          (ngModel)="(selectedOptionId)"
+          [value]="option._id"
+        />
+        <label [for]="option._id" class="burmanRadio__label">{{
+          option.txt
+        }}</label>
+      </div>
+      <div class="actions flex align-center space-between">
+        <div class="toggle flex align-center justify-center">
+          <p-inputSwitch
+            [(ngModel)]="showResults"
+            name="results"
+          ></p-inputSwitch>
+          <span>Show Results</span>
+        </div>
+        <button class="submit-btn" type="submit">Vote</button>
+      </div>
+    </form>
+  </div>
+</div>
