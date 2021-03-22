@@ -12,6 +12,8 @@ import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     PollPreviewComponent,
     PollFilterComponent,
     AppHeaderComponent,
+    PollEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,6 +32,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     RadioButtonModule,
     FormsModule,
     InputSwitchModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

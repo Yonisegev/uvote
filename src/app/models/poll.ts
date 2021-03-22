@@ -11,6 +11,7 @@ export class Poll {
     public owner: any,
     public views: number,
     public comments,
+    public voters: object,
     public dueDate?: number | null,
     public _id?: string
   ) {}

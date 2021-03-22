@@ -1,3 +1,4 @@
+@import "../../../assets/styles/setup/variables";
 .poll-details {
   .main-poll-info {
     h2 {
@@ -5,6 +6,9 @@
     }
     .poll-description {
       font-size: 1.1rem;
+    }
+    .votes-count {
+      margin-bottom: 3px;
     }
 
     .actions {
@@ -19,7 +23,20 @@
     }
 
     form {
+      .option-txt {
+        flex-grow: 1;
+        font-family: Quicksand-SemiBold, sans-serif;
+      }
+      .option-percent {
+        color: $txt;
+        margin-right: 8px;
+      }
+      .option-votes {
+        margin-right: 35px;
+      }
+
       margin-top: 15px;
+      min-width: 370px;
       .burmanRadio {
         margin-bottom: 10px;
         border-radius: 3px;
@@ -27,6 +44,11 @@
         background-color: #eee;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: $cta-color;
+        }
         &__input {
           display: none;
 
@@ -57,15 +79,15 @@
 
           &::before {
             content: "";
-            border: 1.5px solid #4faaf8;
+            border: 1.5px solid $secondary-color;
             width: 20px;
             height: 20px;
           }
 
           &::after {
             content: "\f26b";
-            background: #007eff;
-            border: 1.5px solid #007eff;
+            background: $primary-color;
+            border: 1.5px solid $primary-color;
             color: #fff;
             font-family: "Material-Design-Iconic-Font";
             display: flex;
@@ -79,7 +101,7 @@
 
           &:hover {
             &::before {
-              border-color: #007eff;
+              border-color: $primary-color;
             }
           }
         }

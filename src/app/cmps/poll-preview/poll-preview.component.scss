@@ -1,5 +1,7 @@
+@import "../../../assets/styles/setup/variables";
+
 .poll-preview {
-  margin-bottom: rem(30px);
+  margin-bottom: 1.875rem;
   background-color: #fff;
   padding: 30px;
   border-radius: 3px;
@@ -12,7 +14,7 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.24);
   }
   .votes {
-    border: 2px solid #3bd975;
+    border: 2px solid $cta-color;
     border-radius: 2em;
     padding: 5px 8px;
     position: absolute;

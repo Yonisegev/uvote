@@ -1,9 +1,10 @@
 <div class="poll-details flex justify-center">
-  <div class="main-poll-info">
+  <div class="main-poll-info flex column align-center">
     <h2>{{ poll.title }}</h2>
     <p *ngIf="poll.description" class="poll-description">
       {{ poll.description }}
     </p>
+    <span class="votes-count">{{ poll.totalVotes }} votes</span>
     <small>{{ getCreatedTime() }}</small>
     <form
       #form="ngForm"
@@ -19,9 +20,20 @@
           (ngModel)="(selectedOptionId)"
           [value]="option._id"
         />
-        <label [for]="option._id" class="burmanRadio__label">{{
-          option.txt
-        }}</label>
+        <label [for]="option._id" class="burmanRadio__label">
+          <div class="flex">
+            <span class="option-txt">{{ option.txt }}</span>
+            <div *ngIf="showResults" class="poll-results">
+              <span class="option-percent"
+                >{{ getOptionPrecent(option.votes) + "% " }}
+              </span>
+              <span class="option-votes">
+                ({{ option.votes }}
+                votes)
+              </span>
+            </div>
+          </div>
+        </label>
       </div>
       <div class="actions flex align-center space-between">
         <div class="toggle flex align-center justify-center">
@@ -34,5 +46,9 @@
         <button class="submit-btn" type="submit">Vote</button>
       </div>
     </form>
+    <div>
+      {{ poll | json }}
+    </div>
   </div>
+  <!-- <div class="poll-chart">HELLO</div> -->
 </div>
