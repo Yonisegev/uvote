@@ -1,15 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
 import * as moment from 'moment';
-import { Option } from 'src/app/models/option';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'poll-details',
@@ -19,17 +14,20 @@ import { Subscription } from 'rxjs';
 export class PollDetailsComponent implements OnInit {
   constructor(
     private pollService: PollService,
-    private route: ActivatedRoute,
-    private router: Router
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {}
   poll: Poll;
   selectedOptionId: string;
   showResults: boolean = false;
+  savedPollSub: Subscription;
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
+      // Get current poll data from poll resolver
       this.poll = data.poll;
     });
+    this.userService.getUserData();
   }
 
   getCreatedTime(): string {
@@ -43,6 +41,12 @@ export class PollDetailsComponent implements OnInit {
   }
 
   onSubmitVote(formValue) {
-    this.pollService.addVote(this.poll, formValue.option);
+    this.savedPollSub = this.pollService
+      .addVote(this.poll, formValue.option)
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    if (this.savedPollSub) this.savedPollSub.unsubscribe();
   }
 }

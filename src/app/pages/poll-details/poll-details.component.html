@@ -50,5 +50,7 @@
       {{ poll | json }}
     </div>
   </div>
-  <!-- <div class="poll-chart">HELLO</div> -->
+  <div *ngIf="showResults" class="poll-stats">
+    <h3>Poll Stats</h3>
+  </div>
 </div>

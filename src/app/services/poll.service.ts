@@ -1,42 +1,55 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Poll } from '../models/poll';
-import { storageService } from './async-storage.service';
-const ENTITY = 'poll';
+import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root',
 })
 export class PollService {
-  constructor(private http: HttpClient) {
-    const polls = JSON.parse(localStorage.getItem(ENTITY) || null);
-    if (!polls || !polls.length) {
-      localStorage.setItem(ENTITY, JSON.stringify(this.pollsDB));
-    }
-  }
+  constructor(private http: HttpClient, private userService: UserService) {}
 
+  private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject(null);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
+  userData;
 
-  public async query() {
-    const polls = (await storageService.query(ENTITY)) as Poll[];
-    this._polls$.next(polls);
+  public query() {
+    this.http.get(this.BASE_URL).subscribe((polls: Poll[]) => {
+      this._polls$.next(polls);
+    });
   }
 
   public getById(pollId: string): Observable<Poll> {
-    return from(storageService.get(ENTITY, pollId) as Promise<Poll>);
+    return this.http.get<Poll>(`${this.BASE_URL}/${pollId}`).pipe(
+      catchError((errorRes) => {
+        return throwError(`Failed to get poll ${pollId}, ${errorRes}`);
+      })
+    );
   }
 
   public addVote(poll, selectionId) {
+    this.userService.userData$.subscribe((userData) => {
+      // Show spinner while checking?
+      this.userData = userData;
+    });
     console.log('From poll service:', { poll });
-    // return this.http.get<{ values: any }>('http://ip-api.com/json/');
     const optionToUpdateIdx = poll.options.findIndex(
       (option) => option._id === selectionId
     );
+    const userIp = this.userData.ip_address;
+    if (poll.voters[userIp]) {
+      console.log('user already voted!'); // HANDLE ERROR HERE
+      return;
+    }
+    console.log('the userdata is', this.userData);
+
     poll.options[optionToUpdateIdx].votes += 1;
     poll.totalVotes += 1;
-    storageService.put(ENTITY, poll);
+    poll.voters[userIp] = true;
+
+    return this.http.put(`${this.BASE_URL}/${poll._id}`, poll);
   }
 
   private pollsDB = [
