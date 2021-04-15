@@ -20,7 +20,10 @@ export class PollDetailsComponent implements OnInit {
   poll: Poll;
   selectedOptionId: string;
   showResults: boolean = false;
+  isPopoverOpen: boolean = false;
   savedPollSub: Subscription;
+  actionsTexts = ['Edit Poll', 'Delete Poll', 'Duplicate Poll'];
+  actionsIcons = ['pi pi-pencil', 'pi pi-trash', 'pi pi-clone'];
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
@@ -46,6 +49,24 @@ export class PollDetailsComponent implements OnInit {
       .subscribe();
   }
 
+  onSettingsClick(ev) {
+    ev.stopPropagation();
+    this.isPopoverOpen = !this.isPopoverOpen;
+  }
+
+  onActionClick(actionType) {
+    if (actionType === 'Edit Poll') {
+      // Do something...
+    } else if (actionType === 'Delete Poll') {
+      // Do something...
+    } else {
+      // Do Something...
+    }
+  }
+
+  closePopover() {
+    if (this.isPopoverOpen) this.isPopoverOpen = false;
+  }
   ngOnDestroy() {
     if (this.savedPollSub) this.savedPollSub.unsubscribe();
   }

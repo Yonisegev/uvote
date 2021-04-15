@@ -8,10 +8,6 @@ import { PollResolverService } from './services/poll-resolver.service';
 
 const routes: Routes = [
   {
-    path: 'poll/new',
-    component: PollEditComponent,
-  },
-  {
     path: 'poll/:id/edit',
     component: PollEditComponent,
     resolve: { poll: PollResolverService },
@@ -26,6 +22,10 @@ const routes: Routes = [
   {
     path: 'poll',
     component: PollAppComponent,
+  },
+  {
+    path: 'create',
+    component: PollEditComponent,
   },
   {
     path: '',

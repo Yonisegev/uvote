@@ -11,9 +11,11 @@ import { PollFilterComponent } from './cmps/poll-filter/poll-filter.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PopoverComponent } from './cmps/popover/popover.component';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     PollFilterComponent,
     AppHeaderComponent,
     PollEditComponent,
+    PopoverComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     InputSwitchModule,
     HttpClientModule,
+    DividerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

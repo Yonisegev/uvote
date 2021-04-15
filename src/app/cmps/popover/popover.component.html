@@ -1,0 +1,24 @@
+<!-- <aside>
+  <h4>
+    <i class="pi pi-pencil"></i>
+    Edit Poll
+  </h4>
+  <h4>
+    <i class="pi pi-trash"></i>
+    Delete Poll
+  </h4>
+  <h4>
+    <i class="pi pi-clone"></i>
+    Duplicate Poll
+  </h4>
+</aside> -->
+
+<aside>
+  <h4
+    (click)="onActionClick(txt)"
+    *ngFor="let txt of actionsTexts; let idx = index"
+  >
+    <i class="{{ actionsIcons[idx] }}"></i>
+    {{ txt }}
+  </h4>
+</aside>
