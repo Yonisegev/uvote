@@ -14,11 +14,6 @@ button {
 
   transition: background-color, 0.2s;
 
-  img {
-    width: 20px;
-    transform: skew(-15deg);
-  }
-
   &:hover {
     background-color: lighten($cta-color, 5%);
   }
@@ -31,8 +26,6 @@ button {
   background-color: #3bd975;
   color: #fff;
   border-radius: 3px;
-  text-align: center;
-  align-self: flex-end;
 
   transition: background-color, 0.2s;
 

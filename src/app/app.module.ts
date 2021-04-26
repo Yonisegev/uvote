@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
@@ -10,12 +10,14 @@ import { PollPreviewComponent } from './cmps/poll-preview/poll-preview.component
 import { PollFilterComponent } from './cmps/poll-filter/poll-filter.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { FormsModule } from '@angular/forms';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { CheckboxModule } from 'primeng/checkbox';
+import { CalendarModule } from 'primeng/calendar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PopoverComponent } from './cmps/popover/popover.component';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { DividerModule } from 'primeng/divider';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -31,12 +33,16 @@ import { DividerModule } from 'primeng/divider';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     RadioButtonModule,
+    CalendarModule,
+    CheckboxModule,
     FormsModule,
+    ReactiveFormsModule,
     InputSwitchModule,
     HttpClientModule,
-    DividerModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

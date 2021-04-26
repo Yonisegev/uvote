@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './poll-details.component.html',
   styleUrls: ['./poll-details.component.scss'],
 })
-export class PollDetailsComponent implements OnInit {
+export class PollDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private pollService: PollService,
     private userService: UserService,

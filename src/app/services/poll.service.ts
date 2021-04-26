@@ -15,7 +15,7 @@ export class PollService {
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
   userData;
 
-  public query() {
+  public query(): void {
     this.http.get(this.BASE_URL).subscribe((polls: Poll[]) => {
       this._polls$.next(polls);
     });

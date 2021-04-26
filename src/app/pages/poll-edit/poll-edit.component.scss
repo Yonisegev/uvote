@@ -1,0 +1,150 @@
+@import "../../../assets/styles/setup/variables";
+
+.poll-edit {
+  background-image: url("../../../assets/imgs/fluid.svg");
+  background-position: top;
+  background-size: cover;
+  min-height: calc(100vh - 40px);
+  position: relative;
+  z-index: 5;
+  form {
+    position: relative;
+    background-color: $bg-color;
+    box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.1),
+      0 0px 0 1px rgba(10, 10, 10, 0.02);
+    width: 600px;
+    height: clamp(600px, 600px, auto);
+    padding: 30px;
+    border-radius: 3px;
+    & > *:not(:last-child) {
+      width: 100%;
+    }
+    textarea {
+      resize: none;
+      border: 1px solid #ced4da;
+      border-radius: 3px;
+      padding: 3px 0 0 3px;
+      margin: 10px 0 16px 0;
+    }
+
+    .question-label {
+      font-size: 1.5rem;
+      width: 100%;
+    }
+    .question {
+      width: 100%;
+      padding: 10px 0;
+      outline: none;
+      border: none;
+      font-size: 2.2rem;
+      letter-spacing: 0.6px;
+      margin-bottom: 0;
+      font-family: Quicksand-SemiBold, sans-serif;
+    }
+
+    .options {
+      margin-bottom: 0.8rem;
+      h3 {
+        letter-spacing: 0.5px;
+      }
+      .form-options {
+        & > * {
+          width: 100%;
+          border: 2px solid #ced4da7a;
+          border-radius: 3px;
+          margin-bottom: 8px;
+          padding: 10px;
+          font-size: 1.1rem;
+          outline: none;
+
+          &::placeholder {
+            color: #333;
+          }
+        }
+
+        &:first-of-type {
+          margin-top: 2px;
+        }
+      }
+      button {
+        padding: 4px 20px;
+        font-size: 1.2rem;
+        border-radius: 3px;
+      }
+    }
+
+    .checkboxes {
+      margin-bottom: 0.8rem;
+
+      & > *:not(:first-child) {
+        margin-left: 10px;
+      }
+    }
+
+    .calendar {
+      margin-bottom: 1.1rem;
+    }
+
+    .buttons {
+      width: 100%;
+      position: relative;
+      .reset-btn {
+        background-color: unset;
+        color: lighten($txt, 10%);
+
+        transition: 0.2s color;
+
+        &:hover {
+          color: $txt;
+          &:hover + .underline {
+            opacity: 1;
+          }
+        }
+      }
+      .underline {
+        position: absolute;
+        opacity: 0;
+        height: 1px;
+        bottom: 2px;
+        left: 9px;
+        background-color: lighten($txt, 10%);
+        width: 70px;
+
+        transition: 0.2s opacity;
+      }
+    }
+  }
+
+  .form-container {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+}
+
+.flying-rabbit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  background-image: url("../../../assets/imgs/flying-rabbit.svg");
+  width: 300px;
+  height: 300px;
+  background-position: center;
+  background-size: cover;
+  background-color: transparent;
+  fill: transparent;
+}
+
+.mb-checkbox {
+  margin-bottom: 1.5rem !important;
+}
+
+.has-error {
+  span {
+    color: red;
+  }
+}
+
+.error-p {
+  height: 16px;
+}

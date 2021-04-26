@@ -1,1 +1,112 @@
-<p>poll-edit works!</p>
+<section class="poll-edit flex align-center">
+  <div class="flying-rabbit"></div>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="pollForm"
+    class="flex column align-center justify-center form-container"
+  >
+    <div class="form-question">
+      <label for="title" class="question-label">Question</label>
+      <input
+        #question
+        formControlName="title"
+        id="title"
+        type="text"
+        placeholder="Enter your question here"
+        class="question"
+        autocomplete="off"
+      />
+      <p
+        class="error-p"
+        [ngClass]="{
+          'has-error': submitted && pollForm.get('title').hasError('required')
+        }"
+      >
+        <span *ngIf="submitted && pollForm.get('title').hasError('required')"
+          >Question is required.</span
+        >
+      </p>
+    </div>
+    <textarea
+      formControlName="description"
+      cols="30"
+      rows="3"
+      autocomplete="false"
+      spellcheck="false"
+      placeholder="Optional description"
+    ></textarea>
+    <div class="options" formArrayName="options">
+      <h3>Options:</h3>
+      <p
+        class="error-p"
+        [ngClass]="{
+          'has-error':
+            (submitted && options.controls[0].hasError('required')) ||
+            (submitted && options.controls[1].hasError('required'))
+        }"
+      >
+        <span
+          *ngIf="
+            (submitted && options.controls[0].hasError('required')) ||
+            (submitted && options.controls[1].hasError('required'))
+          "
+          >Please fill at least 2 options.</span
+        >
+      </p>
+      <div
+        *ngFor="let option of options.controls; let i = index"
+        class="form-options"
+      >
+        <input
+          type="text"
+          placeholder="Add option {{ i + 1 }}"
+          [formControlName]="i"
+        />
+      </div>
+      <button type="button" (click)="onAddOption()">Add Option</button>
+    </div>
+    <div
+      class="checkboxes"
+      [ngClass]="{ 'mb-checkbox': !pollForm.get('isDeadline').value }"
+    >
+      <p-checkbox
+        [formControl]="pollForm.controls['comments']"
+        label="Comments"
+        [binary]="true"
+      ></p-checkbox>
+
+      <p-checkbox
+        [formControl]="pollForm.controls['isPrivate']"
+        label="Private Poll"
+        [binary]="true"
+      ></p-checkbox>
+
+      <p-checkbox
+        [formControl]="pollForm.controls['isDeadline']"
+        label="Deadline"
+        [binary]="true"
+        (onChange)="onDateCheckbox($event)"
+      ></p-checkbox>
+    </div>
+    <div *ngIf="pollForm.get('isDeadline').value" class="calendar">
+      <p-calendar
+        class="p-datepicker-monthpicker"
+        formControlName="dueDate"
+        [showTime]="true"
+        showIcon="true"
+        dateFormat="dd/mm/yy"
+        [monthNavigator]="true"
+        showButtonBar="true"
+      ></p-calendar>
+    </div>
+    <div class="buttons flex space-between">
+      <button (click)="onResetForm()" type="button" class="reset-btn">
+        Reset Form
+      </button>
+      <span class="underline"></span>
+      <button type="submit" class="submit-btn">
+        {{ pollToEdit ? "Save" : "Create" }}
+      </button>
+    </div>
+  </form>
+</section>
