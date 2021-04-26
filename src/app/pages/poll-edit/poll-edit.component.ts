@@ -76,8 +76,7 @@ export class PollEditComponent implements OnInit {
       console.log('INVALID FORM!');
       return;
     }
-    const formValue = JSON.parse(JSON.stringify(this.pollForm.value));
-    console.log(formValue);
+    console.log(this.pollForm.value);
 
     this.submitted = false;
   }
