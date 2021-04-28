@@ -11,6 +11,11 @@ export class UserService {
   public userData$: Observable<any> = this._userData$.asObservable();
 
   public getUserData() {
+    const cachedUserInfo = this.loadFromStorage();
+    if (cachedUserInfo) {
+      this._userData$.next(cachedUserInfo);
+      return;
+    }
     this.http
       .get(
         'https://ipgeolocation.abstractapi.com/v1/?api_key=a73f9c3ddf2a4da6ba8f13d7a88898f4',
@@ -19,8 +24,18 @@ export class UserService {
         }
       )
       .subscribe((userData: any) => {
+        this.saveToStorage(userData);
         this._userData$.next(userData);
       });
+  }
+  private saveToStorage(val) {
+    const str = JSON.stringify(val);
+    localStorage.setItem('user-info', str);
+  }
+
+  private loadFromStorage() {
+    const str = localStorage.getItem('user-info');
+    return JSON.parse(str);
   }
 }
 

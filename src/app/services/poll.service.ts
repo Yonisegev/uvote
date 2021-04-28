@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Poll } from '../models/poll';
 import { UserService } from './user.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +14,7 @@ export class PollService {
   private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject(null);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
-  userData;
+  public userData;
 
   public query(): void {
     this.http.get(this.BASE_URL).subscribe((polls: Poll[]) => {
@@ -29,7 +30,7 @@ export class PollService {
     );
   }
 
-  public addVote(poll, selectionId) {
+  public addVote(poll, selectionId): Observable<Poll> {
     this.userService.userData$.subscribe((userData) => {
       // Show spinner while checking?
       this.userData = userData;
@@ -49,7 +50,15 @@ export class PollService {
     poll.totalVotes += 1;
     poll.voters[userIp] = true;
 
-    return this.http.put(`${this.BASE_URL}/${poll._id}`, poll);
+    return this.http.put<Poll>(`${this.BASE_URL}/${poll._id}`, poll);
+  }
+
+  onPollSubmit(poll: Poll) {
+    if (poll._id) {
+      console.log('EDIT!');
+    } else {
+      console.log('CREATE!');
+    }
   }
 
   private pollsDB = [

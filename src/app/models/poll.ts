@@ -7,12 +7,13 @@ export class Poll {
     public options: Option[],
     public totalVotes: number,
     public isPrivate: boolean,
+    public isComments: boolean,
     public createdAt: number,
     public owner: any,
     public views: number,
     public comments,
     public voters: object,
-    public dueDate?: number | null,
+    public dueDate?: Date | string | null,
     public _id?: string
   ) {}
 }
