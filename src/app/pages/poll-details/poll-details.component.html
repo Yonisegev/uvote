@@ -24,7 +24,7 @@
     <p *ngIf="poll.description" class="poll-description">
       {{ poll.description }}
     </p>
-    <span class="votes-count">{{ poll.totalVotes }} votes</span>
+    <span class="votes-count">{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span>
     <small>{{ getCreatedTime() }}</small>
     <form
       #form="ngForm"

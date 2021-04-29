@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'poll-app',
@@ -12,12 +11,11 @@ import { UserService } from 'src/app/services/user.service';
 export class PollAppComponent implements OnInit, OnDestroy {
   constructor(
     private pollService: PollService,
-    private userService: UserService
   ) {}
-  polls: any;
+  polls: Poll[];
   pollsSub: Subscription;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getPolls();
   }
 

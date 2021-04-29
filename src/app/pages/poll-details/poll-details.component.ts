@@ -29,6 +29,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     this.route.data.subscribe((data) => {
       // Get current poll data from poll resolver
       this.poll = data.poll;
+      console.log(this.poll)
     });
     this.userService.getUserData();
   }

@@ -51,14 +51,28 @@ export class PollService {
     poll.voters[userIp] = true;
 
     return this.http.put<Poll>(`${this.BASE_URL}/${poll._id}`, poll);
+  } 
+
+  public onPollSubmit(poll: Poll): Observable<Poll> {
+    console.log('On poll submit:', poll)
+    if (poll._id) {
+      console.log('EDIT!', poll, poll._id);
+      return this.update(poll._id, poll)
+    } else {
+      console.log('CREATE!')
+      delete poll._id
+      return this.create(poll)
+    }
   }
 
-  onPollSubmit(poll: Poll) {
-    if (poll._id) {
-      console.log('EDIT!');
-    } else {
-      console.log('CREATE!');
-    }
+  private create(poll: Poll): Observable<Poll> {
+    console.log('From create, the poll to add is', poll)
+    return this.http.post<Poll>(this.BASE_URL, poll);
+  }
+
+  private update(pollId, poll:Poll) {
+    console.log(`${this.BASE_URL}/${pollId}`)
+    return this.http.put<Poll>(`${this.BASE_URL}/${pollId}`, poll)
   }
 
   private pollsDB = [
@@ -84,6 +98,7 @@ export class PollService {
       ],
       totalVotes: 8,
       isPrivate: false,
+      isComments: true,
       createdAt: 1614010766136,
       dueDate: null,
       _id: 'p101',
@@ -93,6 +108,7 @@ export class PollService {
       },
       views: 2,
       comments: [],
+      voters: [],
     },
     {
       title: 'What should I eat?',
@@ -116,6 +132,7 @@ export class PollService {
       ],
       totalVotes: 8,
       isPrivate: false,
+      isComments: false,
       createdAt: 1614010766136,
       dueDate: null,
       _id: 'p102',
@@ -125,6 +142,7 @@ export class PollService {
       },
       views: 5,
       comments: [],
+      voters: []
     },
   ];
 }

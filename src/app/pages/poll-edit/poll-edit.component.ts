@@ -72,27 +72,34 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     }
     const formValue = cloneDeep(this.pollForm.value);
     const existingPoll = cloneDeep(this.pollToEdit);
+    const options = formValue.options.map((option, idx) => {
+      return {
+        txt: option,
+        votes: existingPoll?.options[idx].votes ? existingPoll.options[idx].votes : 0,
+        _id: existingPoll?.options[idx]._id ? existingPoll.options[idx]._id : `o${idx}`
+      }
+    })
     const pollToSubmit: Poll = {
       _id: existingPoll?._id,
       title: formValue.title,
       description: formValue.description,
-      options: formValue.options,
+      options,
       isPrivate: formValue.isPrivate,
       isComments: formValue.isComments,
       dueDate: formValue.isDeadline
-        ? moment(formValue.dueDate).format('x')
+        ? formValue.dueDate
         : null,
-      comments: existingPoll?.comments,
-      createdAt: existingPoll?.createdAt,
-      views: existingPoll?.views,
-      voters: existingPoll?.voters,
-      totalVotes: existingPoll?.totalVotes,
+      comments: existingPoll?.comments || null,
+      createdAt: existingPoll?.createdAt || Date.now(),
+      views: existingPoll?.views || null,
+      voters: existingPoll?.voters || [],
+      totalVotes: existingPoll?.totalVotes || null,
       owner: existingPoll?.owner ? existingPoll.owner : null,
     };
-    this.pollService.onPollSubmit(pollToSubmit);
+    this.pollService.onPollSubmit(pollToSubmit).subscribe()
 
-    console.log('form value is', formValue);
-    console.log('poll to submit is', pollToSubmit);
+    // console.log('form value is', formValue);
+    // console.log('poll to submit is', pollToSubmit);
 
     this.submitted = false;
   }

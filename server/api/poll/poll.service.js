@@ -8,14 +8,7 @@ async function query(filterBy = {}) {
         const collection = await dbService.getCollection('poll')
         // const reviews = await collection.find(criteria).toArray()
         var polls = await collection.find(filterBy).toArray()
-        console.log('Polls from service', polls);
-        // reviews = reviews.map(review => {
-        //     review.byUser = { _id: review.byUser._id, fullname: review.byUser.fullname }
-        //     review.aboutUser = { _id: review.aboutUser._id, fullname: review.aboutUser.fullname }
-        //     delete review.byUserId
-        //     delete review.aboutUserId
-        //     return review
-        // })
+        // console.log('Polls from service', polls)
 
         return polls
     } catch (err) {
@@ -27,8 +20,9 @@ async function query(filterBy = {}) {
 
 async function getById(pollId) {
     try {
+        console.log('Inside get by id', pollId);
         const collection = await dbService.getCollection('poll')
-        const poll = await collection.findOne({ '_id': pollId })
+        const poll = await collection.findOne({ '_id': ObjectId(pollId) })
         return poll
     } catch (err) {
         logger.error(`while finding poll ${pollId}`, err)
@@ -39,6 +33,7 @@ async function getById(pollId) {
 async function update(poll) {
     try {
         // peek only updatable fields!
+        poll._id = ObjectId(poll._id)
         const collection = await dbService.getCollection('poll')
         const savedPoll = await collection.updateOne({ '_id': poll._id }, { $set: poll })
         return savedPoll;
@@ -65,19 +60,13 @@ async function remove(pollId) {
 }
 
 
-async function add(review) {
+async function add(poll) {
     try {
-        // peek only updatable fields!
-        const reviewToAdd = {
-            byUserId: ObjectId(review.byUserId),
-            aboutUserId: ObjectId(review.aboutUserId),
-            txt: review.txt
-        }
-        const collection = await dbService.getCollection('review')
-        await collection.insertOne(reviewToAdd)
-        return reviewToAdd;
+        const collection = await dbService.getCollection('poll')
+        const addedPoll = await collection.insertOne(poll)
+        return addedPoll;
     } catch (err) {
-        logger.error('cannot insert review', err)
+        logger.error('cannot insert poll', err)
         throw err
     }
 }

@@ -47,10 +47,25 @@ async function updatePoll(req, res) {
     }
 }
 
+async function addPoll(req, res) {
+    try {
+        console.log('Inside add poll controller');
+        let poll = req.body
+        console.log('The poll to add is', poll)
+        poll = await pollService.add(poll)
+        res.send(poll)
+
+    } catch(err) {
+        logger.error('Failed to add poll', err)
+        res.status(500).send({err: 'Failed to add poll'})
+    }
+}
+
 
 module.exports = {
     getPolls,
     getPoll,
+    addPoll,
     updatePoll,
     deletePoll,
 }
