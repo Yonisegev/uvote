@@ -53,7 +53,7 @@ export class PollService {
     return this.http.put<Poll>(`${this.BASE_URL}/${poll._id}`, poll);
   } 
 
-  public onPollSubmit(poll: Poll): Observable<Poll> {
+  public onPollSubmit(poll: Poll): any{
     console.log('On poll submit:', poll)
     if (poll._id) {
       console.log('EDIT!', poll, poll._id);
@@ -65,14 +65,17 @@ export class PollService {
     }
   }
 
-  private create(poll: Poll): Observable<Poll> {
+  private create(poll: Poll) {
     console.log('From create, the poll to add is', poll)
     return this.http.post<Poll>(this.BASE_URL, poll);
   }
 
   private update(pollId, poll:Poll) {
-    console.log(`${this.BASE_URL}/${pollId}`)
     return this.http.put<Poll>(`${this.BASE_URL}/${pollId}`, poll)
+  }
+
+  public remove(pollId) {
+    return this.http.delete(`${this.BASE_URL}/${pollId}`)
   }
 
   private pollsDB = [

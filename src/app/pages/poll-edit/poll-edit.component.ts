@@ -6,12 +6,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { Poll } from 'src/app/models/poll';
 import { UserService } from 'src/app/services/user.service';
 import { cloneDeep } from 'lodash';
 import { PollService } from 'src/app/services/poll.service';
+import { Option } from 'src/app/models/option';
 
 @Component({
   selector: 'poll-edit',
@@ -21,6 +22,7 @@ import { PollService } from 'src/app/services/poll.service';
 export class PollEditComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
     private pollService: PollService,
     private fb: FormBuilder
@@ -72,13 +74,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     }
     const formValue = cloneDeep(this.pollForm.value);
     const existingPoll = cloneDeep(this.pollToEdit);
-    const options = formValue.options.map((option, idx) => {
-      return {
-        txt: option,
-        votes: existingPoll?.options[idx].votes ? existingPoll.options[idx].votes : 0,
-        _id: existingPoll?.options[idx]._id ? existingPoll.options[idx]._id : `o${idx}`
-      }
-    })
+    const options = this.getFormOptions(formValue, existingPoll);
     const pollToSubmit: Poll = {
       _id: existingPoll?._id,
       title: formValue.title,
@@ -86,17 +82,17 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       options,
       isPrivate: formValue.isPrivate,
       isComments: formValue.isComments,
-      dueDate: formValue.isDeadline
-        ? formValue.dueDate
-        : null,
+      dueDate: formValue.isDeadline ? formValue.dueDate : null,
       comments: existingPoll?.comments || null,
       createdAt: existingPoll?.createdAt || Date.now(),
       views: existingPoll?.views || null,
       voters: existingPoll?.voters || [],
-      totalVotes: existingPoll?.totalVotes || null,
-      owner: existingPoll?.owner ? existingPoll.owner : null,
+      totalVotes: existingPoll?.totalVotes || 0,
+      owner: existingPoll?.owner ? existingPoll.owner : null, // TODO: fill guest/user data as owner
     };
-    this.pollService.onPollSubmit(pollToSubmit).subscribe()
+    this.pollService.onPollSubmit(pollToSubmit).subscribe((poll) => {
+      this.router.navigateByUrl(`poll/${poll._id}`)
+    });
 
     // console.log('form value is', formValue);
     // console.log('poll to submit is', pollToSubmit);
@@ -127,7 +123,23 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       isPrivate: [poll ? poll.isPrivate : false],
       isComments: [poll ? poll.isComments : true],
       isDeadline: [poll ? pollIsDeadline : false],
-      dueDate: [poll ? poll.dueDate : ''],
+      dueDate: [poll ? new Date(poll.dueDate) : ''],
     });
+  }
+
+  getFormOptions(formValue, existingPoll): Option[] {
+    const options = []
+    for(let i = 0; i < formValue.options.length; i++) {
+      if(!formValue.options[i]) continue
+      console.log('The I is', i)
+      const option = {
+        txt: formValue.options[i],
+        votes: existingPoll?.options[i]?.votes ? existingPoll.options[i].votes : 0,
+        _id: existingPoll?.options[i]?._id ? existingPoll.options[i]._id : `o${i}`
+        
+      }
+      options.push(option)
+    }
+    return options
   }
 }

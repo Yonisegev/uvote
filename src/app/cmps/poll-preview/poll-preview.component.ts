@@ -18,6 +18,14 @@ export class PollPreviewComponent implements OnInit {
     return moment(this.poll.createdAt).fromNow();
   }
 
+  pollVotesToShow() {
+    const pollVotes = this.poll.totalVotes
+    if(!pollVotes) return 0
+    else if(pollVotes > 1000) return '1k+'
+    else if(pollVotes > 99) return '99+'
+    else return pollVotes
+  }
+
   onPreviewClick() {
     this.router.navigateByUrl(`/poll/${this.poll._id}`);
   }

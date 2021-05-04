@@ -11,6 +11,8 @@ router.get('/', log, getPolls)
 router.get("/:id", getPoll);
 router.post("/", addPoll)
 router.put('/:id', updatePoll)
-router.delete('/:id', requireAuth, deletePoll)
+router.delete('/:id', deletePoll) // TODO: Add Auth
+// router.delete('/:id', requireAuth, deletePoll)
+
 
 module.exports = router

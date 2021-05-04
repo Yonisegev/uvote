@@ -32,46 +32,43 @@ async function getById(pollId) {
 
 async function update(poll) {
     try {
-        // peek only updatable fields!
         poll._id = ObjectId(poll._id)
         const collection = await dbService.getCollection('poll')
-        const savedPoll = await collection.updateOne({ '_id': poll._id }, { $set: poll })
-        return savedPoll;
+        const savedPoll = await collection.findOneAndUpdate({ '_id': poll._id }, { $set: poll }, {upsert: true, returnOriginal: false})
+        console.log('the saved poll is', savedPoll.value)
+        return savedPoll.value;
     } catch (err) {
         logger.error(`cannot update poll ${poll._id}`, err)
         throw err
     }
 }
 
-async function remove(pollId) {
-    try {
-        const store = asyncLocalStorage.getStore()
-        const { userId, isAdmin } = store
-        const collection = await dbService.getCollection('poll')
-        // remove only if user is owner/admin
-        const query = { _id: ObjectId(pollId) }
-        if (!isAdmin) query.byUserId = ObjectId(userId)
-        await collection.deleteOne(query)
-        // return await collection.deleteOne({ _id: ObjectId(pollId), byUserId: ObjectId(userId) })
-    } catch (err) {
-        logger.error(`cannot remove review ${pollId}`, err)
-        throw err
-    }
-}
-
-
 async function add(poll) {
     try {
         const collection = await dbService.getCollection('poll')
         const addedPoll = await collection.insertOne(poll)
-        return addedPoll;
+        return addedPoll.ops[0]
     } catch (err) {
         logger.error('cannot insert poll', err)
         throw err
     }
 }
 
-
+async function remove(pollId) {
+    try {
+        // const store = asyncLocalStorage.getStore()
+        // const { userId, isAdmin } = store
+        const collection = await dbService.getCollection('poll')
+        // remove only if user is owner/admin
+        const query = { _id: ObjectId(pollId) }
+        // if (!isAdmin) query.byUserId = ObjectId(userId)
+        return await collection.deleteOne(query)
+        // return await collection.deleteOne({ _id: ObjectId(pollId), byUserId: ObjectId(userId) })
+    } catch (err) {
+        logger.error(`cannot remove review ${pollId}`, err)
+        throw err
+    }
+}
 
 function _buildCriteria(filterBy) {
     const criteria = {}

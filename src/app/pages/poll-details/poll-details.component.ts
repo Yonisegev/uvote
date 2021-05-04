@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
 import * as moment from 'moment';
@@ -15,7 +15,8 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private pollService: PollService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) {}
   poll: Poll;
   selectedOptionId: string;
@@ -57,9 +58,9 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   onActionClick(actionType) {
     if (actionType === 'Edit Poll') {
-      // Do something...
+      this.router.navigate(['edit'], {relativeTo: this.route})
     } else if (actionType === 'Delete Poll') {
-      // Do something...
+      this.pollService.remove(this.poll._id).subscribe(() => {this.router.navigateByUrl('/poll')}) // TODO: Add a confirm modal
     } else {
       // Do Something...
     }
