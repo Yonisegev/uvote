@@ -1,0 +1,64 @@
+<section class="signup-container flex justify-center align-center">
+  <form
+    [formGroup]="signupForm"
+    (ngSubmit)="onSignup()"
+    class="flex column justify-center"
+  >
+    <h3>Create a free account</h3>
+    <label for="name">Your name</label>
+
+    <span class="has-error" *ngIf="submitted && signupForm.get('name').hasError('required')"
+      >Name is required</span
+    >
+    <span class="p-input-icon-left">
+      <i class="pi pi-user user-icon"></i>
+      <input
+        type="text"
+        id="name"
+        pInputText
+        placeholder="Your name"
+        autocomplete="off"
+        formControlName="name"
+      />
+    </span>
+    <label for="email">Email Address</label>
+    <span class="has-error" *ngIf="submitted && signupForm.get('email').hasError('required') || submitted && signupForm.get('email').invalid"
+    >Valid email is required</span>
+    <span class="has-error" *ngIf=" signupForm.get('email').hasError('emailExists')"
+    >This email is already registered</span>
+    <span class="p-input-icon-left">
+      <i class="pi pi-envelope email-icon"></i>
+      <input
+        id="email"
+        type="email"
+        pInputText
+        placeholder="example@uvote.com"
+        autocomplete="off"
+        formControlName="email"
+      />
+    </span>
+    <label for="password">Choose Password</label>
+    <span class="has-error" *ngIf="submitted && signupForm.get('password').hasError('required')"
+    >Password is required</span>
+    <div class="password-container">
+      <span class="p-input-icon-left">
+        <i class="pi pi-lock password-icon"></i>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          pInputText
+          placeholder="●●●●●"
+          autocomplete="off"
+          formControlName="password"
+        />
+      </span>
+      <span (click)="onTogglePassword()" class="toggle-password">
+        <i
+          [title]="showPassword ? 'Hide Password' : 'Show Password'"
+          [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
+        ></i>
+      </span>
+    </div>
+    <button class="submit-btn" type="submit">Sign up</button>
+    <p class="login-p">Already have an account? <a routerLink="/login">Log In</a></p>
+  </form>
+</section>

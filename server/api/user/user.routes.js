@@ -8,6 +8,7 @@ const {
   getUsers,
   deleteUser,
   updateUser,
+  getByEmailValidator,
 } = require("./user.controller");
 const router = express.Router();
 
@@ -16,6 +17,7 @@ const router = express.Router();
 
 router.get("/", getUsers);
 router.get("/:id", getUser);
+router.get("/email/:email", getByEmailValidator);
 router.put("/:id", updateUser);
 
 // router.put('/:id',  requireAuth, updateUser)

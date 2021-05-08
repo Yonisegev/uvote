@@ -14,7 +14,7 @@ export class PollService {
   private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject(null);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
-  public userData;
+  private userData;
 
   public query(): void {
     this.http.get(this.BASE_URL).subscribe((polls: Poll[]) => {

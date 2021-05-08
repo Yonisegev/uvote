@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
 import { Poll } from 'src/app/models/poll';
 import { UserService } from 'src/app/services/user.service';
 import { cloneDeep } from 'lodash';

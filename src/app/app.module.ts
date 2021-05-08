@@ -11,6 +11,7 @@ import { PollFilterComponent } from './cmps/poll-filter/poll-filter.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import {InputTextModule} from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +19,10 @@ import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PopoverComponent } from './cmps/popover/popover.component';
 import { CommonModule } from '@angular/common';
+import { LoginComponent } from './pages/login/login.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import { ErrorComponent } from './pages/error/error.component';
+import {SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider} from 'angularx-social-login'
 
 @NgModule({
   declarations: [
@@ -30,6 +35,9 @@ import { CommonModule } from '@angular/common';
     AppHeaderComponent,
     PollEditComponent,
     PopoverComponent,
+    LoginComponent,
+    SignupComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,8 +51,25 @@ import { CommonModule } from '@angular/common';
     InputSwitchModule,
     HttpClientModule,
     CommonModule,
+    SocialLoginModule,
+    InputTextModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '1055571878940-4ia31ot06g5svt6h6pvggfc8offps3cq.apps.googleusercontent.com'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

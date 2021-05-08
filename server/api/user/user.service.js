@@ -6,7 +6,8 @@ const ObjectId = require('mongodb').ObjectId
 module.exports = {
     query,
     getById,
-    getByUsername,
+    getByEmail,
+    getByEmailValidator,
     remove,
     update,
     add
@@ -37,24 +38,35 @@ async function getById(userId) {
         const collection = await dbService.getCollection('user')
         const user = await collection.findOne({ '_id': ObjectId(userId) })
         delete user.password
-
-
         return user
     } catch (err) {
         logger.error(`while finding user ${userId}`, err)
         throw err
     }
 }
-async function getByUsername(username) {
+async function getByEmail(email) {
     try {
         const collection = await dbService.getCollection('user')
-        const user = await collection.findOne({ username })
+        const user = await collection.findOne({ email })
         return user
     } catch (err) {
-        logger.error(`while finding user ${username}`, err)
+        logger.error(`while finding user ${email}`, err)
         throw err
     }
 }
+
+async function getByEmailValidator(email) {
+    try {
+        const collection = await dbService.getCollection('user')
+        const user = await collection.findOne({ email })
+        delete user.password
+        if(user) return true
+        else return false
+    } catch (err) {
+        logger.error(`while finding user ${email}`, err)
+        throw err
+    }
+} 
 
 async function remove(userId) {
     try {
@@ -86,16 +98,10 @@ async function update(user) {
 
 async function add(user) {
     try {
-        // peek only updatable fields!
-        const userToAdd = {
-            username: user.username,
-            password: user.password,
-            fullname: user.fullname,
-            score: user.score || 0
-        }
+        console.log('from user service', user)
         const collection = await dbService.getCollection('user')
-        await collection.insertOne(userToAdd)
-        return userToAdd
+        await collection.insertOne(user)
+        return user
     } catch (err) {
         logger.error('cannot insert user', err)
         throw err

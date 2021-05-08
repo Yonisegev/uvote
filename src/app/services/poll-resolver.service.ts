@@ -11,7 +11,6 @@ export class PollResolverService {
   constructor(private pollService: PollService, private router: Router) {}
   resolve(route: ActivatedRouteSnapshot): Observable<Poll> {
     const { id } = route.params;
-    console.log({ id });
     if (!id) {
       this.router.navigateByUrl('/poll');
       return null;

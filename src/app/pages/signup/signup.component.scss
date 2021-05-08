@@ -1,0 +1,77 @@
+@import "../../../assets/styles/setup/variables";
+
+.signup-container {
+    min-height: calc(100vh - 40px);
+    background-color: #fff;
+    background-image: url("../../../assets/imgs/Sea\ of\ Clouds-10s-1536px.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    form {
+        width: 600px;
+        padding: 30px;
+        padding-top: 15px;
+        background-color: $bg-color;
+        height: 400px;
+        box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+        border-radius: 3px;
+        h3 {
+            font-size: 2.2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+        label {
+            margin-bottom: 4px;
+            font-size: 1.2rem;
+            font-family: Quicksand, sans-serif;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .p-inputtext:enabled:focus {
+            box-shadow: none;
+        }
+        .password-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+
+            span:first-of-type {
+                width: 100%;
+            }
+
+            .toggle-password {
+                position: absolute;
+                top: 9px;
+                right: 8px;
+                cursor: pointer;
+            }
+        }
+
+        .user-icon {
+            margin-top: -0.8rem;
+        }
+        .email-icon,
+        .password-icon {
+            margin-top: -0.6rem;
+        }
+        .submit-btn {
+            text-transform: capitalize;
+            align-self: center;
+            margin-bottom: 8px;
+        }
+        .has-error {
+            margin-bottom: 3px;
+            color: red;
+        }
+        .login-p {
+            align-self: center;
+
+            a {
+                color: #3273dc;
+            }
+        }
+    }
+}

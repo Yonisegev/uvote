@@ -1,0 +1,11 @@
+<p>login works!</p>
+
+<button (click)="onGoogleSignin()">Google Login</button>
+<div *ngIf="isLoggedIn">
+    <label>Username</label>
+    <input type="text" [value]="socialUser.firstName" id="username" readonly>
+    <label>Email</label>
+    <input type="email" [value]="socialUser.email" id="email" readonly>
+
+    <button type="button" (click)="onLogout()">Log Out</button>
+</div>
