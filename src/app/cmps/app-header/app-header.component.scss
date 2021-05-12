@@ -19,7 +19,7 @@
       cursor: pointer;
     }
 
-    li:last-of-type {
+    li:not(:first-of-type) {
       margin-left: 10px;
     }
   }

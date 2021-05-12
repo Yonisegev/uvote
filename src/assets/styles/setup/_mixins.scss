@@ -24,35 +24,94 @@
     }
 }
 
-/* Media  Mixins */
-@mixin aspect-ratio($width, $height) {
-    position: relative;
-    overflow: hidden;
-    &::before {
-      display: block;
-      content: "";
-      width: 100%;
-      padding-top: ($height / $width) * 100%;
+@mixin login-signup-container {
+    width: 600px;
+    padding: 30px;
+    background-color: $bg-color;
+    height: 450px;
+    box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+    border-radius: 3px;
+    h3 {
+        font-size: 2.2rem;
+        text-align: center;
+        font-weight: 700;
     }
-    > * {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+    label {
+        margin-bottom: 4px;
+        font-size: 1.2rem;
+        font-family: Quicksand, sans-serif;
     }
-  
-    > img {
-      height: 100%;
-      object-fit: cover;
+    input {
+        width: 100%;
+        margin-bottom: 8px;
     }
-  }
-  
-  // Mixin for removing hover efects on iphone screen
-  @mixin hover-supported {    
-    @media not all and (pointer: coarse) {
-        &:hover {
-            @content;
+    .p-inputtext:enabled:focus {
+        box-shadow: none;
+    }
+    .password-container {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+
+        span:first-of-type {
+            width: 100%;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 9px;
+            right: 8px;
+            cursor: pointer;
         }
     }
-  }
+
+    .user-icon {
+        margin-top: -0.8rem;
+    }
+    .email-icon,
+    .password-icon {
+        margin-top: -0.6rem;
+    }
+    .submit-btn {
+        text-transform: capitalize;
+        align-self: center;
+        margin-bottom: 8px;
+    }
+    .google-btn {
+        align-self: center;
+        display: flex;
+        align-items: center;
+        padding: 4px 20px;
+        margin-bottom: 8px;
+        border-radius: 3px;
+
+        transition: background-color, 0.2s;
+
+        &:hover {
+            background-color: darken($bg-color, 7%);
+        }
+
+        &::before {
+            background-image: url("../../imgs/google-48.svg");
+            background-repeat: no-repeat;
+            background-size: 25px 20px;
+            width: 25px;
+            height: 20px;
+            padding-right: 3px;
+            display: inline-block;
+            content: "";
+        }
+    }
+    .has-error {
+        margin-bottom: 3px;
+        color: red;
+    }
+    .login-p {
+        align-self: center;
+
+        a {
+            color: #3273dc;
+        }
+    }
+}
+ 

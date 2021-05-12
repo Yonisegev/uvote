@@ -1,11 +1,49 @@
-<p>login works!</p>
+<section class="login-container flex justify-center align-center">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onLogin()"
+    class="flex column justify-center"
+  >
+    <h3>Log in to your account</h3>
+    <label for="email">Email</label>
+    <span class="has-error" *ngIf="submitted && loginForm.get('email').hasError('required') || submitted && loginForm.get('email').invalid"
+    >Valid email is required</span>
+    <span class="p-input-icon-left">
+        <i class="pi pi-envelope email-icon"></i>
+        <input
+          id="email"
+          type="email"
+          pInputText
+          placeholder="example@uvote.com"
+          autocomplete="off"
+          formControlName="email"
+        />
+      </span>
+      <label for="password">Password</label>
+      <span class="has-error" *ngIf="submitted && loginForm.get('password').hasError('required')"
+      >Password is required</span>
+      <div class="password-container">
+        <span class="p-input-icon-left">
+          <i class="pi pi-lock password-icon"></i>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            pInputText
+            placeholder="●●●●●"
+            autocomplete="off"
+            formControlName="password"
+          />
+        </span>
+        <span (click)="onTogglePassword()" class="toggle-password">
+          <i
+            [title]="showPassword ? 'Hide Password' : 'Show Password'"
+            [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          ></i>
+        </span>
+      </div>
+      <h2 *ngIf="error">{{error}}</h2>
+      <button class="submit-btn" type="submit">Log in</button>
+      <button (click)="onGoogleSignin()" class="google-btn" type="button">Sign in with Google</button>
+      <p class="login-p">Don't have an account? <a routerLink="/signup">Sign up</a></p>
 
-<button (click)="onGoogleSignin()">Google Login</button>
-<div *ngIf="isLoggedIn">
-    <label>Username</label>
-    <input type="text" [value]="socialUser.firstName" id="username" readonly>
-    <label>Email</label>
-    <input type="email" [value]="socialUser.email" id="email" readonly>
-
-    <button type="button" (click)="onLogout()">Log Out</button>
-</div>
+</form>
+</section>

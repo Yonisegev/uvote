@@ -87,7 +87,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       views: existingPoll?.views || null,
       voters: existingPoll?.voters || [],
       totalVotes: existingPoll?.totalVotes || 0,
-      owner: existingPoll?.owner ? existingPoll.owner : null, // TODO: fill guest/user data as owner
+      owner: existingPoll.owner || null // TODO: fill guest/user data as owner
     };
     this.pollService.onPollSubmit(pollToSubmit).subscribe((poll) => {
       this.router.navigateByUrl(`poll/${poll._id}`)
@@ -103,8 +103,8 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     const poll = this.pollToEdit;
     const pollIsDeadline = poll?.dueDate ? true : false;
     this.pollForm = this.fb.group({
-      title: [poll ? poll.title : '', [Validators.required]],
-      description: [poll ? poll.description : ''],
+      title: [poll?.title || '', [Validators.required]],
+      description: [poll?.description || ''],
       options: this.fb.array(
         poll
           ? poll.options.map((option, idx) => {
@@ -119,8 +119,8 @@ export class PollEditComponent implements OnInit, AfterViewInit {
               this.fb.control(''),
             ]
       ),
-      isPrivate: [poll ? poll.isPrivate : false],
-      isComments: [poll ? poll.isComments : true],
+      isPrivate: [poll?.isPrivate || false],
+      isComments: [ poll?.isComments || true],
       isDeadline: [poll ? pollIsDeadline : false],
       dueDate: [poll ? new Date(poll.dueDate) : ''],
     });

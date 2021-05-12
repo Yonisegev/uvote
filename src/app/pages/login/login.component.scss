@@ -1,0 +1,18 @@
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/mixins";
+
+.login-container {
+    min-height: calc(100vh - 40px);
+
+    form {
+        @include login-signup-container;
+
+        h2 {
+            align-self: center;
+            color: $err-color;
+            font-family: Quicksand-light;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+    }
+}
