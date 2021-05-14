@@ -75,7 +75,7 @@ export class PollService {
   }
 
   public remove(pollId) {
-    return this.http.delete(`${this.BASE_URL}/${pollId}`)
+    return this.http.delete(`${this.BASE_URL}/${pollId}`, { withCredentials: true })
   }
 
   private pollsDB = [

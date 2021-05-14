@@ -11,7 +11,7 @@ import { PollFilterComponent } from './cmps/poll-filter/poll-filter.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {InputTextModule} from 'primeng/inputtext';
+import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +22,15 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ErrorComponent } from './pages/error/error.component';
-import {SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider} from 'angularx-social-login'
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleLoginProvider,
+} from 'angularx-social-login';
+import { ConfirmModalComponent } from './cmps/confirm-modal/confirm-modal.component';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+
+
 
 @NgModule({
   declarations: [
@@ -38,6 +46,7 @@ import {SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider} from 'a
     LoginComponent,
     SignupComponent,
     ErrorComponent,
+    ConfirmModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +61,8 @@ import {SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider} from 'a
     HttpClientModule,
     CommonModule,
     SocialLoginModule,
-    InputTextModule
+    InputTextModule,
+    ConfirmDialogModule,
   ],
   providers: [
     {
@@ -64,11 +74,11 @@ import {SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider} from 'a
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
               '1055571878940-4ia31ot06g5svt6h6pvggfc8offps3cq.apps.googleusercontent.com'
-            )
-          }
-        ]
+            ),
+          },
+        ],
       } as SocialAuthServiceConfig,
-    }
+    },
   ],
   bootstrap: [AppComponent],
 })

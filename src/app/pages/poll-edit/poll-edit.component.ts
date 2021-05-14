@@ -12,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 import { cloneDeep } from 'lodash';
 import { PollService } from 'src/app/services/poll.service';
 import { Option } from 'src/app/models/option';
+import { LoggedUser } from 'src/app/models/logged-user';
+import { UtilService } from 'src/app/services/util.service';
 
 @Component({
   selector: 'poll-edit',
@@ -24,18 +26,23 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     private router: Router,
     private userService: UserService,
     private pollService: PollService,
+    private utilService: UtilService,
     private fb: FormBuilder
   ) {}
   pollToEdit: Poll = null;
   pollForm: FormGroup;
   submitted: boolean = false;
+  loggedInUser: LoggedUser
   @ViewChild('question') questionInput: ElementRef;
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       this.pollToEdit = data.poll;
     });
-    this.userService.getUserData();
+    this.loggedInUser = this.userService.loggedUserValue
+    if(!this.loggedInUser) {
+      this.userService.getUserData();
+    }
     console.log('The poll to edit is:', this.pollToEdit);
     this.fillForm();
   }
@@ -87,12 +94,12 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       views: existingPoll?.views || null,
       voters: existingPoll?.voters || [],
       totalVotes: existingPoll?.totalVotes || 0,
-      owner: existingPoll.owner || null // TODO: fill guest/user data as owner
+      owner: this.formOwner // TODO: fill guest/user data as owner
     };
     this.pollService.onPollSubmit(pollToSubmit).subscribe((poll) => {
       this.router.navigateByUrl(`poll/${poll._id}`)
     });
-
+    console.log('owner', pollToSubmit.owner)
     // console.log('form value is', formValue);
     // console.log('poll to submit is', pollToSubmit);
 
@@ -140,5 +147,23 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       options.push(option)
     }
     return options
+  }
+
+  get formOwner() {
+    if(this.pollToEdit) {
+      return this.pollToEdit.owner
+    } else if(this.loggedInUser) {
+      return this.loggedInUser
+    } else {
+      const guestData =  cloneDeep(this.userService.userData)
+      const owner = {
+        _id: this.utilService.makeid(10),
+        name: 'Guest',
+        email: 'uvoteguest@gmail.com',
+        country: guestData.country,
+        flag: guestData.flag.svg,
+      }
+      return owner
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -6,18 +6,20 @@ import {
   GoogleLoginProvider,
   SocialUser,
 } from 'angularx-social-login';
+import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   socialUser: SocialUser;
   showPassword: boolean = false;
   submitted: boolean = false;
   error = '';
+  loginSub: Subscription
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
   onLogin(socialUser = null) {
     this.submitted = true;
     if (!socialUser && !this.loginForm.valid) return;
-    this.userService.login(socialUser || this.loginForm.value).subscribe(
+    this.loginSub = this.userService.login(socialUser || this.loginForm.value).subscribe(
       (loggedUser) => {
         this.userService.updateLoggedUser(loggedUser);
         this.router.navigateByUrl('poll')
@@ -66,5 +68,9 @@ export class LoginComponent implements OnInit {
 
   onGoogleSignin() {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  ngOnDestroy() {
+    this.loginSub?.unsubscribe()
   }
 }

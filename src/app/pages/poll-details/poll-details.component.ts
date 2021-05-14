@@ -22,6 +22,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   selectedOptionId: string;
   showResults: boolean = false;
   isPopoverOpen: boolean = false;
+  isConfirmModalOpen: boolean = false;
   savedPollSub: Subscription;
   actionsTexts = ['Edit Poll', 'Delete Poll', 'Duplicate Poll'];
   actionsIcons = ['pi pi-pencil', 'pi pi-trash', 'pi pi-clone'];
@@ -29,6 +30,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       // Get current poll data from poll resolver
+      if(!data.poll) this.router.navigateByUrl('/error')
       this.poll = data.poll;
       console.log(this.poll)
     });
@@ -41,8 +43,9 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   getOptionPrecent(optionVotes) {
     const precent = (optionVotes / this.poll.totalVotes) * 100;
-    return parseFloat('' + precent).toFixed(2); // Still need to decide which one is better
-    // return Math.floor(precent);
+    if(!precent) return 0
+    return parseFloat('' + precent).toFixed(2);
+    
   }
 
   onSubmitVote(formValue) {
@@ -60,10 +63,19 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     if (actionType === 'Edit Poll') {
       this.router.navigate(['edit'], {relativeTo: this.route})
     } else if (actionType === 'Delete Poll') {
-      this.pollService.remove(this.poll._id).subscribe(() => {this.router.navigateByUrl('/poll')}) // TODO: Add a confirm modal
+      this.isConfirmModalOpen = true
     } else {
       // Do Something...
     }
+  }
+
+  onPollDelete(ev) {
+    console.log(ev);
+    if(ev) {
+      this.pollService.remove(this.poll._id).subscribe(() => {this.router.navigateByUrl('/poll')})
+    }
+    this.isConfirmModalOpen = false
+
   }
 
   closePopover() {

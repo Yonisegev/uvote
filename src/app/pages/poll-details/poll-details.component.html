@@ -65,6 +65,7 @@
         </div>
         <button class="submit-btn" type="submit">Vote</button>
       </div>
+      <confirm-modal *ngIf="isConfirmModalOpen" (userSelection)="onPollDelete($event)"></confirm-modal>
     </form>
     <div>
       {{ poll | json }}

@@ -13,7 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { User } from '../models/user';
+import { LoggedUser } from '../models/logged-user';
 
 @Injectable({
   providedIn: 'root',
@@ -47,24 +47,27 @@ export class UserService {
       });
   }
 
-  public get loggedUserValue(): User {
+  public get loggedUserValue(): LoggedUser {
     return this._loggedInUser$.value;
   }
 
-  public login(credentials) {
+  public get userData() {
+    return this._userData$.value
+  }
+
+  public login(credentials): Observable<any> {
     console.log('the creds are', credentials);
     return this.http
-      .post(`${this.BASE_URL}/login`, credentials)
+      .post(`${this.BASE_URL}/login`, credentials, { withCredentials: true })
       .pipe(catchError((err) => throwError(err)));
   }
 
-  public registerUser(userInfo) {
+  public registerUser(userInfo): Subscription {
     userInfo.name = userInfo.name.trim();
     if (this._userData$) {
       const sub: Subscription = this.userData$.subscribe((geoInfo) => {
         userInfo.country = geoInfo.country;
         userInfo.flag = geoInfo.flag.svg;
-        userInfo.polls = [];
       });
       sub.unsubscribe();
     }
@@ -77,11 +80,14 @@ export class UserService {
       });
   }
 
-  public socialRegister(socialUser) {
+  public socialRegister(socialUser): void {
     this.checkifEmailExists(socialUser.email).subscribe(
       (isRegistred) => {
-        this.login(socialUser).subscribe(loggedUser => this.updateLoggedUser(loggedUser) )
         console.log(isRegistred, 'need to log in!');
+        const loginSub: Subscription = this.login(socialUser).subscribe(
+          (loggedUser) => this.updateLoggedUser(loggedUser)
+        );
+        loginSub.unsubscribe();
       },
       (err) => {
         if (err.status === 500) {
@@ -92,15 +98,15 @@ export class UserService {
     );
   }
 
-  public logout() {
+  public logout(): void {
     localStorage.removeItem('user');
     this._loggedInUser$.next(null);
+    this.http.post(`${this.BASE_URL}/logout`, {}, { withCredentials: true }).subscribe()
   }
 
-  public updateLoggedUser(user) {
+  public updateLoggedUser(user): void {
     this._loggedInUser$.next(user);
     this.saveToStorage('user', user);
-
   }
 
   public checkifEmailExists(email): Observable<object> {

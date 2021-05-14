@@ -24,10 +24,13 @@ async function getPoll(req, res) {
 
 async function deletePoll(req, res) {
     try {
-        await pollService.remove(req.params.id)
+        const user = req.session.user
+        console.log('THE USER FROM DELETE POLL IS', user)
+        await pollService.remove(req.params.id, user)
         res.send({ msg: 'Deleted successfully' })
     } catch (err) {
         logger.error('Failed to delete poll', err)
+        if(err.status === 401) res.status(401).send({err: 'Unauthorized'})
         res.status(500).send({ err: 'Failed to delete poll' })
     }
 }
