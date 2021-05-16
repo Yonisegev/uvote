@@ -1,4 +1,14 @@
+@import "../../../assets/styles/setup/variables";
+
 .poll-app {
-  height: calc(100vh - 40px);
   padding-top: 30px;
+
+  .ngx-pagination {
+    padding-left: 0 !important;
+
+    .current {
+      background: $secondary-color;
+    }
+  }
+  
 }

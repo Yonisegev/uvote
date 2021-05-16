@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
@@ -7,15 +7,17 @@ import { PollService } from 'src/app/services/poll.service';
   selector: 'poll-app',
   templateUrl: './poll-app.component.html',
   styleUrls: ['./poll-app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PollAppComponent implements OnInit, OnDestroy {
-  constructor(
-    private pollService: PollService,
-  ) {}
+  constructor(private pollService: PollService) {}
   polls: Poll[];
   pollsSub: Subscription;
-
+  page: number = 1;
+  paginatorSize: number = 5;
+  totalItems: number
   ngOnInit() {
+    this.pollService.query()
     this.getPolls();
   }
 
@@ -23,10 +25,16 @@ export class PollAppComponent implements OnInit, OnDestroy {
     this.pollsSub = this.pollService.polls$.subscribe((polls) => {
       this.polls = polls;
     });
-    this.pollService.query();
+    
   }
+  
 
   ngOnDestroy() {
     this.pollsSub.unsubscribe();
+  }
+
+  handlePageChange(ev) {
+    this.page = ev;
+    this.getPolls()
   }
 }

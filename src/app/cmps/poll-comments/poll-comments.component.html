@@ -1,0 +1,27 @@
+<section class="comments-section">
+    <p class="error" *ngIf="error">Can't post an empty comment</p>
+    <div class="container flex column">
+        <div class="add-comment flex column">
+            <h4 class="comments-heading">Add a comment</h4>
+            <textarea
+            [(ngModel)]="commentValue"
+            name="comments"
+            id="comments"
+            placeholder="Share your thoughts"
+            ></textarea>
+            <button (click)="onCommentPost()">Post comment</button>
+        </div>
+        <div *ngIf="poll.comments.length" class="comment-list">
+            <div *ngFor="let comment of poll.comments" class="comment-preview">
+                <div class="comment-heading">
+                    <h5>{{ comment.author.name }}</h5>
+                    <span> - {{ getCommentDate(comment) }}</span>
+                </div>
+                <p class="comment-txt">{{ comment.txt }}</p>
+                <div class="author-logo flex justify-center align-center">
+                    <span>{{ comment.author.name.charAt(0) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter } from 'rxjs/operators';
 import { Poll } from '../models/poll';
 import { UserService } from './user.service';
 
@@ -12,15 +12,19 @@ export class PollService {
   constructor(private http: HttpClient, private userService: UserService) {}
 
   private BASE_URL: string = 'http://localhost:3030/api/poll';
-  private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject(null);
+  private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject([]);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
   private userData;
 
   public query(): void {
-    this.http.get(this.BASE_URL).subscribe((polls: Poll[]) => {
-      this._polls$.next(polls);
-    });
+    this.http
+      .get<any>(this.BASE_URL)
+      .pipe(filter((poll) => !poll.isPrivate))
+      .subscribe((polls: Poll[]) => {
+        this._polls$.next(polls);
+      });
   }
+
 
   public getById(pollId: string): Observable<Poll> {
     return this.http.get<Poll>(`${this.BASE_URL}/${pollId}`).pipe(
@@ -50,32 +54,58 @@ export class PollService {
     poll.totalVotes += 1;
     poll.voters[userIp] = true;
 
-    return this.http.put<Poll>(`${this.BASE_URL}/${poll._id}`, poll);
-  } 
+    return this.update(poll._id, poll);
+  }
 
-  public onPollSubmit(poll: Poll): any{
-    console.log('On poll submit:', poll)
+  public onPollSubmit(poll: Poll): any {
+    console.log('On poll submit:', poll);
     if (poll._id) {
       console.log('EDIT!', poll, poll._id);
-      return this.update(poll._id, poll)
+      return this.update(poll._id, poll);
     } else {
-      console.log('CREATE!')
-      delete poll._id
-      return this.create(poll)
+      console.log('CREATE!');
+      delete poll._id;
+      return this.create(poll);
     }
   }
 
+  public onCommentSubmit(comment, poll: Poll) {
+    const commentToAdd = {
+      txt: comment,
+      createdAt: Date.now(),
+      author: {},
+    };
+    let author = this.userService.loggedUserValue;
+    if (!author) {
+      let guestData = this.userService.userData;
+      author = {
+        _id: 'guest',
+        name: 'Guest',
+        email: 'uvoteguest@gmail.com',
+        country: guestData.country,
+        flag: guestData.flag.svg,
+      };
+    }
+    console.log('the author is', author);
+    commentToAdd.author = author;
+    poll.comments = [commentToAdd, ...poll.comments];
+    console.log('the comments are', poll.comments);
+    return this.update(poll._id, poll);
+  }
+
   private create(poll: Poll) {
-    console.log('From create, the poll to add is', poll)
+    console.log('From create, the poll to add is', poll);
     return this.http.post<Poll>(this.BASE_URL, poll);
   }
 
-  private update(pollId, poll:Poll) {
-    return this.http.put<Poll>(`${this.BASE_URL}/${pollId}`, poll)
+  private update(pollId, poll: Poll) {
+    return this.http.put<Poll>(`${this.BASE_URL}/${pollId}`, poll);
   }
 
   public remove(pollId) {
-    return this.http.delete(`${this.BASE_URL}/${pollId}`, { withCredentials: true })
+    return this.http.delete(`${this.BASE_URL}/${pollId}`, {
+      withCredentials: true,
+    });
   }
 
   private pollsDB = [
@@ -145,7 +175,7 @@ export class PollService {
       },
       views: 5,
       comments: [],
-      voters: []
+      voters: [],
     },
   ];
 }

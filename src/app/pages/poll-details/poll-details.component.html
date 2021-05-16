@@ -1,8 +1,11 @@
-<div (click)="closePopover()" class="poll-details flex justify-center">
+<div (click)="closePopover()" class="poll-details flex column">
+  <div class="poll-container">
+    
   <div class="main-poll-info flex column align-center">
     <div class="poll-title flex align-center">
       <h2>{{ poll.title }}</h2>
       <div
+      *ngIf="loggedUser._id === poll.owner._id"
         (click)="onSettingsClick($event)"
         class="poll-settings flex justify-center align-center"
       >
@@ -24,7 +27,9 @@
     <p *ngIf="poll.description" class="poll-description">
       {{ poll.description }}
     </p>
-    <span class="votes-count">{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span>
+    <span class="votes-count"
+      >{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span
+    >
     <small>{{ getCreatedTime() }}</small>
     <form
       #form="ngForm"
@@ -65,13 +70,19 @@
         </div>
         <button class="submit-btn" type="submit">Vote</button>
       </div>
-      <confirm-modal *ngIf="isConfirmModalOpen" (userSelection)="onPollDelete($event)"></confirm-modal>
+      <confirm-modal
+        *ngIf="isConfirmModalOpen"
+        (userSelection)="onPollDelete($event)"
+      ></confirm-modal>
     </form>
-    <div>
-      {{ poll | json }}
-    </div>
   </div>
-  <div *ngIf="showResults" class="poll-stats">
+  <poll-comments
+    *ngIf="poll.isComments"
+    [poll]="poll"
+    [onUpdatePoll]="onUpdatePoll"
+  ></poll-comments>
+  <!-- <div *ngIf="showResults" class="poll-stats">
     <h3>Poll Stats</h3>
+  </div> -->
   </div>
 </div>

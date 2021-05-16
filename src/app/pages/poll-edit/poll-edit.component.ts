@@ -89,7 +89,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       isPrivate: formValue.isPrivate,
       isComments: formValue.isComments,
       dueDate: formValue.isDeadline ? formValue.dueDate : null,
-      comments: existingPoll?.comments || null,
+      comments: existingPoll?.comments || [],
       createdAt: existingPoll?.createdAt || Date.now(),
       views: existingPoll?.views || null,
       voters: existingPoll?.voters || [],

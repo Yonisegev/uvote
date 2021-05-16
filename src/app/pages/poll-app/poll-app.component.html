@@ -1,9 +1,27 @@
-<div class="poll-app flex justify-center">
+<div class="poll-app flex column align-center justify-center">
   <div class="poll-list">
     <poll-preview
       class="preview-container"
-      *ngFor="let poll of polls"
+      *ngFor="let poll of polls | paginate : {
+        itemsPerPage: paginatorSize,
+        currentPage: page
+      }
+      let i = index
+      "
+      [class.active]="i == currentIndex"
       [poll]="poll"
     ></poll-preview>
+  </div>
+  <div class="pagination">
+    <pagination-controls
+    previousLabel="Previous"
+    nextLabel="Next"
+    responsive="true"
+    (pageBoundsCorrection)="handlePageChange($event)"
+    (pageChange)="handlePageChange($event)
+    "
+    >
+
+    </pagination-controls>
   </div>
 </div>

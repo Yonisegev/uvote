@@ -5,6 +5,8 @@ import { PollService } from 'src/app/services/poll.service';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { cloneDeep } from 'lodash';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'poll-details',
@@ -16,7 +18,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     private pollService: PollService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
   poll: Poll;
   selectedOptionId: string;
@@ -24,17 +26,20 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   isPopoverOpen: boolean = false;
   isConfirmModalOpen: boolean = false;
   savedPollSub: Subscription;
+  loggedUser: Partial<User>
   actionsTexts = ['Edit Poll', 'Delete Poll', 'Duplicate Poll'];
   actionsIcons = ['pi pi-pencil', 'pi pi-trash', 'pi pi-clone'];
+
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       // Get current poll data from poll resolver
-      if(!data.poll) this.router.navigateByUrl('/error')
+      if (!data.poll) this.router.navigateByUrl('/error');
       this.poll = data.poll;
-      console.log(this.poll)
+      console.log(this.poll);
     });
     this.userService.getUserData();
+    this.loggedUser = this.userService.loggedUserValue
   }
 
   getCreatedTime(): string {
@@ -43,9 +48,8 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   getOptionPrecent(optionVotes) {
     const precent = (optionVotes / this.poll.totalVotes) * 100;
-    if(!precent) return 0
+    if (!precent) return 0;
     return parseFloat('' + precent).toFixed(2);
-    
   }
 
   onSubmitVote(formValue) {
@@ -61,9 +65,9 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   onActionClick(actionType) {
     if (actionType === 'Edit Poll') {
-      this.router.navigate(['edit'], {relativeTo: this.route})
+      this.router.navigate(['edit'], { relativeTo: this.route });
     } else if (actionType === 'Delete Poll') {
-      this.isConfirmModalOpen = true
+      this.isConfirmModalOpen = true;
     } else {
       // Do Something...
     }
@@ -71,12 +75,19 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   onPollDelete(ev) {
     console.log(ev);
-    if(ev) {
-      this.pollService.remove(this.poll._id).subscribe(() => {this.router.navigateByUrl('/poll')})
+    if (ev) {
+      this.pollService.remove(this.poll._id).subscribe(() => {
+        this.router.navigateByUrl('/poll');
+      });
     }
-    this.isConfirmModalOpen = false
-
+    this.isConfirmModalOpen = false;
   }
+
+  onUpdatePoll(updatedPoll: Poll) {
+    this.poll = updatedPoll;
+  }
+
+ 
 
   closePopover() {
     if (this.isPopoverOpen) this.isPopoverOpen = false;
