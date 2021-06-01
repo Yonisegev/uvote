@@ -10,7 +10,6 @@ export class Poll {
     public isComments: boolean,
     public createdAt: number,
     public owner: any,
-    public views: number,
     public comments,
     public voters: object,
     public dueDate?: Date | string | null,

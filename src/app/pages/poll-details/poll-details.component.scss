@@ -3,17 +3,36 @@
 
 .poll-details {
   padding-top: 30px;
-  background-image: url("../../../assets/imgs/fluid.svg");
-  background-position: right;
+
+  background-image: url("../../../assets/imgs/layered-waves-haikei.svg");
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
+  // background-attachment: fixed;
+
   min-height: 100vh;
+  position: relative;
+
+  .poll-container {
+    height: 100%;
+  }
   .main-poll-info {
+    margin: 0 auto rem(30px) auto;
+    width: 600px;
+    min-height: 55vh;
+
     h2 {
-      font-size: 3rem;
+      font-size: 4rem;
       font-family: Quicksand-Bold, sans-serif;
       font-weight: 400;
+    }
+    .error {
+      text-align: center;
+      color: $err-color;
+      font-family: Quicksand, sans-serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
     }
     .poll-settings {
       margin: 4px 0 0 18px;
@@ -54,6 +73,7 @@
       margin-bottom: rem(75.25px);
       .toggle {
         position: relative;
+        flex-basis: 80%;
         span {
           margin-left: 8px;
           position: relative;
@@ -65,6 +85,7 @@
     form {
       .option-txt {
         flex-grow: 1;
+        font-size: 1.5rem;
         font-family: Quicksand-SemiBold, sans-serif;
       }
       .option-percent {
@@ -72,7 +93,7 @@
         margin-right: 8px;
       }
       .option-votes {
-        margin-right: 35px;
+        margin-right: 5px;
       }
 
       margin-top: 15px;
@@ -83,21 +104,24 @@
         padding: 5px 10px;
         background-color: #eee;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        width: 400px;
+        height: 60px;
+
         transition: background-color 0.2s;
 
         &:hover {
           background-color: $cta-color;
         }
-        &__input {
+        &.input {
           display: none;
 
-          &:checked ~ .burmanRadio__label::after {
+          &:checked ~ label::after {
             opacity: 1;
             transform: scale(1);
           }
         }
 
-        &__label {
+        label {
           cursor: pointer;
           line-height: 30px;
           position: relative;
@@ -110,7 +134,7 @@
           &::after {
             border-radius: 50%;
             position: absolute;
-            top: 4px;
+            top: 5px;
             left: -35px;
             transition: all 0.3s ease-out;
             z-index: 2;
@@ -146,5 +170,26 @@
         }
       }
     }
+  }
+
+  .info {
+
+    margin: 0 auto 155px auto;
+    background-color: $bg-color;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .flying-rabbit {
+    position: absolute;
+    left: 5%;
+    top: 0;
+    z-index: 1;
+    background-image: url("../../../assets/imgs/flying-rabbit.svg");
+    width: 350px;
+    height: 350px;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+    fill: transparent;
   }
 }

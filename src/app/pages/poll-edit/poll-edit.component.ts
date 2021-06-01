@@ -91,8 +91,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       dueDate: formValue.isDeadline ? formValue.dueDate : null,
       comments: existingPoll?.comments || [],
       createdAt: existingPoll?.createdAt || Date.now(),
-      views: existingPoll?.views || null,
-      voters: existingPoll?.voters || [],
+      voters: existingPoll?.voters || {},
       totalVotes: existingPoll?.totalVotes || 0,
       owner: this.formOwner // TODO: fill guest/user data as owner
     };

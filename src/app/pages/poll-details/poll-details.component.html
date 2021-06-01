@@ -1,88 +1,95 @@
 <div (click)="closePopover()" class="poll-details flex column">
+  <div class="flying-rabbit"></div>
   <div class="poll-container">
-    
-  <div class="main-poll-info flex column align-center">
-    <div class="poll-title flex align-center">
-      <h2>{{ poll.title }}</h2>
-      <div
-      *ngIf="loggedUser._id === poll.owner._id"
-        (click)="onSettingsClick($event)"
-        class="poll-settings flex justify-center align-center"
-      >
-        <i class="pi pi-ellipsis-h">
-          <div
-            (click)="$event.stopPropagation()"
-            *ngIf="isPopoverOpen"
-            class="popover-content flex justify-center align-center"
-          >
-            <popover
-              [actionsTexts]="actionsTexts"
-              [actionsIcons]="actionsIcons"
-              (actionType)="onActionClick($event)"
-            ></popover>
-          </div>
-        </i>
-      </div>
-    </div>
-    <p *ngIf="poll.description" class="poll-description">
-      {{ poll.description }}
-    </p>
-    <span class="votes-count"
-      >{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span
-    >
-    <small>{{ getCreatedTime() }}</small>
-    <form
-      #form="ngForm"
-      (ngSubmit)="onSubmitVote(form.value)"
-      class="poll-options"
-    >
-      <div *ngFor="let option of poll.options" class="burmanRadio">
-        <input
-          type="radio"
-          class="burmanRadio__input"
-          [id]="option._id"
-          name="option"
-          (ngModel)="(selectedOptionId)"
-          [value]="option._id"
-        />
-        <label [for]="option._id" class="burmanRadio__label">
-          <div class="flex">
-            <span class="option-txt">{{ option.txt }}</span>
-            <div *ngIf="showResults" class="poll-results">
-              <span class="option-percent"
-                >{{ getOptionPrecent(option.votes) + "% " }}
-              </span>
-              <span class="option-votes">
-                ({{ option.votes }}
-                votes)
-              </span>
+    <voted-modal
+      [poll]="poll"
+      (onModalClose)="isVoteModalOpen = $event"
+      [isVoteModalOpen]="isVoteModalOpen"
+    ></voted-modal>
+    <div class="main-poll-info flex column align-center">
+      <div class="poll-title flex align-center">
+        <h2>{{ poll.title }}</h2>
+        <div
+          *ngIf="loggedUser?._id === poll.owner._id"
+          (click)="onSettingsClick($event)"
+          class="poll-settings flex justify-center align-center"
+        >
+          <i class="pi pi-ellipsis-h">
+            <div
+              (click)="$event.stopPropagation()"
+              *ngIf="isPopoverOpen"
+              class="popover-content flex justify-center align-center"
+            >
+              <popover
+                [actionsTexts]="actionsTexts"
+                [actionsIcons]="actionsIcons"
+                (actionType)="onActionClick($event)"
+              ></popover>
             </div>
-          </div>
-        </label>
-      </div>
-      <div class="actions flex align-center space-between">
-        <div class="toggle flex align-center justify-center">
-          <p-inputSwitch
-            [(ngModel)]="showResults"
-            name="results"
-          ></p-inputSwitch>
-          <span>Show Results</span>
+          </i>
         </div>
-        <button class="submit-btn" type="submit">Vote</button>
       </div>
-      <confirm-modal
-        *ngIf="isConfirmModalOpen"
-        (userSelection)="onPollDelete($event)"
-      ></confirm-modal>
-    </form>
-  </div>
-  <poll-comments
-    *ngIf="poll.isComments"
-    [poll]="poll"
-    [onUpdatePoll]="onUpdatePoll"
-  ></poll-comments>
-  <!-- <div *ngIf="showResults" class="poll-stats">
-    <h3>Poll Stats</h3>
-  </div> -->
+      <p *ngIf="poll.description" class="poll-description">
+        {{ poll.description }}
+      </p>
+      <span class="votes-count"
+        >{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span
+      >
+      <small>{{ getCreatedTime() }}</small>
+      <form
+        #form="ngForm"
+        (ngSubmit)="onSubmitVote(form.value)"
+        class="poll-options"
+      >
+        <div
+          *ngFor="let option of poll.options"
+          class="burmanRadio flex align-center"
+        >
+          <input
+            type="radio"
+            class="burmanRadio input"
+            [id]="option._id"
+            name="option"
+            (ngModel)="(selectedOptionId)"
+            [value]="option._id"
+          />
+          <label [for]="option._id">
+            <div class="flex">
+              <span class="option-txt">{{ option.txt }}</span>
+              <div *ngIf="showResults" class="poll-results">
+                <span class="option-percent"
+                  >{{ getOptionPrecent(option.votes) + "% " }}
+                </span>
+                <span class="option-votes">
+                  ({{ option.votes }}
+                  votes)
+                </span>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="error">
+          <h4 *ngIf="error">{{ error }}</h4>
+        </div>
+        <div class="actions flex align-center">
+          <div class="toggle flex align-center">
+            <a [routerLink]="resultsLink">Results</a>
+          </div>
+          <button class="submit-btn vote-btn" type="submit">Vote</button>
+        </div>
+        <confirm-modal
+          *ngIf="isConfirmModalOpen"
+          (userSelection)="onPollDelete($event)"
+        ></confirm-modal>
+      </form>
+    </div>
+    <section class="info">
+      <share></share>
+      <poll-comments
+        *ngIf="poll.isComments"
+        [poll]="poll"
+        [onUpdatePoll]="onUpdatePoll"
+      ></poll-comments>
+    </section>
   </div>
 </div>

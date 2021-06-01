@@ -1,7 +1,25 @@
 @import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/functions";
+
 
 .poll-app {
-  padding-top: 30px;
+  padding-top: 15px;
+
+  .list-header {
+    margin-bottom: rem(15px);
+    h3 {
+      font-family: Quicksand-SemiBold;
+      font-weight: 400;
+      font-size: 2rem;
+      letter-spacing: 0.8px;
+      line-height: 1.7;
+      padding-left: 2px;
+      margin-bottom: 5px;
+    }
+    .p-dropdown:not(.p-disabled).p-focus {
+      box-shadow: none !important;
+    }
+  }
 
   .ngx-pagination {
     padding-left: 0 !important;

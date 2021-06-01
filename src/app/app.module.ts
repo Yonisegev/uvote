@@ -8,6 +8,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -17,6 +19,7 @@ import {
   GoogleLoginProvider,
 } from 'angularx-social-login';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { PollAppComponent } from './pages/poll-app/poll-app.component';
@@ -31,6 +34,10 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { ConfirmModalComponent } from './cmps/confirm-modal/confirm-modal.component';
 import { PollCommentsComponent } from './cmps/poll-comments/poll-comments.component';
+import { PollResultsComponent } from './pages/poll-results/poll-results.component';
+import { VotedModalComponent } from './cmps/voted-modal/voted-modal.component';
+import { ShareComponent } from './cmps/share/share.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -48,6 +55,9 @@ import { PollCommentsComponent } from './cmps/poll-comments/poll-comments.compon
     ErrorComponent,
     ConfirmModalComponent,
     PollCommentsComponent,
+    PollResultsComponent,
+    VotedModalComponent,
+    ShareComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +74,11 @@ import { PollCommentsComponent } from './cmps/poll-comments/poll-comments.compon
     SocialLoginModule,
     InputTextModule,
     ConfirmDialogModule,
+    DialogModule,
     NgxPaginationModule,
+    DropdownModule,
+    FontAwesomeModule,
+    ToastModule,
   ],
   providers: [
     {

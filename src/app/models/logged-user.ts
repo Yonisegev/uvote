@@ -6,4 +6,5 @@ export interface LoggedUser {
      email: string,
      country: string,
      flag: string,
+     logoColor: string
 }

@@ -14,12 +14,13 @@ import {
 } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoggedUser } from '../models/logged-user';
+import { UtilService } from './util.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private utilService: UtilService) {}
   private _userData$: BehaviorSubject<any> = new BehaviorSubject(null);
   public userData$: Observable<any> = this._userData$.asObservable();
   private _loggedInUser$: BehaviorSubject<any> = new BehaviorSubject(
@@ -52,7 +53,7 @@ export class UserService {
   }
 
   public get userData() {
-    return this._userData$.value
+    return this._userData$.value;
   }
 
   public login(credentials): Observable<any> {
@@ -64,6 +65,8 @@ export class UserService {
 
   public registerUser(userInfo): Subscription {
     userInfo.name = userInfo.name.trim();
+    userInfo.email = userInfo.email.toLowerCase();
+    userInfo.logoColor = this.utilService.getRandomLightColor();
     if (this._userData$) {
       const sub: Subscription = this.userData$.subscribe((geoInfo) => {
         userInfo.country = geoInfo.country;
@@ -73,7 +76,7 @@ export class UserService {
     }
     console.log('from service', userInfo);
     return this.http
-      .post(`${this.BASE_URL}/signup`, userInfo)
+      .post(`${this.BASE_URL}/signup`, userInfo, { withCredentials: true })
       .subscribe((loggedInUser) => {
         this.saveToStorage('user', loggedInUser);
         this._loggedInUser$.next(loggedInUser);
@@ -85,9 +88,8 @@ export class UserService {
       (isRegistred) => {
         console.log(isRegistred, 'need to log in!');
         const loginSub: Subscription = this.login(socialUser).subscribe(
-          (loggedUser) => this.updateLoggedUser(loggedUser)
+          (loggedInUser) => this._loggedInUser$.next(loggedInUser)
         );
-        loginSub.unsubscribe();
       },
       (err) => {
         if (err.status === 500) {
@@ -101,7 +103,9 @@ export class UserService {
   public logout(): void {
     localStorage.removeItem('user');
     this._loggedInUser$.next(null);
-    this.http.post(`${this.BASE_URL}/logout`, {}, { withCredentials: true }).subscribe()
+    this.http
+      .post(`${this.BASE_URL}/logout`, {}, { withCredentials: true })
+      .subscribe();
   }
 
   public updateLoggedUser(user): void {

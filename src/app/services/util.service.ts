@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class UtilService {
   constructor() {}
-  
+
   makeid = (length) => {
     let text = '';
     const possible =
@@ -16,5 +16,10 @@ export class UtilService {
     }
 
     return text;
+  };
+
+  getRandomLightColor = () => {
+    let color = 'hsl(' + Math.random() * 360 + ', 100%, 40%)';
+    return color;
   };
 }

@@ -1,0 +1,23 @@
+<div
+  (click)="onModalClick($event)"
+  class="voted-modal flex column align-center justify-center"
+  [ngClass]="isVoteModalOpen ? '' : 'hide'"
+>
+  <h3>Thanks for voting!</h3>
+  <img src="../../../assets/imgs/checked.svg" alt="" />
+  <div class="actions flex">
+    <div class="buttons flex">
+      <button (click)="onCloseModal()" class="regular-btn">Back to poll</button>
+      <button class="regular-btn share-btn flex align-center">
+        <i class="pi pi-share-alt flex align-center"></i>
+        Share
+      </button>
+    </div>
+    <div class="btn-container flex">
+      <a class="results-btn" [routerLink]="resultsLink">
+        <i class="pi pi-chart-bar"></i>
+        Poll results
+      </a>
+    </div>
+  </div>
+</div>

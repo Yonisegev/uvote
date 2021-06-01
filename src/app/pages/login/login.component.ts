@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   showPassword: boolean = false;
   submitted: boolean = false;
   error = '';
-  loginSub: Subscription
+  loginSub: Subscription;
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.socialAuthService.authState.subscribe((googleUser) => {
+      console.log('google user', googleUser);
+
       const userToSignIn = {
         email: googleUser.email,
         password: googleUser.idToken,
@@ -45,19 +47,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   onLogin(socialUser = null) {
     this.submitted = true;
     if (!socialUser && !this.loginForm.valid) return;
-    this.loginSub = this.userService.login(socialUser || this.loginForm.value).subscribe(
-      (loggedUser) => {
-        this.userService.updateLoggedUser(loggedUser);
-        this.router.navigateByUrl('poll')
-      },
-      (err) => {
-        if(err.status === 401) {
-          this.error = 'Invalid email/password'
-        } else {
-          this.error = 'An error occurred. Please try again.';
+    this.loginSub = this.userService
+      .login(socialUser || this.loginForm.value)
+      .subscribe(
+        (loggedUser) => {
+          this.userService.updateLoggedUser(loggedUser);
+          this.router.navigateByUrl('poll');
+        },
+        (err) => {
+          if (err.status === 401) {
+            this.error = 'Invalid email/password';
+          } else {
+            this.error = 'An error occurred. Please try again.';
+          }
+          return;
         }
-      }
-    );
+      );
 
     this.submitted = false;
   }
@@ -71,6 +76,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.loginSub?.unsubscribe()
+    this.loginSub?.unsubscribe();
   }
 }

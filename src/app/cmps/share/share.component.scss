@@ -1,0 +1,70 @@
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/functions";
+
+.share {
+    margin: 25px auto 20px auto;
+    width: 550px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    padding: 20px 0;
+
+    .heading {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+    .copy-btn {
+        padding: 8px 20px;
+        background-color: lighten($primary-color, 5%);
+        color: $white;
+        cursor: pointer;
+        font-size: 1.2rem;
+
+        transition: background-color 0.2s;
+        &:hover {
+            background-color: lighten($primary-color, 10%);
+        }
+
+        span {
+            margin-left: 5px;
+        }
+    }
+    .social-links {
+        margin-bottom: 10px;
+        fa-icon {
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.5rem;
+            margin-left: 5px;
+            &.fb-icon {
+                background-color: #4267b2;
+            }
+            &.twitter-icon {
+                background-color: #1DA1F2;
+            }
+            &.whatsapp-icon {
+                background-color: #25D366;
+            }
+            &.mail-icon {
+                background-color: #333;
+            }
+        }
+
+        // .fb-icon {
+        //     background-color: #4267B2;
+        // }
+        // .twitter-icon {
+        //     background-color: #1DA1F2;
+        // }
+        // .whatsapp-icon {
+        //     background-color: #25D366;
+        // }
+        // .mail-icon {
+        //     background-color: #4285F4;
+        // }
+    }
+}

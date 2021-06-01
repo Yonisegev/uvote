@@ -1,0 +1,23 @@
+<section class="share flex column align-center">
+  <p-toast position="top-center" preventDuplicates="true"></p-toast>
+  <p class="heading">Share this poll</p>
+
+  <div class="social-links flex">
+    <a [href]="getShareLink('fb')">
+      <fa-icon class="fb-icon" [icon]="fbIcon"></fa-icon>
+    </a>
+    <a [href]="getShareLink('twitter')">
+      <fa-icon class="twitter-icon" [icon]="twitterIcon"></fa-icon>
+    </a>
+    <a [href]="getShareLink('whatsapp')">
+      <fa-icon class="whatsapp-icon" [icon]="whatsAppIcon"></fa-icon>
+    </a>
+    <a [href]="getShareLink('email')">
+      <fa-icon class="mail-icon" [icon]="mailIcon"></fa-icon>
+    </a>
+  </div>
+  <p (click)="onLinkCopy()" class="copy-btn regular-btn flex align-center">
+    <i class="pi pi-link"></i>
+    <span>Copy Link</span>
+  </p>
+</section>

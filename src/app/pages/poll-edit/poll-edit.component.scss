@@ -88,6 +88,7 @@
     .buttons {
       width: 100%;
       position: relative;
+      margin-bottom: 8px;
       .reset-btn {
         background-color: unset;
         color: lighten($txt, 10%);
@@ -130,7 +131,7 @@
   right: 0;
   top: 0;
   z-index: -1;
-  background-image: url("../../../assets/imgs/flying-rabbit.svg");
+  background-image: url("../../../assets/imgs/dabbing-rabbit.svg");
   width: 300px;
   height: 300px;
   background-position: center;
@@ -145,7 +146,7 @@
 
 .has-error {
   span {
-    color: red;
+    color: $err-color;
   }
 }
 

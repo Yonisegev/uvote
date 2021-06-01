@@ -25,11 +25,12 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   showResults: boolean = false;
   isPopoverOpen: boolean = false;
   isConfirmModalOpen: boolean = false;
+  isVoteModalOpen: boolean = false;
   savedPollSub: Subscription;
-  loggedUser: Partial<User>
+  loggedUser: Partial<User>;
+  error: string;
   actionsTexts = ['Edit Poll', 'Delete Poll', 'Duplicate Poll'];
   actionsIcons = ['pi pi-pencil', 'pi pi-trash', 'pi pi-clone'];
-
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
@@ -39,7 +40,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
       console.log(this.poll);
     });
     this.userService.getUserData();
-    this.loggedUser = this.userService.loggedUserValue
+    this.loggedUser = this.userService.loggedUserValue;
   }
 
   getCreatedTime(): string {
@@ -55,7 +56,14 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   onSubmitVote(formValue) {
     this.savedPollSub = this.pollService
       .addVote(this.poll, formValue.option)
-      .subscribe();
+      .subscribe(
+        (res) => {
+          this.isVoteModalOpen = true;
+        },
+        (err) => {
+          this.error = 'You have already voted on this poll.';
+        }
+      );
   }
 
   onSettingsClick(ev) {
@@ -87,11 +95,15 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     this.poll = updatedPoll;
   }
 
- 
-
   closePopover() {
     if (this.isPopoverOpen) this.isPopoverOpen = false;
+    if (this.isVoteModalOpen) this.isVoteModalOpen = false;
   }
+
+  get resultsLink() {
+    return `/poll/${this.poll._id}/results`;
+  }
+
   ngOnDestroy() {
     if (this.savedPollSub) this.savedPollSub.unsubscribe();
   }

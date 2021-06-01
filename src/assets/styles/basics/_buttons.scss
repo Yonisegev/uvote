@@ -33,3 +33,14 @@ button {
     background-color: lighten($cta-color, 5%);
   }
 }
+
+.regular-btn {
+  padding: 6px 10px;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s;
+  font-size: 0.98rem;
+  &:hover {
+    background-color: darken(#f0f0f0, 5%);
+  }
+}

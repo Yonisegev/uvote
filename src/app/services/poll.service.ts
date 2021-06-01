@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter } from 'rxjs/operators';
+import { catchError, filter, map } from 'rxjs/operators';
 import { Poll } from '../models/poll';
 import { UserService } from './user.service';
+import { UtilService } from './util.service';
+import { LoggedUser } from '../models/logged-user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PollService {
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private utilService: UtilService,
+    private router: Router
+  ) {}
 
   private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject([]);
@@ -17,18 +25,16 @@ export class PollService {
   private userData;
 
   public query(): void {
-    this.http
-      .get<any>(this.BASE_URL)
-      .pipe(filter((poll) => !poll.isPrivate))
-      .subscribe((polls: Poll[]) => {
-        this._polls$.next(polls);
-      });
+    this.http.get<Poll[]>(this.BASE_URL).subscribe((polls: Poll[]) => {
+      polls = polls.filter((poll) => !poll.isPrivate);
+      this._polls$.next(polls);
+    });
   }
-
 
   public getById(pollId: string): Observable<Poll> {
     return this.http.get<Poll>(`${this.BASE_URL}/${pollId}`).pipe(
       catchError((errorRes) => {
+        this.router.navigateByUrl('/error');
         return throwError(`Failed to get poll ${pollId}, ${errorRes}`);
       })
     );
@@ -36,23 +42,25 @@ export class PollService {
 
   public addVote(poll, selectionId): Observable<Poll> {
     this.userService.userData$.subscribe((userData) => {
-      // Show spinner while checking?
       this.userData = userData;
     });
+    const loggedUser: LoggedUser = this.userService.loggedUserValue
     console.log('From poll service:', { poll });
     const optionToUpdateIdx = poll.options.findIndex(
       (option) => option._id === selectionId
     );
     const userIp = this.userData.ip_address;
-    if (poll.voters[userIp]) {
-      console.log('user already voted!'); // HANDLE ERROR HERE
-      return;
+    if (poll.voters[userIp] || poll.voters[loggedUser?._id]) {
+      return throwError((err) => new Error('User already voted'));
     }
     console.log('the userdata is', this.userData);
 
     poll.options[optionToUpdateIdx].votes += 1;
     poll.totalVotes += 1;
     poll.voters[userIp] = true;
+    if(loggedUser) {
+      poll.voters[loggedUser._id] = true
+    }
 
     return this.update(poll._id, poll);
   }
@@ -69,21 +77,23 @@ export class PollService {
     }
   }
 
-  public onCommentSubmit(comment, poll: Poll) {
+  public onCommentSubmit(txt, poll: Poll) {
     const commentToAdd = {
-      txt: comment,
+      txt,
       createdAt: Date.now(),
       author: {},
     };
-    let author = this.userService.loggedUserValue;
+    let author: Partial<LoggedUser> = this.userService.loggedUserValue;
     if (!author) {
       let guestData = this.userService.userData;
       author = {
         _id: 'guest',
         name: 'Guest',
-        email: 'uvoteguest@gmail.com',
         country: guestData.country,
         flag: guestData.flag.svg,
+        logoColor:
+          this.userService.loggedUserValue?.logoColor ||
+          this.utilService.getRandomLightColor(),
       };
     }
     console.log('the author is', author);
@@ -107,75 +117,4 @@ export class PollService {
       withCredentials: true,
     });
   }
-
-  private pollsDB = [
-    {
-      title: 'Which frontend framework should I learn?',
-      description: 'I cant choose between the three, help me decide',
-      options: [
-        {
-          txt: 'React',
-          votes: 3,
-          _id: 'o101',
-        },
-        {
-          txt: 'Angular',
-          votes: 2,
-          _id: 'o102',
-        },
-        {
-          txt: 'Vue',
-          votes: 3,
-          _id: 'o103',
-        },
-      ],
-      totalVotes: 8,
-      isPrivate: false,
-      isComments: true,
-      createdAt: 1614010766136,
-      dueDate: null,
-      _id: 'p101',
-      owner: {
-        username: 'Yoni',
-        _id: 'u101',
-      },
-      views: 2,
-      comments: [],
-      voters: [],
-    },
-    {
-      title: 'What should I eat?',
-      description: 'I cant choose between the three, help me decide',
-      options: [
-        {
-          txt: 'Sushi',
-          votes: 3,
-          _id: 'o101',
-        },
-        {
-          txt: 'Hamburger',
-          votes: 2,
-          _id: 'o102',
-        },
-        {
-          txt: 'Pizza',
-          votes: 3,
-          _id: 'o103',
-        },
-      ],
-      totalVotes: 8,
-      isPrivate: false,
-      isComments: false,
-      createdAt: 1614010766136,
-      dueDate: null,
-      _id: 'p102',
-      owner: {
-        username: 'Yoni',
-        _id: 'u101',
-      },
-      views: 5,
-      comments: [],
-      voters: [],
-    },
-  ];
 }

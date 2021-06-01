@@ -6,10 +6,18 @@ import { LoginComponent } from './pages/login/login.component';
 import { PollAppComponent } from './pages/poll-app/poll-app.component';
 import { PollDetailsComponent } from './pages/poll-details/poll-details.component';
 import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
+import { PollResultsComponent } from './pages/poll-results/poll-results.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { PollResolverService } from './services/poll-resolver.service';
 
 const routes: Routes = [
+  {
+    path: 'poll/:id/results',
+    component: PollResultsComponent,
+    resolve: { poll: PollResolverService },
+    runGuardsAndResolvers: 'paramsChange',
+    pathMatch: 'full'
+  },
   {
     path: 'poll/:id/edit',
     component: PollEditComponent,
@@ -32,11 +40,11 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'signup',
-    component: SignupComponent
+    component: SignupComponent,
   },
   {
     path: '',
@@ -45,8 +53,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: ErrorComponent
-  }
+    component: ErrorComponent,
+  },
 ];
 
 @NgModule({

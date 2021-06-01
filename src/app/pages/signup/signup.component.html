@@ -1,13 +1,16 @@
-<section class="signup-container flex justify-center align-center">
+<section class="signup-container flex column justify-center align-center">
   <form
     [formGroup]="signupForm"
     (ngSubmit)="onSignup()"
     class="flex column justify-center"
   >
+    <div class="signup-rabbit"></div>
     <h3>Create a free account</h3>
     <label for="name">Your name</label>
 
-    <span class="has-error" *ngIf="submitted && signupForm.get('name').hasError('required')"
+    <span
+      class="has-error"
+      *ngIf="submitted && signupForm.get('name').hasError('required')"
       >Name is required</span
     >
     <span class="p-input-icon-left">
@@ -22,10 +25,19 @@
       />
     </span>
     <label for="email">Email Address</label>
-    <span class="has-error" *ngIf="submitted && signupForm.get('email').hasError('required') || submitted && signupForm.get('email').invalid"
-    >Valid email is required</span>
-    <span class="has-error" *ngIf=" signupForm.get('email').hasError('emailExists')"
-    >This email is already registered</span>
+    <span
+      class="has-error"
+      *ngIf="
+        (submitted && signupForm.get('email').hasError('required')) ||
+        (submitted && signupForm.get('email').invalid)
+      "
+      >Valid email is required</span
+    >
+    <span
+      class="has-error"
+      *ngIf="signupForm.get('email').hasError('emailExists')"
+      >This email is already registered</span
+    >
     <span class="p-input-icon-left">
       <i class="pi pi-envelope email-icon"></i>
       <input
@@ -38,8 +50,11 @@
       />
     </span>
     <label for="password">Choose Password</label>
-    <span class="has-error" *ngIf="submitted && signupForm.get('password').hasError('required')"
-    >Password is required</span>
+    <span
+      class="has-error"
+      *ngIf="submitted && signupForm.get('password').hasError('required')"
+      >Password is required</span
+    >
     <div class="password-container">
       <span class="p-input-icon-left">
         <i class="pi pi-lock password-icon"></i>
@@ -59,7 +74,11 @@
       </span>
     </div>
     <button class="submit-btn" type="submit">Sign up</button>
-    <button (click)="onGoogleSignUp()" class="google-btn" type="button">Sign up with Google</button>
-    <p class="login-p">Already have an account? <a routerLink="/login">Log In</a></p>
+    <button (click)="onGoogleSignUp()" class="google-btn" type="button">
+      Sign up with Google
+    </button>
+    <p class="login-p">
+      Already have an account? <a routerLink="/login">Log In</a>
+    </p>
   </form>
 </section>

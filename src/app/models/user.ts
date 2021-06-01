@@ -5,6 +5,7 @@ export class User {
         public password: string | number,
         public country: string,
         public flag: string,
+        public logoColor: string,
         public _id?:string
     ) {}
 }

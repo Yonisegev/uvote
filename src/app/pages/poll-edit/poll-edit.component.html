@@ -108,5 +108,8 @@
         {{ pollToEdit ? "Save" : "Create" }}
       </button>
     </div>
+    <div *ngIf="!loggedInUser" class="info">
+      <p>* As a guest you won't be able to edit/delete your poll</p>
+    </div>
   </form>
 </section>

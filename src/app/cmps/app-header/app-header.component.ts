@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SocialAuthService } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 export class AppHeaderComponent implements OnInit {
   loggedInUser: User;
   userSub: Subscription;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private socialAuthService: SocialAuthService) {}
 
   ngOnInit(): void {
     this.userSub = this.userService.loggedInUser$.subscribe((user) => {
@@ -21,5 +22,6 @@ export class AppHeaderComponent implements OnInit {
 
   onLogout(): void {
     this.userService.logout();
+    this.socialAuthService.signOut()
   }
 }

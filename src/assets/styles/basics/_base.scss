@@ -13,11 +13,14 @@ html {
   scroll-behavior: smooth;
   color: $txt;
   background-color: $bg-color;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   font-family: Quicksand, sans-serif;
   margin: 0;
+  padding: 0;
   background-color: $bg-color;
 }
 

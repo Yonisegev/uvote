@@ -2,8 +2,9 @@
 @import "../../../assets/styles/setup/functions";
 
 .comments-section {
-    width: 980px;
     margin: 0 auto;
+    // padding: 10px 40px;
+    width: 550px;
     .comments-heading {
         font-size: 2rem;
         font-family: Quicksand, sans-serif;
@@ -13,6 +14,10 @@
     }
     .add-comment {
         position: relative;
+        padding: 20px 0;
+        margin-bottom: rem(28.532px);
+        width: 550px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         textarea {
             border: 1px solid darken($bg-color, 4%);
             border-left: 3px solid $cta-color;
@@ -31,16 +36,16 @@
         button {
             align-self: center;
             color: #fff;
-            padding: 4px 10px;
+            padding: 5px 10px;
             border-radius: 3px;
             background-color: lighten($primary-color, 5%);
+            font-size: 1rem;
 
-            transition: background-color, .2s;
+            transition: background-color, 0.2s;
             &:hover {
                 background-color: lighten($primary-color, 10%);
             }
         }
-        margin-bottom: rem(15px);
     }
     .error {
         text-align: center;
@@ -49,10 +54,12 @@
     }
     .comment-list {
         align-self: center;
+
         .comment-preview {
             padding: 20px 30px;
-            border-left: 1px solid rgba(51, 51, 51, 0.404);
             position: relative;
+            box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.08), 0 0px 0 1px rgba(10, 10, 10, 0.03);
+            background-color: #fff;
             .comment-heading {
                 margin-bottom: 5px;
                 h5 {
@@ -78,9 +85,27 @@
                 border-radius: 50%;
                 background-color: $primary-color;
                 color: #fff;
+                font-family: Quicksand-SemiBold, sans-serif;
                 left: -18px;
                 top: 50%;
                 transform: translateY(-50%);
+            }
+        }
+    }
+    .pagination {
+        margin: 0 auto;
+        .ngx-pagination {
+            padding-left: 0 !important;
+            li {
+                span {
+                    color: $txt;
+                }
+            }
+            .current {
+                background: $secondary-color;
+            }
+            .pagination-previous.disabled {
+                color: darken(#cacaca, 35%);
             }
         }
     }
