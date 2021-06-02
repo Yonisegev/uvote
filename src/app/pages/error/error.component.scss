@@ -1,0 +1,54 @@
+.error {
+    height: 100vh;
+    background-image: url("../../../assets/imgs/Sea\ of\ Clouds-10s-1536px.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 4;
+
+    .astronaut {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-image: url("../../../assets/imgs/astronaut.svg");
+        background-position: center;
+        background-size: cover;
+        height: 300px;
+        width: 300px;
+        z-index: 5;
+        .numbers {
+            position: relative;
+            z-index: 3;
+            color: #dd4040;
+            font-family: Dosis-ExtraBold, sans-serif;
+            text-shadow: -2px 4px 0 rgba(0, 0, 0, 0.3);
+            transform: rotate(350deg);
+            .first-number,
+            .last-number {
+                position: relative;
+                font-size: 10rem;
+                top: -8%;
+            }
+
+            .last-number {
+                left: 57%;
+            }
+        }
+    }
+    .text {
+        height: 35vh;
+        h3 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            font-size: Quicksand-Bold, sans-serif;
+            text-shadow: -0.0375em 0 0 rgba(48, 48, 48, 0.1);
+            color: #dd4040;
+        }
+        button {
+            font-size: 2rem;
+            padding: 10px 20px;
+        }
+    }
+}

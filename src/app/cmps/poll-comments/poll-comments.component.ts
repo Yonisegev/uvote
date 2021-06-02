@@ -24,7 +24,7 @@ export class PollCommentsComponent implements OnInit {
     if (!this.commentValue) this.error = true;
     const pollCopy = cloneDeep(this.poll);
     this.pollService
-      .onCommentSubmit(this.commentValue, pollCopy)
+      .addComment(this.commentValue, pollCopy)
       .subscribe((updatedPoll) => this.onUpdatePoll(updatedPoll));
     this.error = false;
     this.commentValue = '';

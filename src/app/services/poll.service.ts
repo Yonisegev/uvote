@@ -34,22 +34,20 @@ export class PollService {
   public getById(pollId: string): Observable<Poll> {
     return this.http.get<Poll>(`${this.BASE_URL}/${pollId}`).pipe(
       catchError((errorRes) => {
-        this.router.navigateByUrl('/error');
+        this.router.navigateByUrl('/404');
         return throwError(`Failed to get poll ${pollId}, ${errorRes}`);
       })
     );
   }
 
   public addVote(poll, selectionId): Observable<Poll> {
-    this.userService.userData$.subscribe((userData) => {
-      this.userData = userData;
-    });
-    const loggedUser: LoggedUser = this.userService.loggedUserValue
+    const userData = this.userService.userData;
+    const loggedUser: LoggedUser = this.userService.loggedUserValue;
     console.log('From poll service:', { poll });
     const optionToUpdateIdx = poll.options.findIndex(
       (option) => option._id === selectionId
     );
-    const userIp = this.userData.ip_address;
+    const userIp = userData.ip_address;
     if (poll.voters[userIp] || poll.voters[loggedUser?._id]) {
       return throwError((err) => new Error('User already voted'));
     }
@@ -58,14 +56,14 @@ export class PollService {
     poll.options[optionToUpdateIdx].votes += 1;
     poll.totalVotes += 1;
     poll.voters[userIp] = true;
-    if(loggedUser) {
-      poll.voters[loggedUser._id] = true
+    if (loggedUser) {
+      poll.voters[loggedUser._id] = true;
     }
 
     return this.update(poll._id, poll);
   }
 
-  public onPollSubmit(poll: Poll): any {
+  public submitPoll(poll: Poll): any {
     console.log('On poll submit:', poll);
     if (poll._id) {
       console.log('EDIT!', poll, poll._id);
@@ -77,7 +75,7 @@ export class PollService {
     }
   }
 
-  public onCommentSubmit(txt, poll: Poll) {
+  public addComment(txt, poll: Poll): Observable<Poll> {
     const commentToAdd = {
       txt,
       createdAt: Date.now(),

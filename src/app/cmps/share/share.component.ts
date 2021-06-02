@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
   selector: 'share',
   templateUrl: './share.component.html',
   styleUrls: ['./share.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ShareComponent implements OnInit {
   constructor(private messageService: MessageService) {}
@@ -24,7 +24,7 @@ export class ShareComponent implements OnInit {
     console.log(window.location.href);
   }
 
-  getShareLink(type) {
+  getShareLink(type): string {
     const link = window.location.href;
     switch (type) {
       case 'fb':

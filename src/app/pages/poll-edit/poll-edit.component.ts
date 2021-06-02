@@ -95,7 +95,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       totalVotes: existingPoll?.totalVotes || 0,
       owner: this.formOwner // TODO: fill guest/user data as owner
     };
-    this.pollService.onPollSubmit(pollToSubmit).subscribe((poll) => {
+    this.pollService.submitPoll(pollToSubmit).subscribe((poll) => {
       this.router.navigateByUrl(`poll/${poll._id}`)
     });
     console.log('owner', pollToSubmit.owner)

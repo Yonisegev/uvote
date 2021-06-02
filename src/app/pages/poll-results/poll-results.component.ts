@@ -12,7 +12,7 @@ export class PollResultsComponent implements OnInit {
   poll: Poll;
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
-      if (!data.poll) this.router.navigateByUrl('/error');
+      if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
       console.log(this.poll, 'from results');
     });
