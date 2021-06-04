@@ -1,5 +1,6 @@
-<div
-  (click)="onPreviewClick()"
+<a
+  [routerLink]="pollLink"
+  [href]="pollLink"
   *ngIf="!poll.isPrivate"
   class="poll-preview flex column"
 >
@@ -9,4 +10,4 @@
   <h2>{{ poll.title }}</h2>
   <p *ngIf="poll.description">{{ poll.description }}</p>
   <small>{{ getCreatedTime() }}</small>
-</div>
+</a>

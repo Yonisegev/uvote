@@ -5,8 +5,8 @@ import { PollService } from 'src/app/services/poll.service';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { cloneDeep } from 'lodash';
 import { User } from 'src/app/models/user';
+
 
 @Component({
   selector: 'poll-details',

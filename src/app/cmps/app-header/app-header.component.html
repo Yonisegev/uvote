@@ -1,13 +1,13 @@
 <header class="app-header main-container flex align-center">
   <div class="logo">
-    <h1 routerLink="/">Uvote</h1>
+    <h1 routerLink="/"><a href="/">Uvote</a></h1>
   </div>
   <ul class="flex align-center">
-    <li routerLink="/create" class="create-btn">Create Poll</li>
-    <li routerLink="/poll">Discover</li>
+    <li routerLink="/create" class="create-btn"><a href="#/create">Create Poll</a></li>
+    <li routerLink="/poll"><a href="#/poll">Discover</a></li>
     <li *ngIf="loggedInUser">Dashboard</li>
     <li (click)="onLogout()" *ngIf="loggedInUser">Logout</li>
-    <li *ngIf="!loggedInUser" routerLink="/login">Login</li>
-    <li *ngIf="!loggedInUser" routerLink="/signup">Sign up</li>
+    <li *ngIf="!loggedInUser" routerLink="/login"><a href="#/login">Login</a></li>
+    <li *ngIf="!loggedInUser" routerLink="/signup"><a href="#/signup">Sign up</a></li>
   </ul>
 </header>

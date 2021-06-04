@@ -10,6 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
+import { ChartModule } from 'primeng/chart';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -79,6 +80,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DropdownModule,
     FontAwesomeModule,
     ToastModule,
+    ChartModule,
   ],
   providers: [
     {

@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 })
 export class ShareComponent implements OnInit {
   constructor(private messageService: MessageService) {}
+  link: string;
   fbIcon = faFacebookF;
   twitterIcon = faTwitter;
   whatsAppIcon = faWhatsapp;
@@ -22,10 +23,15 @@ export class ShareComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(window.location.href);
+    const link = window.location.href;
+    const endIndex = link.indexOf('/results');
+    if (endIndex > 0) {
+      this.link = link.slice(0, endIndex);
+    } else this.link = link;
   }
 
   getShareLink(type): string {
-    const link = window.location.href;
+    const link = this.link
     switch (type) {
       case 'fb':
         return `https://www.facebook.com/sharer/sharer.php?u=${link}`;
@@ -42,7 +48,7 @@ export class ShareComponent implements OnInit {
 
   onLinkCopy() {
     navigator.clipboard
-      .writeText(window.location.href)
+      .writeText(this.link)
       .then(() => this.showSuccess())
       .catch((e) => console.error(e));
   }
