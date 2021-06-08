@@ -8,7 +8,9 @@ import { PollDetailsComponent } from './pages/poll-details/poll-details.componen
 import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
 import { PollResultsComponent } from './pages/poll-results/poll-results.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { PollResolverService } from './services/poll-resolver.service';
+import { UserResolver } from './services/user.resolver';
 
 const routes: Routes = [
   {
@@ -16,7 +18,7 @@ const routes: Routes = [
     component: PollResultsComponent,
     resolve: { poll: PollResolverService },
     runGuardsAndResolvers: 'paramsChange',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'poll/:id/edit',
@@ -28,6 +30,12 @@ const routes: Routes = [
     path: 'poll/:id',
     component: PollDetailsComponent,
     resolve: { poll: PollResolverService },
+    runGuardsAndResolvers: 'paramsChange',
+  },
+  {
+    path: 'u/:id',
+    component: UserProfileComponent,
+    resolve: { user: UserResolver },
     runGuardsAndResolvers: 'paramsChange',
   },
   {

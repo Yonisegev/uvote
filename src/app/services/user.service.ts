@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoggedUser } from '../models/logged-user';
+import { User } from '../models/user';
 import { UtilService } from './util.service';
 
 @Injectable({
@@ -28,6 +29,7 @@ export class UserService {
   );
   public loggedInUser$: Observable<any> = this._loggedInUser$.asObservable();
   private BASE_URL: string = 'http://localhost:3030/api/auth';
+  private USER_URL: string = 'http://localhost:3030/api/user';
 
   public getUserData() {
     const cachedUserInfo = this.loadFromStorage('user-info');
@@ -61,6 +63,10 @@ export class UserService {
     return this.http
       .post(`${this.BASE_URL}/login`, credentials, { withCredentials: true })
       .pipe(catchError((err) => throwError(err)));
+  }
+
+  public getById(userId): Observable<User> {
+    return this.http.get<User>(`${this.USER_URL}/${userId}`)
   }
 
   public registerUser(userInfo): Subscription {

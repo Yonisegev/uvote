@@ -12,7 +12,7 @@ export class PollResolverService {
   resolve(route: ActivatedRouteSnapshot): Observable<Poll> {
     const { id } = route.params;
     if (!id) {
-      this.router.navigateByUrl('/poll');
+      this.router.navigateByUrl('/404');
       return null;
     }
     return this.pollService.getById(id);

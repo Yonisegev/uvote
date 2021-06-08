@@ -39,6 +39,8 @@ import { PollResultsComponent } from './pages/poll-results/poll-results.componen
 import { VotedModalComponent } from './cmps/voted-modal/voted-modal.component';
 import { ShareComponent } from './cmps/share/share.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { PollListComponent } from './cmps/poll-list/poll-list.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PollResultsComponent,
     VotedModalComponent,
     ShareComponent,
+    UserProfileComponent,
+    PollListComponent,
   ],
   imports: [
     BrowserModule,

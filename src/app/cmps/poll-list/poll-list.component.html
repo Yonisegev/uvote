@@ -1,0 +1,41 @@
+<div
+  *ngIf="pollsToDisplay.length"
+  class="poll-list flex column justify-center align-center"
+>
+  <div class="list-header flex column justify-center align-center">
+    <h3>{{listTitle}}</h3>
+    <div class="sort-container">
+      <p-dropdown
+        [options]="options"
+        [(ngModel)]="sortBy"
+        placeholder="Sort By"
+        optionLabel="name"
+        (onChange)="sortPolls(sortBy.name)"
+      ></p-dropdown>
+    </div>
+  </div>
+  <poll-preview
+    class="preview-container"
+    *ngFor="
+      let poll of pollsToDisplay
+        | paginate
+          : {
+              itemsPerPage: paginatorSize,
+              currentPage: page
+            };
+      let i = index
+    "
+    [class.active]="i == currentIndex"
+    [poll]="poll"
+  ></poll-preview>
+  <div class="pagination">
+    <pagination-controls
+      previousLabel="Previous"
+      nextLabel="Next"
+      responsive="true"
+      (pageBoundsCorrection)="handlePageChange($event)"
+      (pageChange)="handlePageChange($event)"
+    >
+    </pagination-controls>
+  </div>
+</div>

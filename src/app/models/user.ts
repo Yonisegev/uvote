@@ -1,3 +1,5 @@
+import { Poll } from "./poll";
+
 export class User {
     constructor(
         public name: string,
@@ -6,6 +8,7 @@ export class User {
         public country: string,
         public flag: string,
         public logoColor: string,
-        public _id?:string
+        public _id?:string,
+        public polls?: Poll[]
     ) {}
 }

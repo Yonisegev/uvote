@@ -20,12 +20,12 @@ export class PollResultsComponent implements OnInit {
       this.poll = data.poll;
     });
     this.populateColors();
-    console.log(this.colors);
+    const dataToShow = this.voteCount
     this.data = {
-      labels: this.labelNames,
+      labels: dataToShow ? this.labelNames : ['No data yet!'],
       datasets: [
         {
-          data: this.voteNumbers,
+          data: dataToShow || ['100'],
           backgroundColor: this.colors,
         },
       ],
@@ -49,20 +49,21 @@ export class PollResultsComponent implements OnInit {
   }
 
   get labelNames() {
-    const labelNames = this.poll.options.map((option) => {
-      return option.txt;
-    });
+    const labelNames = this.sortedPollByOptionsDescending.options.map(option => option.txt)
     return labelNames;
   }
 
-  get voteNumbers() {
-    const voteNumbers = this.poll.options.map((option) => {
+  get voteCount() {
+    let voteCount = this.sortedPollByOptionsDescending.options.map((option) => {
       return option.votes;
     });
-    return voteNumbers;
+    if (voteCount.every((item) => item === 0)) {
+      return false;
+    }
+    return voteCount;
   }
 
-  get sortedOptionsDescending() {
+  get sortedPollByOptionsDescending(): Poll {
     const pollCopy: Poll = cloneDeep(this.poll);
     pollCopy.options.sort((a, b): any => {
       return b.votes - a.votes;

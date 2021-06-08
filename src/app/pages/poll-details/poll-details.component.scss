@@ -8,7 +8,6 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  // background-attachment: fixed;
 
   min-height: 100vh;
   position: relative;
@@ -18,14 +17,22 @@
   }
   .main-poll-info {
     margin: 0 auto rem(30px) auto;
-    width: 600px;
+    min-width: 600px;
+    max-width: 768px;
     min-height: 55vh;
-
     h2 {
       font-size: 4rem;
       font-family: Quicksand-Bold, sans-serif;
       font-weight: 400;
+      text-align: center;
+      word-break: break-word;
     }
+    
+    .poll-title {
+      margin-bottom: 3px;
+      position: relative;
+    }
+
     .error {
       text-align: center;
       color: $err-color;
@@ -41,6 +48,8 @@
       width: 31px;
       height: 31px;
       cursor: pointer;
+      position: absolute;
+      right: -45px;
 
       transition: background-color 0.2s;
 
@@ -81,12 +90,11 @@
           text-decoration: underline;
           text-decoration-color: transparent;
 
-          transition: all .2s;
+          transition: all 0.2s;
           &:hover {
             text-decoration-color: $txt;
           }
         }
-
       }
     }
 
@@ -181,7 +189,6 @@
   }
 
   .info {
-
     margin: 0 auto 155px auto;
     background-color: $bg-color;
     border-top: 1px solid rgba(0, 0, 0, 0.12);

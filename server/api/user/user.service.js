@@ -1,5 +1,6 @@
 
 const dbService = require('../../services/db.service')
+const pollService = require('../poll/poll.service')
 // const logger = require('../../services/logger.service')
 const ObjectId = require('mongodb').ObjectId
 
@@ -20,10 +21,6 @@ async function query(filterBy = {}) {
         var users = await collection.find(criteria).toArray()
         users = users.map(user => {
             delete user.password
-            user.isHappy = true
-            user.createdAt = ObjectId(user._id).getTimestamp()
-            // Returning fake fresh data
-            // user.createdAt = Date.now() - (1000 * 60 * 60 * 24 * 3) // 3 days ago
             return user
         })
         return users
@@ -38,6 +35,8 @@ async function getById(userId) {
         const collection = await dbService.getCollection('user')
         const user = await collection.findOne({ '_id': ObjectId(userId) })
         delete user.password
+        const userPolls = await pollService.query({userId})
+        user.polls = userPolls
         return user
     } catch (err) {
         logger.error(`while finding user ${userId}`, err)
@@ -83,9 +82,11 @@ async function update(user) {
         // peek only updatable fields!
         const userToSave = {
             _id: ObjectId(user._id),
-            username: user.username,
-            fullname: user.fullname,
-            score: user.score
+            name: user.name,
+            email: user.email,
+            logoColor: user.logoColor,
+            country: user.country,
+            flag: user.flag
         }
         const collection = await dbService.getCollection('user')
         await collection.updateOne({ '_id': userToSave._id }, { $set: userToSave })

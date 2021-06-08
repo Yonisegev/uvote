@@ -1,0 +1,46 @@
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/functions";
+
+.user-profile {
+    padding-top: 30px;
+    .container {
+        width: 980px;
+        margin: 0 auto;
+        & > * {
+            width: 100%;
+        }
+        .heading {
+            margin-bottom: rem(30px);
+            .logo {
+                width: 95px;
+                height: 95px;
+                border-radius: 50%;
+                position: relative;
+
+                span {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    text-transform: capitalize;
+                    font-size: 3.5rem;
+                    color: $white;
+                 
+                }
+            }
+            .username {
+                display: flex;
+                align-items: center;
+                margin-left: 15px;
+                font-size: 2rem;
+                font-family: Quicksand-Bold, sans-serif;
+            }
+        }
+        .user-info {
+            .user-country {
+                width: 15px;
+                height: 15px;
+            }
+        }
+    }
+}
