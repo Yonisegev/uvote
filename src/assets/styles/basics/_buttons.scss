@@ -32,6 +32,11 @@ button {
   &:hover {
     background-color: lighten($cta-color, 5%);
   }
+
+  &:disabled {
+    background-color: #3bd9757a;
+    cursor: not-allowed;
+  }
 }
 
 .regular-btn {

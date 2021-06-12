@@ -29,6 +29,8 @@ async function getById(pollId) {
 }
 
 async function update(poll) {
+  console.log('due date', new Date(poll.dueDate))
+  console.log('now', new Date(Date.now()))
   try {
     poll._id = ObjectId(poll._id);
     const collection = await dbService.getCollection("poll");

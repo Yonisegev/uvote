@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
 
@@ -8,17 +9,17 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
-  constructor(private router: ActivatedRoute) {}
+  constructor(private router: ActivatedRoute, private titleService: Title) {}
 
-  user: User
+  user: User;
   ngOnInit(): void {
-    this.router.data.subscribe(data => {
-      this.user = data.user
-      console.log(this.user)
-    } )
+    this.router.data.subscribe((data) => {
+      this.user = data.user;
+      this.titleService.setTitle(`${data.user.name} | Uvote`);
+    });
   }
 
   get listTitle() {
-    return `Polls made by ${this.user.name}`
+    return `Public polls made by ${this.user.name}`;
   }
 }

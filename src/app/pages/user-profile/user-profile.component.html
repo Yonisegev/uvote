@@ -1,30 +1,39 @@
 <section class="user-profile">
   <div class="container flex column align-center justify-center">
-    <div class="heading flex justify-center">
+    <div class="heading flex align-center">
       <div [style.background-color]="user.logoColor" class="logo">
         <span>{{ user.name.charAt(0) }}</span>
       </div>
-      <span class="username">{{ user.name }}</span>
-    </div>
-    <div class="user-info flex space-around">
-      <div class="polls-count flex column align-center">
-        <h3>{{ user.polls?.length || 0 }}</h3>
-        <p>Polls created</p>
-      </div>
-      <div class="country flex column align-center">
-        <img
-          class="user-country"
-          [src]="user.flag"
-          [alt]="user.country"
-          [title]="user.country"
-        />
-        <p>{{ user.country }}</p>
+      <div class="info-container flex">
+        <span class="username flex column"
+          >{{ user.name }}
+          <div class="country flex">
+            <img
+              class="user-country"
+              [src]="user.flag"
+              [alt]="user.country"
+              [title]="user.country"
+            />
+          </div>
+        </span>
+        <div class="count-container">
+
+          <div class="polls-count flex column justify-center">
+            <h3>{{ user.polls?.length || 0 }}</h3>
+            <p>Polls created</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="user-polls">
-      <!-- <poll-list *ngIf="user.polls.length" [polls]="user.polls" [listTitle]="listTitle" paginatorSize="3"></poll-list> -->
-      <p *ngIf="user.polls.length">
-        {{ user.name }} didn't create public polls yet.
+      <poll-list
+        *ngIf="user.polls.length"
+        [polls]="user.polls"
+        [listTitle]="listTitle"
+        paginatorSize="3"
+      ></poll-list>
+      <p class="default-msg" *ngIf="!user.polls.length">
+        {{ user.name }} didn't create any public polls yet
       </p>
     </div>
   </div>

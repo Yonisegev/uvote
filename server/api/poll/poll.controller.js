@@ -40,7 +40,6 @@ async function updatePoll(req, res) {
     try {
         let poll = req.body
         console.log('The req is:', poll);
-        // poll.byUserId = req.session.user._id
         poll = await pollService.update(poll)
         res.send(poll)
 

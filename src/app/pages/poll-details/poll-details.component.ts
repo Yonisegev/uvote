@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
@@ -6,41 +6,45 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
-
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'poll-details',
   templateUrl: './poll-details.component.html',
   styleUrls: ['./poll-details.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PollDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private pollService: PollService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {}
   poll: Poll;
   selectedOptionId: string;
-  showResults: boolean = false;
   isPopoverOpen: boolean = false;
   isConfirmModalOpen: boolean = false;
   isVoteModalOpen: boolean = false;
+  isDue: boolean = false;
   savedPollSub: Subscription;
   loggedUser: Partial<User>;
   error: string;
-  actionsTexts = ['Edit Poll', 'Delete Poll', 'Duplicate Poll'];
-  actionsIcons = ['pi pi-pencil', 'pi pi-trash', 'pi pi-clone'];
+  actionsTexts = ['Edit Poll', 'Delete Poll'];
+  actionsIcons = ['pi pi-pencil', 'pi pi-trash'];
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       // Get current poll data from poll resolver
       if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
+      this.titleService.setTitle(`${data.poll.title} | Uvote`);
       console.log(this.poll);
     });
     this.userService.getUserData();
     this.loggedUser = this.userService.loggedUserValue;
+    this.dueDateString // invoked here to avoid erratic UI behavior after CD runs (NG0100)
   }
 
   getCreatedTime(): string {
@@ -102,6 +106,38 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   get resultsLink() {
     return `/poll/${this.poll._id}/results`;
+  }
+
+  get userProfileLink() {
+    if (this.poll.owner._id === 'guest') {
+      return '';
+    } else {
+      return `/#/u/${this.poll.owner._id}`;
+    }
+  }
+
+  get pollUserHtmlString() {
+    if (this.poll.owner._id === 'guest') {
+      return `by a guest · <span>${this.getCreatedTime()}</span>`;
+    } else {
+      return `by <a routerLink="${this.userProfileLink}" href="${
+        this.userProfileLink
+      }">${this.poll.owner.name}</a> · <span>${this.getCreatedTime()}</span>`;
+    }
+  }
+
+  get dueDateString() {
+    if (this.poll.dueDate) {
+      const dueDate = new Date(this.poll.dueDate);
+      const now = new Date(Date.now());
+      const formattedDueDate = moment(this.poll.dueDate).fromNow();
+      if (dueDate > now) {
+        return `Voting ends ${formattedDueDate}.`;
+      } else {
+        this.isDue = true;
+        return `Voting ended ${formattedDueDate}.`;
+      }
+    }
   }
 
   ngOnDestroy() {

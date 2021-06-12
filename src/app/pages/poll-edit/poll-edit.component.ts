@@ -13,7 +13,6 @@ import { cloneDeep } from 'lodash';
 import { PollService } from 'src/app/services/poll.service';
 import { Option } from 'src/app/models/option';
 import { LoggedUser } from 'src/app/models/logged-user';
-import { UtilService } from 'src/app/services/util.service';
 
 @Component({
   selector: 'poll-edit',
@@ -26,21 +25,20 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     private router: Router,
     private userService: UserService,
     private pollService: PollService,
-    private utilService: UtilService,
     private fb: FormBuilder
   ) {}
   pollToEdit: Poll = null;
   pollForm: FormGroup;
   submitted: boolean = false;
-  loggedInUser: LoggedUser
+  loggedInUser: LoggedUser;
   @ViewChild('question') questionInput: ElementRef;
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       this.pollToEdit = data.poll;
     });
-    this.loggedInUser = this.userService.loggedUserValue
-    if(!this.loggedInUser) {
+    this.loggedInUser = this.userService.loggedUserValue;
+    if (!this.loggedInUser) {
       this.userService.getUserData();
     }
     console.log('The poll to edit is:', this.pollToEdit);
@@ -93,12 +91,12 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       createdAt: existingPoll?.createdAt || Date.now(),
       voters: existingPoll?.voters || {},
       totalVotes: existingPoll?.totalVotes || 0,
-      owner: this.formOwner // TODO: fill guest/user data as owner
+      owner: this.formOwner, // TODO: fill guest/user data as owner
     };
     this.pollService.submitPoll(pollToSubmit).subscribe((poll) => {
-      this.router.navigateByUrl(`poll/${poll._id}`)
+      this.router.navigateByUrl(`poll/${poll._id}`);
     });
-    console.log('owner', pollToSubmit.owner)
+    console.log('owner', pollToSubmit.owner);
     // console.log('form value is', formValue);
     // console.log('poll to submit is', pollToSubmit);
 
@@ -126,43 +124,46 @@ export class PollEditComponent implements OnInit, AfterViewInit {
             ]
       ),
       isPrivate: [poll?.isPrivate || false],
-      isComments: [ poll?.isComments || true],
+      isComments: [poll?.isComments || true],
       isDeadline: [poll ? pollIsDeadline : false],
       dueDate: [poll ? new Date(poll.dueDate) : ''],
     });
   }
 
   getFormOptions(formValue, existingPoll): Option[] {
-    const options = []
-    for(let i = 0; i < formValue.options.length; i++) {
-      if(!formValue.options[i]) continue
-      console.log('The I is', i)
+    const options = [];
+    for (let i = 0; i < formValue.options.length; i++) {
+      if (!formValue.options[i]) continue;
+      console.log('The I is', i);
       const option = {
         txt: formValue.options[i],
-        votes: existingPoll?.options[i]?.votes ? existingPoll.options[i].votes : 0,
-        _id: existingPoll?.options[i]?._id ? existingPoll.options[i]._id : `o${i}`
-        
-      }
-      options.push(option)
+        votes: existingPoll?.options[i]?.votes
+          ? existingPoll.options[i].votes
+          : 0,
+        _id: existingPoll?.options[i]?._id
+          ? existingPoll.options[i]._id
+          : `o${i}`,
+      };
+      options.push(option);
     }
-    return options
+    return options;
   }
 
   get formOwner() {
-    if(this.pollToEdit) {
-      return this.pollToEdit.owner
-    } else if(this.loggedInUser) {
-      return this.loggedInUser
+    if (this.pollToEdit) {
+      return this.pollToEdit.owner;
+    } else if (this.loggedInUser) {
+      return this.loggedInUser;
     } else {
-      const guestData =  cloneDeep(this.userService.userData)
+      const guestData = cloneDeep(this.userService.userData);
       const owner = {
-        _id: this.utilService.makeid(10),
+        _id: 'guest',
         name: 'Guest',
         email: 'uvoteguest@gmail.com',
         country: guestData.country,
         flag: guestData.flag.svg,
-      }
-      return owner
+      };
+      return owner;
     }
   }
 }
