@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
 import { Title } from '@angular/platform-browser';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'poll-details',
@@ -20,10 +21,11 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
+    private socketService: SocketService
   ) {}
   poll: Poll;
-  selectedOptionId: string;
+  selectedOptions: string[] = [];
   isPopoverOpen: boolean = false;
   isConfirmModalOpen: boolean = false;
   isVoteModalOpen: boolean = false;
@@ -41,10 +43,20 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
       this.poll = data.poll;
       this.titleService.setTitle(`${data.poll.title} | Uvote`);
       console.log(this.poll);
+      this.socketService.on('connection')
+      this.socketService.emit('join poll', data.poll._id)
     });
-    this.userService.getUserData();
+    this.userService.getGuestData();
     this.loggedUser = this.userService.loggedUserValue;
-    this.dueDateString // invoked here to avoid erratic UI behavior after CD runs (NG0100)
+    this.dueDateString; // invoked here to avoid erratic UI behavior after CD runs (NG0100)
+  }
+
+
+  toggleChecked(optionId) {
+    const optionIdx = this.selectedOptions.indexOf(optionId);
+    if (optionIdx === -1) {
+      return false;
+    } else return true;
   }
 
   getCreatedTime(): string {
@@ -57,9 +69,22 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     return parseFloat('' + precent).toFixed(2);
   }
 
-  onSubmitVote(formValue) {
+  onSelectOption(optionId) {
+    const optionIdx = this.selectedOptions.indexOf(optionId);
+    if(this.poll.allowMultiple) {
+      if (optionIdx === -1) {
+        this.selectedOptions.push(optionId);
+      } else {
+        this.selectedOptions.splice(optionIdx, 1);
+      }
+    } else {
+      this.selectedOptions = [optionId]
+    }
+  }
+
+  onSubmitVote() {
     this.savedPollSub = this.pollService
-      .addVote(this.poll, formValue.option)
+      .addVote(this.poll, [...this.selectedOptions])
       .subscribe(
         (res) => {
           this.isVoteModalOpen = true;
@@ -102,6 +127,14 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   closePopover() {
     if (this.isPopoverOpen) this.isPopoverOpen = false;
     if (this.isVoteModalOpen) this.isVoteModalOpen = false;
+  }
+
+  getOptionName(idx) {
+    if (this.poll.allowMultiple) {
+      return `option${idx}`;
+    } else {
+      return 'option';
+    }
   }
 
   get resultsLink() {

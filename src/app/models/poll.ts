@@ -12,6 +12,7 @@ export class Poll {
     public owner: any,
     public comments,
     public voters: object,
+    public allowMultiple: boolean,
     public dueDate?: Date | string | null,
     public _id?: string
   ) {}

@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { UtilService } from './util.service';
 import { LoggedUser } from '../models/logged-user';
 import { Router } from '@angular/router';
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +17,13 @@ export class PollService {
     private http: HttpClient,
     private userService: UserService,
     private utilService: UtilService,
-    private router: Router
+    private router: Router,
+    private socketService: SocketService
   ) {}
 
   private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject([]);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
-  private userData;
 
   public query(): void {
     this.http.get<Poll[]>(this.BASE_URL).subscribe((polls: Poll[]) => {
@@ -40,26 +41,28 @@ export class PollService {
     );
   }
 
-  public addVote(poll, selectionId): Observable<Poll> {
-    const userData = this.userService.userData;
+  public addVote(poll: Poll, selectedOptions): Observable<Poll> {
+    const guestData = this.userService.guestDataValue;
     const loggedUser: LoggedUser = this.userService.loggedUserValue;
-    console.log('From poll service:', { poll });
-    const optionToUpdateIdx = poll.options.findIndex(
-      (option) => option._id === selectionId
-    );
-    const userIp = userData.ip_address;
+    const userIp = guestData.ip_address;
+
     if (poll.voters[userIp] || poll.voters[loggedUser?._id]) {
       return throwError((err) => new Error('User already voted'));
     }
-    console.log('the userdata is', this.userData);
 
-    poll.options[optionToUpdateIdx].votes += 1;
-    poll.totalVotes += 1;
+    selectedOptions.forEach((selectionId) => {
+      const optionToUpdateIdx = poll.options.findIndex(
+        (option) => option._id === selectionId
+      );
+      poll.options[optionToUpdateIdx].votes += 1;
+    });
+
+    poll.totalVotes += selectedOptions.length;
     poll.voters[userIp] = true;
     if (loggedUser) {
       poll.voters[loggedUser._id] = true;
     }
-
+    this.socketService.emit('update poll', poll);
     return this.update(poll._id, poll);
   }
 
@@ -83,7 +86,7 @@ export class PollService {
     };
     let author: Partial<LoggedUser> = this.userService.loggedUserValue;
     if (!author) {
-      let guestData = this.userService.userData;
+      let guestData = this.userService.guestDataValue;
       author = {
         _id: 'guest',
         name: 'Guest',

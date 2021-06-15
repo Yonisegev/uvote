@@ -38,20 +38,21 @@
       >
       <form
         #form="ngForm"
-        (ngSubmit)="onSubmitVote(form.value)"
+        (ngSubmit)="onSubmitVote()"
         class="poll-options"
       >
         <div
-          *ngFor="let option of poll.options"
+          *ngFor="let option of poll.options let i = index"
           class="burmanRadio flex align-center"
         >
           <input
             type="radio"
             class="burmanRadio input"
             [id]="option._id"
-            name="option"
-            (ngModel)="(selectedOptionId)"
+            [name]="getOptionName(i)"
+            (click)="onSelectOption(option._id)"
             [value]="option._id"
+            [checked]="toggleChecked(option._id)"
           />
           <label [for]="option._id">
             <div class="flex">

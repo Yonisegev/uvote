@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
     if (this.userService.loggedUserValue) {
       this.router.navigate(['/poll']);
     }
-    this.userService.getUserData();
+    this.userService.getGuestData();
     this.signupForm = this.fb.group({
       name: ['', [Validators.required]],
       email: [

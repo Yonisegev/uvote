@@ -22,8 +22,8 @@ import { UtilService } from './util.service';
 })
 export class UserService {
   constructor(private http: HttpClient, private utilService: UtilService) {}
-  private _userData$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public userData$: Observable<any> = this._userData$.asObservable();
+  private _guestData$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public guestData$: Observable<any> = this._guestData$.asObservable();
   private _loggedInUser$: BehaviorSubject<any> = new BehaviorSubject(
     this.loadFromStorage('user')
   );
@@ -31,10 +31,10 @@ export class UserService {
   private BASE_URL: string = 'http://localhost:3030/api/auth';
   private USER_URL: string = 'http://localhost:3030/api/user';
 
-  public getUserData() {
+  public getGuestData() {
     const cachedUserInfo = this.loadFromStorage('user-info');
     if (cachedUserInfo) {
-      this._userData$.next(cachedUserInfo);
+      this._guestData$.next(cachedUserInfo);
       return;
     }
     this.http
@@ -44,9 +44,9 @@ export class UserService {
           headers: null,
         }
       )
-      .subscribe((userData: any) => {
-        this.saveToStorage('user-info', userData);
-        this._userData$.next(userData);
+      .subscribe((guestData: any) => {
+        this.saveToStorage('user-info', guestData);
+        this._guestData$.next(guestData);
       });
   }
 
@@ -54,8 +54,8 @@ export class UserService {
     return this._loggedInUser$.value;
   }
 
-  public get userData() {
-    return this._userData$.value;
+  public get guestDataValue() {
+    return this._guestData$.value;
   }
 
   public login(credentials): Observable<any> {
@@ -73,8 +73,8 @@ export class UserService {
     userInfo.name = userInfo.name.trim();
     userInfo.email = userInfo.email.toLowerCase();
     userInfo.logoColor = this.utilService.getRandomLightColor();
-    if (this._userData$) {
-      const sub: Subscription = this.userData$.subscribe((geoInfo) => {
+    if (this._guestData$) {
+      const sub: Subscription = this.guestData$.subscribe((geoInfo) => {
         userInfo.country = geoInfo.country;
         userInfo.flag = geoInfo.flag.svg;
       });

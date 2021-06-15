@@ -87,6 +87,12 @@
         [binary]="true"
         (onChange)="onDateCheckbox($event)"
       ></p-checkbox>
+
+      <p-checkbox
+        [formControl]="pollForm.controls['allowMultiple']"
+        label="Allow Multiple Answers"
+        [binary]="true"
+      ></p-checkbox>
     </div>
     <div *ngIf="pollForm.get('isDeadline').value" class="calendar">
       <p-calendar

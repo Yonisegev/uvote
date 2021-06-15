@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 import { cloneDeep } from 'lodash';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'poll-results',
@@ -9,7 +10,11 @@ import { cloneDeep } from 'lodash';
   styleUrls: ['./poll-results.component.scss'],
 })
 export class PollResultsComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private socketService: SocketService
+  ) {}
   poll: Poll;
   data: any;
   options: any;
@@ -18,9 +23,19 @@ export class PollResultsComponent implements OnInit {
     this.route.data.subscribe((data) => {
       if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
+      this.socketService.on('connection');
+      this.socketService.emit('join poll', data.poll._id);
+      this.socketService.on('poll updated').subscribe((updatedPoll: Poll) => {
+        this.poll = updatedPoll;
+        this.populateChart();
+      });
     });
     this.populateColors();
-    const dataToShow = this.voteCount
+    this.populateChart();
+  }
+
+  populateChart() {
+    const dataToShow = this.voteCount;
     this.data = {
       labels: dataToShow ? this.labelNames : ['No data yet!'],
       datasets: [
@@ -49,7 +64,9 @@ export class PollResultsComponent implements OnInit {
   }
 
   get labelNames() {
-    const labelNames = this.sortedPollByOptionsDescending.options.map(option => option.txt)
+    const labelNames = this.sortedPollByOptionsDescending.options.map(
+      (option) => option.txt
+    );
     return labelNames;
   }
 

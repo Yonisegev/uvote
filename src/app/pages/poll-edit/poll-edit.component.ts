@@ -39,7 +39,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     });
     this.loggedInUser = this.userService.loggedUserValue;
     if (!this.loggedInUser) {
-      this.userService.getUserData();
+      this.userService.getGuestData();
     }
     console.log('The poll to edit is:', this.pollToEdit);
     this.fillForm();
@@ -67,7 +67,8 @@ export class PollEditComponent implements OnInit, AfterViewInit {
 
   onResetForm(): void {
     this.pollForm.reset();
-    this.pollForm.controls.comments.setValue(true);
+    console.log(this.pollForm)
+    this.pollForm.controls.isComments.setValue(true);
     this.submitted = false;
   }
 
@@ -87,6 +88,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       isPrivate: formValue.isPrivate,
       isComments: formValue.isComments,
       dueDate: formValue.isDeadline ? formValue.dueDate : null,
+      allowMultiple: formValue.allowMultiple ?? false,
       comments: existingPoll?.comments || [],
       createdAt: existingPoll?.createdAt || Date.now(),
       voters: existingPoll?.voters || {},
@@ -98,7 +100,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     });
     console.log('owner', pollToSubmit.owner);
     // console.log('form value is', formValue);
-    // console.log('poll to submit is', pollToSubmit);
+    console.log('poll to submit is', pollToSubmit);
 
     this.submitted = false;
   }
@@ -127,6 +129,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       isComments: [poll?.isComments || true],
       isDeadline: [poll ? pollIsDeadline : false],
       dueDate: [poll ? new Date(poll.dueDate) : ''],
+      allowMultiple: [poll?.allowMultiple ?? false]
     });
   }
 
@@ -155,7 +158,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     } else if (this.loggedInUser) {
       return this.loggedInUser;
     } else {
-      const guestData = cloneDeep(this.userService.userData);
+      const guestData = cloneDeep(this.userService.guestDataValue);
       const owner = {
         _id: 'guest',
         name: 'Guest',
