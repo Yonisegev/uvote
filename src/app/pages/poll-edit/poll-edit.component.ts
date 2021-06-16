@@ -5,6 +5,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  keyframes,
+} from '@angular/animations';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
@@ -18,6 +26,27 @@ import { LoggedUser } from 'src/app/models/logged-user';
   selector: 'poll-edit',
   templateUrl: './poll-edit.component.html',
   styleUrls: ['./poll-edit.component.scss'],
+  animations: [
+    trigger('input', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [
+        animate(
+          '.3s ease-in',
+          keyframes([
+            style({ opacity: 0 }),
+            style({ opacity: 0.5 }),
+            style({ opacity: 1 }),
+          ])
+        ),
+      ]),
+    ]),
+    trigger(
+			"disabled",
+			[
+				transition( ":enter", [] )
+			]
+		)
+  ],
 })
 export class PollEditComponent implements OnInit, AfterViewInit {
   constructor(
@@ -31,6 +60,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
   pollForm: FormGroup;
   submitted: boolean = false;
   loggedInUser: LoggedUser;
+  isAnimationDisabled: boolean = true
   @ViewChild('question') questionInput: ElementRef;
 
   ngOnInit(): void {
@@ -55,7 +85,16 @@ export class PollEditComponent implements OnInit, AfterViewInit {
   }
 
   onAddOption(): void {
+    this.isAnimationDisabled = false
     this.options.push(this.fb.control(''));
+  }
+
+  onOptionFocus(idx) {
+    console.log('the i is', idx);
+    console.log('the options length is', this.pollForm.controls.options.value);
+    if (idx + 1 === this.pollForm.controls.options.value.length) {
+      this.onAddOption();
+    }
   }
 
   onDateCheckbox(ev): void {
@@ -67,7 +106,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
 
   onResetForm(): void {
     this.pollForm.reset();
-    console.log(this.pollForm)
+    console.log(this.pollForm);
     this.pollForm.controls.isComments.setValue(true);
     this.submitted = false;
   }
@@ -129,7 +168,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       isComments: [poll?.isComments || true],
       isDeadline: [poll ? pollIsDeadline : false],
       dueDate: [poll ? new Date(poll.dueDate) : ''],
-      allowMultiple: [poll?.allowMultiple ?? false]
+      allowMultiple: [poll?.allowMultiple ?? false],
     });
   }
 

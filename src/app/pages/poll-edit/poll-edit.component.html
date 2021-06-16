@@ -56,11 +56,14 @@
       <div
         *ngFor="let option of options.controls; let i = index"
         class="form-options"
+        [@.disabled]="isAnimationDisabled"
       >
         <input
           type="text"
           placeholder="Add option {{ i + 1 }}"
           [formControlName]="i"
+          (focus)="onOptionFocus(i)"
+          [@input]="'in'"
         />
       </div>
       <button type="button" (click)="onAddOption()">Add Option</button>
