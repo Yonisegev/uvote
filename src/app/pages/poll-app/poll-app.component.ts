@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
 
@@ -12,7 +12,8 @@ import { PollService } from 'src/app/services/poll.service';
 })
 export class PollAppComponent implements OnInit, OnDestroy {
   constructor(private pollService: PollService, private titleService: Title) {}
-  polls: Poll[];
+  // polls: Poll[];
+  polls$: Observable<Poll[]>
   pollsSub: Subscription;
   ngOnInit() {
     this.pollService.query();
@@ -21,13 +22,14 @@ export class PollAppComponent implements OnInit, OnDestroy {
   }
 
   getPolls() {
-    this.pollsSub = this.pollService.polls$.subscribe((polls) => {
-      console.log('inside getpolls')
-      this.polls = polls;
-    });
+    // this.pollsSub = this.pollService.polls$.subscribe((polls) => {
+    //   console.log('inside getpolls')
+    //   this.polls = polls;
+    // });
+    this.polls$ = this.pollService.polls$
   }
 
   ngOnDestroy() {
-    this.pollsSub.unsubscribe();
+    // this.pollsSub.unsubscribe();
   }
 }
