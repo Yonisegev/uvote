@@ -16,6 +16,7 @@
   </div>
   <poll-preview
     class="preview-container"
+    [ngStyle]="{'width': '100%'}"
     *ngFor="
       let poll of pollsToDisplay
         | paginate

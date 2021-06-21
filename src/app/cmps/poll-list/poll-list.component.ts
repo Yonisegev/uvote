@@ -21,6 +21,10 @@ export class PollListComponent implements OnInit {
   ngOnInit(): void {
     this.sortPolls();
   }
+  
+  ngOnChanges() {
+    this.sortPolls()
+  }
 
   sortPolls(sortBy = 'Newest') {
     console.log('inside sortpolls by', sortBy);

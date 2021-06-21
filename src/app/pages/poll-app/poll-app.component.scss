@@ -4,4 +4,14 @@
 
 .poll-app {
   padding-top: 15px;
+
+  .pagination {
+    margin-top: 1rem;
+    .ngx-pagination {
+      border-radius: 3px;
+      box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.08), 0 0px 0 1px rgba(10, 10, 10, 0.03);
+      padding: 20px !important;
+      background-color: #fff;
+    }
+  }
 }

@@ -1,7 +1,8 @@
 @import "../../../assets/styles/setup/functions";
 @import "../../../assets/styles/setup/variables";
 .poll-list {
-    width: 100%;
+    width: 600px;
+    margin: 0 auto;
     .list-header {
         margin-bottom: rem(15px);
         h3 {
@@ -18,10 +19,16 @@
         }
     }
 }
-.ngx-pagination {
-    padding-left: 0 !important;
-    text-align: center;
-    .current {
-        background: $secondary-color;
+
+.pagination {
+    margin-bottom: 1rem;
+    .ngx-pagination {
+        padding-left: 0 !important;
+        margin-bottom: 0 !important;
+        text-align: center;
+
+        .current {
+            background: $secondary-color;
+        }
     }
 }

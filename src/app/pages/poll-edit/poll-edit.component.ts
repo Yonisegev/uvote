@@ -21,6 +21,7 @@ import { cloneDeep } from 'lodash';
 import { PollService } from 'src/app/services/poll.service';
 import { Option } from 'src/app/models/option';
 import { LoggedUser } from 'src/app/models/logged-user';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'poll-edit',
@@ -40,12 +41,7 @@ import { LoggedUser } from 'src/app/models/logged-user';
         ),
       ]),
     ]),
-    trigger(
-			"disabled",
-			[
-				transition( ":enter", [] )
-			]
-		)
+    trigger('disabled', [transition(':enter', [])]),
   ],
 })
 export class PollEditComponent implements OnInit, AfterViewInit {
@@ -54,13 +50,14 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     private router: Router,
     private userService: UserService,
     private pollService: PollService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private titleService: Title
   ) {}
   pollToEdit: Poll = null;
   pollForm: FormGroup;
   submitted: boolean = false;
   loggedInUser: LoggedUser;
-  isAnimationDisabled: boolean = true
+  isAnimationDisabled: boolean = true;
   @ViewChild('question') questionInput: ElementRef;
 
   ngOnInit(): void {
@@ -73,6 +70,9 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     }
     console.log('The poll to edit is:', this.pollToEdit);
     this.fillForm();
+    const tabTitle = (this.pollToEdit) ? 'Edit Poll' : 'Create Poll'
+    this.titleService.setTitle(tabTitle)
+
   }
 
   ngAfterViewInit() {
@@ -85,7 +85,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
   }
 
   onAddOption(): void {
-    this.isAnimationDisabled = false
+    this.isAnimationDisabled = false;
     this.options.push(this.fb.control(''));
   }
 

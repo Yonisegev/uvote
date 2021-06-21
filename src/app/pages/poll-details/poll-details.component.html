@@ -37,8 +37,8 @@
         >{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span
       >
       <form
-        #form="ngForm"
-        (ngSubmit)="onSubmitVote()"
+        #pollForm="ngForm"
+        (ngSubmit)="onSubmitVote(pollForm)"
         class="poll-options"
       >
         <div
@@ -53,6 +53,7 @@
             (click)="onSelectOption(option._id)"
             [value]="option._id"
             [checked]="toggleChecked(option._id)"
+            #option
           />
           <label [for]="option._id">
             <div class="flex">
@@ -60,6 +61,9 @@
             </div>
           </label>
         </div>
+        <!-- <div class="error">
+          <h4 *ngIf="pollSubmitted && pollForm.invalid">pls vote bro</h4>
+        </div> -->
         <div *ngIf="poll.dueDate" class="deadline-txt flex align-center">
           <i class="pi pi-clock"></i>
           <p [innerHTML]="dueDateString"></p>

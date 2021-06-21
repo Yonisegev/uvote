@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Poll } from '../models/poll';
 import { UserService } from './user.service';
 import { UtilService } from './util.service';

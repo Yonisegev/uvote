@@ -5,7 +5,7 @@
   <ul class="flex align-center">
     <li routerLink="/create" class="create-btn"><a href="#/create">Create Poll</a></li>
     <li routerLink="/poll"><a href="#/poll">Discover</a></li>
-    <li *ngIf="loggedInUser">Dashboard</li>
+    <li *ngIf="loggedInUser" [routerLink]="['/u', loggedInUser._id]" ><a [href]="profileLink">Profile</a></li>
     <li (click)="onLogout()" *ngIf="loggedInUser">Logout</li>
     <li *ngIf="!loggedInUser" routerLink="/login"><a href="#/login">Login</a></li>
     <li *ngIf="!loggedInUser" routerLink="/signup"><a href="#/signup">Sign up</a></li>

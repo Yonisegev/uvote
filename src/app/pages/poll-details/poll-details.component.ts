@@ -33,6 +33,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   savedPollSub: Subscription;
   loggedUser: Partial<User>;
   error: string;
+  pollSubmitted: boolean = false;
   actionsTexts = ['Edit Poll', 'Delete Poll'];
   actionsIcons = ['pi pi-pencil', 'pi pi-trash'];
 
@@ -82,7 +83,13 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmitVote() {
+  onSubmitVote(form) {
+    this.pollSubmitted = true
+    this.error = ''
+    if(!this.selectedOptions.length) {
+      this.error = 'Please select at least one option'
+      return
+    }
     this.savedPollSub = this.pollService
       .addVote(this.poll, [...this.selectedOptions])
       .subscribe(
@@ -93,6 +100,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
           this.error = 'You have already voted on this poll.';
         }
       );
+      this.pollSubmitted = false
   }
 
   onSettingsClick(ev) {

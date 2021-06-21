@@ -27,6 +27,11 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": ["src/favicon.ico", "src/assets"],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/styles/setup/_variables.scss"
+              ]
+            },
             "styles": [
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",

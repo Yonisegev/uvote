@@ -22,6 +22,7 @@ export class PollAppComponent implements OnInit, OnDestroy {
 
   getPolls() {
     this.pollsSub = this.pollService.polls$.subscribe((polls) => {
+      console.log('inside getpolls')
       this.polls = polls;
     });
   }
