@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Poll } from 'src/app/models/poll';
 import * as moment from 'moment';
 
@@ -6,6 +6,7 @@ import * as moment from 'moment';
   selector: 'poll-preview',
   templateUrl: './poll-preview.component.html',
   styleUrls: ['./poll-preview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PollPreviewComponent implements OnInit {
   @Input() poll: Poll;

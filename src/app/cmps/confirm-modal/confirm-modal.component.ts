@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -6,6 +6,7 @@ import { ConfirmationService } from 'primeng/api';
   templateUrl: './confirm-modal.component.html',
   styleUrls: ['./confirm-modal.component.scss'],
   providers: [ConfirmationService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmModalComponent implements OnInit {
   constructor(private confirmationService: ConfirmationService) {}

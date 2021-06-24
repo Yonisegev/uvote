@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   faFacebookF,
   faTwitter,
@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
   templateUrl: './share.component.html',
   styleUrls: ['./share.component.scss'],
   providers: [MessageService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShareComponent implements OnInit {
   constructor(private messageService: MessageService) {}

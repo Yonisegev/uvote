@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Poll } from 'src/app/models/poll';
 
 @Component({
   selector: 'voted-modal',
   templateUrl: './voted-modal.component.html',
   styleUrls: ['./voted-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VotedModalComponent implements OnInit {
   constructor() {}

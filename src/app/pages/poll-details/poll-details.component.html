@@ -61,9 +61,6 @@
             </div>
           </label>
         </div>
-        <!-- <div class="error">
-          <h4 *ngIf="pollSubmitted && pollForm.invalid">pls vote bro</h4>
-        </div> -->
         <div *ngIf="poll.dueDate" class="deadline-txt flex align-center">
           <i class="pi pi-clock"></i>
           <p [innerHTML]="dueDateString"></p>

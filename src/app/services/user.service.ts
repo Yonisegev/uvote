@@ -12,7 +12,7 @@ import {
   Subscription,
   throwError,
 } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map} from 'rxjs/operators';
 import { LoggedUser } from '../models/logged-user';
 import { User } from '../models/user';
 import { UtilService } from './util.service';
@@ -58,15 +58,14 @@ export class UserService {
     return this._guestData$.value;
   }
 
-  public login(credentials): Observable<any> {
-    console.log('the creds are', credentials);
+  public login(credentials): Observable<LoggedUser> {
     return this.http
-      .post(`${this.BASE_URL}/login`, credentials, { withCredentials: true })
+      .post<LoggedUser>(`${this.BASE_URL}/login`, credentials, { withCredentials: true })
       .pipe(catchError((err) => throwError(err)));
   }
 
   public getById(userId): Observable<User> {
-    return this.http.get<User>(`${this.USER_URL}/${userId}`)
+    return this.http.get<User>(`${this.USER_URL}/${userId}`);
   }
 
   public registerUser(userInfo): Subscription {
@@ -74,11 +73,9 @@ export class UserService {
     userInfo.email = userInfo.email.toLowerCase();
     userInfo.logoColor = this.utilService.getRandomLightColor();
     if (this._guestData$) {
-      const sub: Subscription = this.guestData$.subscribe((geoInfo) => {
-        userInfo.country = geoInfo.country;
-        userInfo.flag = geoInfo.flag.svg;
-      });
-      sub.unsubscribe();
+      const guestData = this.guestDataValue;
+      userInfo.country = guestData.country;
+      userInfo.flag = guestData.flag.svg;
     }
     console.log('from service', userInfo);
     return this.http
@@ -93,8 +90,8 @@ export class UserService {
     this.checkifEmailExists(socialUser.email).subscribe(
       (isRegistred) => {
         console.log(isRegistred, 'need to log in!');
-        const loginSub: Subscription = this.login(socialUser).subscribe(
-          (loggedInUser) => this._loggedInUser$.next(loggedInUser)
+        this.login(socialUser).subscribe((loggedInUser) =>
+          this._loggedInUser$.next(loggedInUser)
         );
       },
       (err) => {
@@ -125,7 +122,7 @@ export class UserService {
 
   public emailValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.checkifEmailExists(control.value).pipe(
+      return this.checkifEmailExists(control.value.toLowerCase()).pipe(
         catchError((err) => of('')),
         map((res) => {
           return res ? { emailExists: true } : null;

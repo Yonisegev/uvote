@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { cloneDeep } from 'lodash';
@@ -6,15 +6,14 @@ import { Router } from '@angular/router';
 import {
   SocialAuthService,
   GoogleLoginProvider,
-  SocialUser,
 } from 'angularx-social-login';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+
 
 @Component({
   selector: 'signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignupComponent implements OnInit {
   constructor(

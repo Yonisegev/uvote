@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Poll } from 'src/app/models/poll';
 
 @Component({
@@ -6,6 +6,7 @@ import { Poll } from 'src/app/models/poll';
   templateUrl: './poll-list.component.html',
   styleUrls: ['./poll-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PollListComponent implements OnInit {
   constructor() {}

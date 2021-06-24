@@ -26,7 +26,6 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
 import { PollAppComponent } from './pages/poll-app/poll-app.component';
 import { PollDetailsComponent } from './pages/poll-details/poll-details.component';
 import { PollPreviewComponent } from './cmps/poll-preview/poll-preview.component';
-import { PollFilterComponent } from './cmps/poll-filter/poll-filter.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
 import { PopoverComponent } from './cmps/popover/popover.component';
@@ -48,7 +47,6 @@ import { PollListComponent } from './cmps/poll-list/poll-list.component';
     PollAppComponent,
     PollDetailsComponent,
     PollPreviewComponent,
-    PollFilterComponent,
     AppHeaderComponent,
     PollEditComponent,
     PopoverComponent,
