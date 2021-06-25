@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     this.loggedInUser = this.userService.loggedUserValue;
-    if (this.loggedInUser) return true;
+    if (this.loggedInUser) return true; // Return true and false stated here because I want to use the router and the guard needs to return a boolean
     this.router.navigate(['/login']);
     return false;
   }

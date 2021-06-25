@@ -58,17 +58,17 @@ export class UserService {
     return this._guestData$.value;
   }
 
-  public login(credentials): Observable<LoggedUser> {
+  public login(credentials: {name: string, email: string, password: string | number}): Observable<LoggedUser> {
     return this.http
       .post<LoggedUser>(`${this.BASE_URL}/login`, credentials, { withCredentials: true })
       .pipe(catchError((err) => throwError(err)));
   }
 
-  public getById(userId): Observable<User> {
+  public getById(userId: string): Observable<User> {
     return this.http.get<User>(`${this.USER_URL}/${userId}`);
   }
 
-  public registerUser(userInfo): Subscription {
+  public registerUser(userInfo: User): Subscription {
     userInfo.name = userInfo.name.trim();
     userInfo.email = userInfo.email.toLowerCase();
     userInfo.logoColor = this.utilService.getRandomLightColor();
@@ -86,7 +86,7 @@ export class UserService {
       });
   }
 
-  public socialRegister(socialUser): void {
+  public socialRegister(socialUser: any): void {
     this.checkifEmailExists(socialUser.email).subscribe(
       (isRegistred) => {
         console.log(isRegistred, 'need to log in!');
@@ -111,12 +111,12 @@ export class UserService {
       .subscribe();
   }
 
-  public updateLoggedUser(user): void {
+  public updateLoggedUser(user: LoggedUser): void {
     this._loggedInUser$.next(user);
     this.saveToStorage('user', user);
   }
 
-  public checkifEmailExists(email): Observable<object> {
+  public checkifEmailExists(email: string): Observable<object> {
     return this.http.get(`http://localhost:3030/api/user/email/${email}`);
   }
 
@@ -131,12 +131,12 @@ export class UserService {
     };
   }
 
-  private saveToStorage(key, val) {
+  private saveToStorage(key: string, val: any) {
     const str = JSON.stringify(val);
     localStorage.setItem(key, str);
   }
 
-  private loadFromStorage(key) {
+  private loadFromStorage(key: string) {
     const str = localStorage.getItem(key);
     return JSON.parse(str);
   }

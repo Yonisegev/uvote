@@ -1,8 +1,0 @@
-{
-    "http://localhost:4200/*": {
-        "target": "http://ip-api.com/json/",
-        "secure": false,
-        "changeOrigin": true,
-        "logLevel": "debug"
-    }
-}

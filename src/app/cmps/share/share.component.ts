@@ -31,7 +31,7 @@ export class ShareComponent implements OnInit {
     } else this.link = link;
   }
 
-  getShareLink(type): string {
+  getShareLink(type: string): string {
     const link = this.link
     switch (type) {
       case 'fb':

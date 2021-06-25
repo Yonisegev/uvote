@@ -1,3 +1,4 @@
+import { Comment } from './comment';
 import { Option } from './option';
 
 export class Poll {
@@ -10,7 +11,7 @@ export class Poll {
     public isComments: boolean,
     public createdAt: number,
     public owner: any,
-    public comments,
+    public comments: Comment[] | [],
     public voters: object,
     public allowMultiple: boolean,
     public dueDate?: Date | string | null,

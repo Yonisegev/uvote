@@ -10,7 +10,7 @@ import { PollService } from 'src/app/services/poll.service';
   styleUrls: ['./poll-app.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class PollAppComponent implements OnInit, OnDestroy {
+export class PollAppComponent implements OnInit {
   constructor(private pollService: PollService, private titleService: Title) {}
   // polls: Poll[];
   polls$: Observable<Poll[]>
@@ -22,14 +22,7 @@ export class PollAppComponent implements OnInit, OnDestroy {
   }
 
   getPolls() {
-    // this.pollsSub = this.pollService.polls$.subscribe((polls) => {
-    //   console.log('inside getpolls')
-    //   this.polls = polls;
-    // });
     this.polls$ = this.pollService.polls$
   }
 
-  ngOnDestroy() {
-    // this.pollsSub.unsubscribe();
-  }
 }

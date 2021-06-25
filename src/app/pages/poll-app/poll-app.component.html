@@ -1,4 +1,3 @@
 <div class="poll-app">
-<!-- <poll-list *ngIf="polls.length" [polls]="polls" listTitle="Discover Community Polls"></poll-list> -->
-<poll-list [polls]="polls$ | async" listTitle="Discover Community Polls"></poll-list>
+<poll-list *ngIf="(polls$ | async).length" [polls]="polls$ | async" listTitle="Discover Community Polls"></poll-list>
 </div>

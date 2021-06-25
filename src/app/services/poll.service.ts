@@ -41,13 +41,13 @@ export class PollService {
     );
   }
 
-  public addVote(poll: Poll, selectedOptions): Observable<Poll> {
+  public addVote(poll: Poll, selectedOptions: any[]): Observable<Poll> {
     const guestData = this.userService.guestDataValue;
     const loggedUser: LoggedUser = this.userService.loggedUserValue;
-    const userIp = guestData.ip_address;
+    const userIp: string = guestData.ip_address;
 
     if (poll.voters[userIp] || poll.voters[loggedUser?._id]) {
-      return throwError((err) => new Error('User already voted'));
+      return throwError((err: Error) => new Error('User already voted'));
     }
 
     selectedOptions.forEach((selectionId) => {
@@ -78,7 +78,7 @@ export class PollService {
     }
   }
 
-  public addComment(txt, poll: Poll): Observable<Poll> {
+  public addComment(txt: string, poll: Poll): Observable<Poll> {
     const commentToAdd = {
       txt,
       createdAt: Date.now(),
@@ -109,11 +109,11 @@ export class PollService {
     return this.http.post<Poll>(this.BASE_URL, poll);
   }
 
-  private update(pollId, poll: Poll) {
+  private update(pollId: string, poll: Poll) {
     return this.http.put<Poll>(`${this.BASE_URL}/${pollId}`, poll);
   }
 
-  public remove(pollId) {
+  public remove(pollId: string) {
     return this.http.delete(`${this.BASE_URL}/${pollId}`, {
       withCredentials: true,
     });

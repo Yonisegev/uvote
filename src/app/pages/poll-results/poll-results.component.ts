@@ -18,7 +18,7 @@ export class PollResultsComponent implements OnInit {
   poll: Poll;
   data: any;
   options: any;
-  colors;
+  colors: string[];
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       if (!data.poll) this.router.navigateByUrl('/404');
@@ -53,7 +53,7 @@ export class PollResultsComponent implements OnInit {
     };
   }
 
-  getOptionPrecent(optionVotes) {
+  getOptionPrecent(optionVotes: number) {
     const precent = (optionVotes / this.poll.totalVotes) * 100;
     if (!precent) return 0;
     return parseFloat('' + precent).toFixed(2);

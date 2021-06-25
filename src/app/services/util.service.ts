@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class UtilService {
   constructor() {}
 
-  makeid = (length) => {
+  makeid = (length: number) => {
     let text = '';
     const possible =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

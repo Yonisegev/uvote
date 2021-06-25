@@ -3,6 +3,7 @@ import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
 import * as moment from 'moment';
 import { cloneDeep } from 'lodash';
+import { Comment } from 'src/app/models/comment';
 
 @Component({
   selector: 'poll-comments',
@@ -16,7 +17,7 @@ export class PollCommentsComponent implements OnInit {
   error: boolean = false;
   page: number = 1;
   @Input() poll: Poll;
-  @Input() onUpdatePoll;
+  @Input() onUpdatePoll: any;
 
   ngOnInit(): void {}
 
@@ -30,12 +31,12 @@ export class PollCommentsComponent implements OnInit {
     this.commentValue = '';
   }
 
-  getCommentDate(comment) {
+  getCommentDate(comment: Comment) {
     const created = moment(comment.createdAt);
     return created.from(Date.now());
   }
 
-  handlePageChange(ev) {
+  handlePageChange(ev: any) {
     this.page = ev;
   }
 }

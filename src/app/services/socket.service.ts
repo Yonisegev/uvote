@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+// @ts-ignore
 import * as io from 'socket.io-client/dist/socket.io';
 import { Poll } from '../models/poll';
 @Injectable({
@@ -15,13 +16,13 @@ export class SocketService {
 
   on(eventName: string):Observable<Poll> {
     return new Observable((subscriber) => {
-      this.socket.on(eventName, (data) => {
+      this.socket.on(eventName, (data: any) => {
         subscriber.next(data);
       });
     });
   }
 
-  emit(eventName: string, data) {
+  emit(eventName: string, data: any) {
     this.socket.emit(eventName, data);
   }
 }

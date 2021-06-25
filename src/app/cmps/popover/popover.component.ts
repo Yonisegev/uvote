@@ -8,13 +8,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 })
 export class PopoverComponent implements OnInit {
   constructor() {}
-  @Input() actionsTexts;
-  @Input() actionsIcons;
+  @Input() actionsTexts: any[];
+  @Input() actionsIcons: any[];
   @Output() actionType = new EventEmitter<string>();
 
   ngOnInit(): void {}
 
-  onActionClick(actionType) {
+  onActionClick(actionType: string) {
     this.actionType.emit(actionType);
   }
 }

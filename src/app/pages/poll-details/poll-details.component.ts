@@ -53,7 +53,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleChecked(optionId) {
+  toggleChecked(optionId: string) {
     const optionIdx = this.selectedOptions.indexOf(optionId);
     if (optionIdx === -1) {
       return false;
@@ -64,13 +64,13 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     return moment(this.poll.createdAt).fromNow();
   }
 
-  getOptionPrecent(optionVotes) {
+  getOptionPrecent(optionVotes: number) {
     const precent = (optionVotes / this.poll.totalVotes) * 100;
     if (!precent) return 0;
     return parseFloat('' + precent).toFixed(2);
   }
 
-  onSelectOption(optionId) {
+  onSelectOption(optionId: string) {
     const optionIdx = this.selectedOptions.indexOf(optionId);
     if(this.poll.allowMultiple) {
       if (optionIdx === -1) {
@@ -83,7 +83,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmitVote(form) {
+  onSubmitVote() {
     this.pollSubmitted = true
     this.error = ''
     if(!this.selectedOptions.length) {
@@ -103,12 +103,12 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
       this.pollSubmitted = false
   }
 
-  onSettingsClick(ev) {
+  onSettingsClick(ev: HTMLFormElement) {
     ev.stopPropagation();
     this.isPopoverOpen = !this.isPopoverOpen;
   }
 
-  onActionClick(actionType) {
+  onActionClick(actionType: string) {
     if (actionType === 'Edit Poll') {
       this.router.navigate(['edit'], { relativeTo: this.route });
     } else if (actionType === 'Delete Poll') {
@@ -118,7 +118,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onPollDelete(ev) {
+  onPollDelete(ev: any) {
     console.log(ev);
     if (ev) {
       this.pollService.remove(this.poll._id).subscribe(() => {
@@ -137,7 +137,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     if (this.isVoteModalOpen) this.isVoteModalOpen = false;
   }
 
-  getOptionName(idx) {
+  getOptionName(idx: number) {
     if (this.poll.allowMultiple) {
       return `option${idx}`;
     } else {

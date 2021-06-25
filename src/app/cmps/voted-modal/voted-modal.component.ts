@@ -14,7 +14,7 @@ export class VotedModalComponent implements OnInit {
   @Output() onModalClose = new EventEmitter<boolean>();
   ngOnInit(): void {}
 
-  onModalClick(ev) {
+  onModalClick(ev: HTMLFormElement) {
     ev.stopPropagation();
   }
 

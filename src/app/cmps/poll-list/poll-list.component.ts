@@ -40,7 +40,11 @@ export class PollListComponent implements OnInit {
     }
   }
 
-  handlePageChange(ev) {
+  handlePageChange(ev: number) {
     this.page = ev;
+  }
+
+  trackByFunc(i, poll) {
+  return poll._id || i
   }
 }

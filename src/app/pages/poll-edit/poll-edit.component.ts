@@ -89,7 +89,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     this.options.push(this.fb.control(''));
   }
 
-  onOptionFocus(idx) {
+  onOptionFocus(idx: number) {
     console.log('the i is', idx);
     console.log('the options length is', this.pollForm.controls.options.value);
     if (idx + 1 === this.pollForm.controls.options.value.length) {
@@ -97,7 +97,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onDateCheckbox(ev): void {
+  onDateCheckbox(ev: HTMLInputElement): void {
     // If user checked deadline, selected a date and then unchecked deadline, reset the dueDate property to ''.
     if (!ev.checked) {
       this.pollForm.controls.dueDate.setValue('');
@@ -134,7 +134,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
       totalVotes: existingPoll?.totalVotes || 0,
       owner: this.formOwner, // TODO: fill guest/user data as owner
     };
-    this.pollService.submitPoll(pollToSubmit).subscribe((poll) => {
+    this.pollService.submitPoll(pollToSubmit).subscribe((poll: Poll) => {
       this.router.navigateByUrl(`poll/${poll._id}`);
     });
     console.log('owner', pollToSubmit.owner);
@@ -172,7 +172,7 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getFormOptions(formValue, existingPoll): Option[] {
+  getFormOptions(formValue: any, existingPoll: Poll): Option[] {
     const options = [];
     for (let i = 0; i < formValue.options.length; i++) {
       if (!formValue.options[i]) continue;
