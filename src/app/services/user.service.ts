@@ -70,8 +70,8 @@ export class UserService {
       .pipe(catchError((err) => throwError(err)));
   }
 
-  public getById(userId: string, pageNumber = 1): Observable<User> {
-    const query = { page: '' + pageNumber };
+  public getById(userId: string, pageNumber = 1, sortBy = 'newest'): Observable<User> {
+    const query = { page: '' + pageNumber, sortBy };
     return this.http.get<User>(`${this.USER_URL}/${userId}`, { params: query });
   }
 

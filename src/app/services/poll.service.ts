@@ -27,12 +27,12 @@ export class PollService {
   private _totalPollsCount$: BehaviorSubject<number> = new BehaviorSubject(100)
   public totalPollsCount$: Observable<number> = this._totalPollsCount$.asObservable()
 
-  public query(pageNumber = 1): void {
-    this.http.get<any>(`${this.BASE_URL}?page=${pageNumber}`).subscribe((res: {data: Poll[], total: number}) => {
-      console.log('polls', res.data)
+  public query(pageNumber = 1, sortBy = 'newest'): void {
+    console.log('from query', sortBy)
+    const query = { page: '' + pageNumber, sortBy };
+    this.http.get<any>(`${this.BASE_URL}`, {params: query}).subscribe((res: {data: Poll[], total: number}) => {
       const polls = res.data.filter((poll) => !poll.isPrivate);
       this._polls$.next(polls);
-      console.log(res.total, 'res total')
       this._totalPollsCount$.next(res.total)
     });
   }

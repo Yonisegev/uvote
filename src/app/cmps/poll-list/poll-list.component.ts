@@ -29,30 +29,19 @@ export class PollListComponent implements OnInit {
   options = [{ name: 'Newest' }, { name: 'Popularity' }];
   sortBy = { name: 'Newest' };
   ngOnInit(): void {
-    this.sortPolls();
+    this.r.queryParams.subscribe((params) => {
+      if(params.sort) {
+        this.sortBy.name = params?.sort?.charAt(0).toUpperCase() + params?.sort?.slice(1)
+      }
+    });
+    this.query(this.currPage)
   }
 
-  ngOnChanges() {
-    this.sortPolls();
-  }
-
-  sortPolls(sortBy = 'Newest') {
-    console.log('inside sortpolls by', sortBy);
-    if (sortBy === 'Newest') {
-      this.pollsToDisplay = this.polls.slice().sort((a, b) => {
-        return b.createdAt - a.createdAt;
-      });
-    } else if (sortBy === 'Popularity') {
-      this.pollsToDisplay = this.polls.slice().sort((a, b) => {
-        return b.totalVotes - a.totalVotes;
-      });
-    }
-  }
-
-  handlePageChange(ev: number) {
-    const params: Params = { page: ev };
+  query(ev: number = this.currPage) {
+    const sortBy = this.sortBy.name.toLowerCase();
+    const params: Params = { page: +ev, sort: sortBy };
     this.router.navigate([], { relativeTo: this.r, queryParams: params });
-    this.onPageChange.emit(ev);
+    this.onPageChange.emit({ ev, sortBy });
   }
 
   trackByFunc(i, poll) {

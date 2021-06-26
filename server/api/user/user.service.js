@@ -29,12 +29,12 @@ async function query(filterBy = {}) {
   }
 }
 
-async function getById(userId, pageNumber) {
+async function getById(userId, pageNumber, sortBy) {
   try {
     const collection = await dbService.getCollection("user");
     const user = await collection.findOne({ _id: ObjectId(userId) });
     delete user.password;
-    const userPolls = await pollService.query({ userId }, pageNumber);
+    const userPolls = await pollService.query({ userId }, pageNumber, sortBy);
     console.log(userPolls);
     user.polls = userPolls.data;
     const res = {

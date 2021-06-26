@@ -26,7 +26,7 @@ export class UserProfileComponent implements OnInit {
     this.router.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
-        this.pageNumber = params.page;
+        this.pageNumber = +params.page || 1;
       });
     this.getUser();
     this.titleService.setTitle(`${this.user.name} | Uvote`);
@@ -40,10 +40,10 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  handlePageChange(pageNumber) {
-    this.pageNumber = pageNumber;
+  handlePageChange({ev, sortBy}) {
+    this.pageNumber = ev;
     this.userService
-      .getById(this.user._id, this.pageNumber)
+      .getById(this.user._id, this.pageNumber, sortBy)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         console.log('res', res);

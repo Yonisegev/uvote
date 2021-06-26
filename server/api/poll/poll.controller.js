@@ -5,7 +5,9 @@ const pollService = require('./poll.service')
 async function getPolls(req, res) {
     try {
         const pageNumber = parseInt(req.query.page || 1)
-        const polls = await pollService.query({}, pageNumber)
+        console.log('req query', req.query)
+        const {sortBy} = req.query
+        const polls = await pollService.query({}, pageNumber, sortBy)
         res.send(polls)
     } catch (err) {
         logger.error('Cannot get polls', err)

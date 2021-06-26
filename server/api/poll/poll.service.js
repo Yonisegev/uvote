@@ -1,22 +1,32 @@
 const dbService = require("../../services/db.service");
 const ObjectId = require("mongodb").ObjectId;
 
-async function query(filterBy = {}, page = 1) {
-    console.log(filterBy)
-    const PAGE_SIZE = 5
-    const skip = (page - 1) * PAGE_SIZE
-    console.log(page)
+async function query(filterBy = {}, page = 1, sortBy = "newest") {
+  console.log('filterby', filterBy);
+  const PAGE_SIZE = 5;
+  const skip = (page - 1) * PAGE_SIZE;
+  console.log('page', page);
   try {
     const criteria = _buildCriteria(filterBy);
     const collection = await dbService.getCollection("poll");
-    var polls = await collection.find(criteria).skip(skip).limit(PAGE_SIZE)
-    const total = await polls.count()
-    console.log(total)
+    let mongoSort;
+    if (sortBy === "newest") {
+      mongoSort = { createdAt: -1 };
+    } else if (sortBy === "popularity") {
+      mongoSort = { totalVotes: -1 };
+    }
+    var polls = await collection
+      .find(criteria, { _id: 0 })
+      .sort(mongoSort)
+      .skip(skip)
+      .limit(PAGE_SIZE);
+    const total = await polls.count();
+    console.log(total);
     // console.log('Polls from service', polls)
     const res = {
       data: await polls.toArray(),
       total,
-    }
+    };
 
     return res;
   } catch (err) {
@@ -38,8 +48,8 @@ async function getById(pollId) {
 }
 
 async function update(poll) {
-  console.log('due date', new Date(poll.dueDate))
-  console.log('now', new Date(Date.now()))
+  console.log("due date", new Date(poll.dueDate));
+  console.log("now", new Date(Date.now()));
   try {
     poll._id = ObjectId(poll._id);
     const collection = await dbService.getCollection("poll");

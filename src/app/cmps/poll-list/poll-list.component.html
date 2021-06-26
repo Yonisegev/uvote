@@ -1,5 +1,5 @@
 <div
-  *ngIf="pollsToDisplay.length"
+  *ngIf="polls.length"
   class="poll-list flex column justify-center align-center"
 >
   <div class="list-header flex column justify-center align-center">
@@ -10,7 +10,7 @@
         [(ngModel)]="sortBy"
         placeholder="Sort By"
         optionLabel="name"
-        (onChange)="sortPolls(sortBy.name)"
+        (onChange)="query()"
       ></p-dropdown>
     </div>
   </div>
@@ -18,7 +18,7 @@
     class="preview-container"
     [ngStyle]="{'width': '100%'}"
     *ngFor="
-      let poll of pollsToDisplay
+      let poll of polls
         | paginate
           : {
               itemsPerPage: paginatorSize,
@@ -36,8 +36,8 @@
       previousLabel="Previous"
       nextLabel="Next"
       responsive="true"
-      (pageBoundsCorrection)="handlePageChange($event)"
-      (pageChange)="handlePageChange($event)"
+      (pageBoundsCorrection)="query($event)"
+      (pageChange)="query($event)"
     >
     </pagination-controls>
   </div>

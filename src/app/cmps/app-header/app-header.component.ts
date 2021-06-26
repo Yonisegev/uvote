@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SocialAuthService } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
@@ -12,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class AppHeaderComponent implements OnInit, OnDestroy {
   loggedInUser: User;
   userSub: Subscription;
-  constructor(private userService: UserService, private socialAuthService: SocialAuthService) {}
+  constructor(private userService: UserService, private socialAuthService: SocialAuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.userSub = this.userService.loggedInUser$.subscribe((user) => {
@@ -23,6 +24,10 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   onLogout(): void {
     this.userService.logout();
     this.socialAuthService.signOut()
+  }
+
+  discoverNavigate() {
+    this.router.navigateByUrl('/poll?page=1&sort=newest')
   }
 
   get profileLink(): string {
