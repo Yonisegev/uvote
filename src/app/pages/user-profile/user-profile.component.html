@@ -19,7 +19,7 @@
         <div class="count-container">
 
           <div class="polls-count flex column justify-center">
-            <h3>{{ user.polls?.length || 0 }}</h3>
+            <h3>{{ totalPolls || 0 }}</h3>
             <p>Polls created</p>
           </div>
         </div>
@@ -28,9 +28,12 @@
     <div class="user-polls">
       <poll-list
         *ngIf="user.polls.length"
+        (onPageChange)="handlePageChange($event)"
         [polls]="user.polls"
         [listTitle]="listTitle"
-        paginatorSize="3"
+        [totalItems]="totalPolls"
+        [currPage]="pageNumber"
+        paginatorSize="5"
       ></poll-list>
       <p class="default-msg" *ngIf="!user.polls.length">
         {{ user.name }} didn't create any public polls yet

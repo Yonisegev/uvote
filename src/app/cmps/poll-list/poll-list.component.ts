@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 
 @Component({
@@ -6,25 +15,25 @@ import { Poll } from 'src/app/models/poll';
   templateUrl: './poll-list.component.html',
   styleUrls: ['./poll-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollListComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router, private r: ActivatedRoute) {}
   @Input() polls: Poll[];
   @Input() listTitle: string;
   @Input() paginatorSize: number = 5;
+  @Input() currPage: number = 1;
+  @Input() totalItems: number = 100;
+  @Output() onPageChange = new EventEmitter();
   pollsToDisplay: Poll[];
-  page: number = 1;
-  // paginatorSize: number = 5;
-  totalItems: number;
   options = [{ name: 'Newest' }, { name: 'Popularity' }];
   sortBy = { name: 'Newest' };
   ngOnInit(): void {
     this.sortPolls();
   }
-  
+
   ngOnChanges() {
-    this.sortPolls()
+    this.sortPolls();
   }
 
   sortPolls(sortBy = 'Newest') {
@@ -41,10 +50,12 @@ export class PollListComponent implements OnInit {
   }
 
   handlePageChange(ev: number) {
-    this.page = ev;
+    const params: Params = { page: ev };
+    this.router.navigate([], { relativeTo: this.r, queryParams: params });
+    this.onPageChange.emit(ev);
   }
 
   trackByFunc(i, poll) {
-  return poll._id || i
+    return poll._id || i;
   }
 }

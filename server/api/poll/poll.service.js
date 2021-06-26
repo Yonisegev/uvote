@@ -1,15 +1,24 @@
 const dbService = require("../../services/db.service");
 const ObjectId = require("mongodb").ObjectId;
 
-async function query(filterBy = {}) {
+async function query(filterBy = {}, page = 1) {
     console.log(filterBy)
+    const PAGE_SIZE = 5
+    const skip = (page - 1) * PAGE_SIZE
+    console.log(page)
   try {
     const criteria = _buildCriteria(filterBy);
     const collection = await dbService.getCollection("poll");
-    var polls = await collection.find(criteria).toArray();
+    var polls = await collection.find(criteria).skip(skip).limit(PAGE_SIZE)
+    const total = await polls.count()
+    console.log(total)
     // console.log('Polls from service', polls)
+    const res = {
+      data: await polls.toArray(),
+      total,
+    }
 
-    return polls;
+    return res;
   } catch (err) {
     logger.error("cannot find polls", err);
     throw err;

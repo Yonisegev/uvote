@@ -22,7 +22,8 @@
         | paginate
           : {
               itemsPerPage: paginatorSize,
-              currentPage: page
+              currentPage: currPage,
+              totalItems: totalItems
             };
       let i = index
       trackBy: trackByFunc

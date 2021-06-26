@@ -24,11 +24,16 @@ export class PollService {
   private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject([]);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
+  private _totalPollsCount$: BehaviorSubject<number> = new BehaviorSubject(100)
+  public totalPollsCount$: Observable<number> = this._totalPollsCount$.asObservable()
 
-  public query(): void {
-    this.http.get<Poll[]>(this.BASE_URL).subscribe((polls: Poll[]) => {
-      polls = polls.filter((poll) => !poll.isPrivate);
+  public query(pageNumber = 1): void {
+    this.http.get<any>(`${this.BASE_URL}?page=${pageNumber}`).subscribe((res: {data: Poll[], total: number}) => {
+      console.log('polls', res.data)
+      const polls = res.data.filter((poll) => !poll.isPrivate);
       this._polls$.next(polls);
+      console.log(res.total, 'res total')
+      this._totalPollsCount$.next(res.total)
     });
   }
 

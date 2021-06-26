@@ -12,7 +12,7 @@ import {
   Subscription,
   throwError,
 } from 'rxjs';
-import { catchError, map} from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { LoggedUser } from '../models/logged-user';
 import { User } from '../models/user';
 import { UtilService } from './util.service';
@@ -58,14 +58,21 @@ export class UserService {
     return this._guestData$.value;
   }
 
-  public login(credentials: {name: string, email: string, password: string | number}): Observable<LoggedUser> {
+  public login(credentials: {
+    name: string;
+    email: string;
+    password: string | number;
+  }): Observable<LoggedUser> {
     return this.http
-      .post<LoggedUser>(`${this.BASE_URL}/login`, credentials, { withCredentials: true })
+      .post<LoggedUser>(`${this.BASE_URL}/login`, credentials, {
+        withCredentials: true,
+      })
       .pipe(catchError((err) => throwError(err)));
   }
 
-  public getById(userId: string): Observable<User> {
-    return this.http.get<User>(`${this.USER_URL}/${userId}`);
+  public getById(userId: string, pageNumber = 1): Observable<User> {
+    const query = { page: '' + pageNumber };
+    return this.http.get<User>(`${this.USER_URL}/${userId}`, { params: query });
   }
 
   public registerUser(userInfo: User): Subscription {
