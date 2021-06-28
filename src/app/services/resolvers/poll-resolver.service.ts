@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Poll } from '../models/poll';
-import { PollService } from './poll.service';
+import { Poll } from 'src/app/models/poll';
+import { PollService } from '../poll.service';
 
 @Injectable({
   providedIn: 'root',

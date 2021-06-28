@@ -9,8 +9,8 @@ import { PollEditComponent } from './pages/poll-edit/poll-edit.component';
 import { PollResultsComponent } from './pages/poll-results/poll-results.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-import { PollResolverService } from './services/poll-resolver.service';
-import { UserResolver } from './services/user.resolver';
+import { PollResolverService } from './services/resolvers/poll-resolver.service';
+import { UserResolver } from './services/resolvers/user.resolver';
 
 const routes: Routes = [
   {

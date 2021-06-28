@@ -39,7 +39,6 @@ export class PollAppComponent implements OnInit, OnDestroy {
   onPageChange({ ev, sortBy }) {
     this.pageNumber = ev;
     this.pollService.query(this.pageNumber, sortBy);
-    this.getPolls();
   }
 
   getPolls() {

@@ -1,20 +1,29 @@
-import { Component } from '@angular/core';
-import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {
+  Event,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'uvote';
-  loading: boolean = false
+  loading: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
+
+  ngOnInit() {
     this.router.events.subscribe((event: Event) => {
-      switch(true) {
+      switch (true) {
         case event instanceof NavigationStart: {
-          this.loading = true
+          this.loading = true;
           break;
         }
         case event instanceof NavigationEnd:
@@ -27,6 +36,6 @@ export class AppComponent {
           break;
         }
       }
-    })
+    });
   }
 }

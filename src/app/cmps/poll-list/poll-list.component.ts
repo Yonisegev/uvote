@@ -25,7 +25,6 @@ export class PollListComponent implements OnInit {
   @Input() currPage: number = 1;
   @Input() totalItems: number = 100;
   @Output() onPageChange = new EventEmitter();
-  pollsToDisplay: Poll[];
   options = [{ name: 'Newest' }, { name: 'Popularity' }];
   sortBy = { name: 'Newest' };
   ngOnInit(): void {

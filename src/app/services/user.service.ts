@@ -25,14 +25,14 @@ export class UserService {
   private _guestData$: BehaviorSubject<any> = new BehaviorSubject(null);
   public guestData$: Observable<any> = this._guestData$.asObservable();
   private _loggedInUser$: BehaviorSubject<any> = new BehaviorSubject(
-    this.loadFromStorage('user')
+    this.utilService.loadFromStorage('user')
   );
   public loggedInUser$: Observable<any> = this._loggedInUser$.asObservable();
   private BASE_URL: string = 'http://localhost:3030/api/auth';
   private USER_URL: string = 'http://localhost:3030/api/user';
 
   public getGuestData() {
-    const cachedUserInfo = this.loadFromStorage('user-info');
+    const cachedUserInfo = this.utilService.loadFromStorage('user-info');
     if (cachedUserInfo) {
       this._guestData$.next(cachedUserInfo);
       return;
@@ -45,7 +45,7 @@ export class UserService {
         }
       )
       .subscribe((guestData: any) => {
-        this.saveToStorage('user-info', guestData);
+        this.utilService.saveToStorage('user-info', guestData);
         this._guestData$.next(guestData);
       });
   }
@@ -88,7 +88,7 @@ export class UserService {
     return this.http
       .post(`${this.BASE_URL}/signup`, userInfo, { withCredentials: true })
       .subscribe((loggedInUser) => {
-        this.saveToStorage('user', loggedInUser);
+        this.utilService.saveToStorage('user', loggedInUser);
         this._loggedInUser$.next(loggedInUser);
       });
   }
@@ -120,7 +120,7 @@ export class UserService {
 
   public updateLoggedUser(user: LoggedUser): void {
     this._loggedInUser$.next(user);
-    this.saveToStorage('user', user);
+    this.utilService.saveToStorage('user', user);
   }
 
   public checkifEmailExists(email: string): Observable<object> {
