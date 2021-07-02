@@ -12,7 +12,7 @@ const session = expressSession({
   secret: "shawrama is amazing",
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: false },
+  cookie: { secure: false, sameSite: true },
 });
 // Express App Config
 app.use(cookieParser());

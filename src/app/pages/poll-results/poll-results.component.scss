@@ -1,7 +1,8 @@
 @import "../../../assets/styles/setup/variables";
 @import "../../../assets/styles/setup/functions";
 .results {
-    width: 980px;
+    width: 1140px;
+    min-height: 80vh;
     margin: 0 auto;
     padding-top: 30px;
     .heading {
@@ -21,7 +22,8 @@
         width: 100%;
         margin-bottom: 15vh;
         .text-info {
-            flex-basis: 50%;
+            width: 50%;
+            margin-bottom: 20px;
             .container {
                 width: 100%;
             }
@@ -46,6 +48,12 @@
                     display: inline-block;
                     height: 100%;
                 }
+            }
+        }
+        .charts {
+            margin-left: 15px;
+            .votes-chart {
+                margin-bottom: 15px;
             }
         }
     }

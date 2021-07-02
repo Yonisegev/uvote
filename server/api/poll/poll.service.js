@@ -2,10 +2,10 @@ const dbService = require("../../services/db.service");
 const ObjectId = require("mongodb").ObjectId;
 
 async function query(filterBy = {}, page = 1, sortBy = "newest") {
-  console.log('filterby', filterBy);
+  // console.log("filterby", filterBy);
   const PAGE_SIZE = 5;
   const skip = (page - 1) * PAGE_SIZE;
-  console.log('page', page);
+  // console.log("page", page);
   try {
     const criteria = _buildCriteria(filterBy);
     const collection = await dbService.getCollection("poll");
@@ -47,9 +47,10 @@ async function getById(pollId) {
   }
 }
 
-async function update(poll) {
+async function update(poll, user) {
   console.log("due date", new Date(poll.dueDate));
   console.log("now", new Date(Date.now()));
+  if (poll.owner._id !== user._id) throw new Error("Not the owner");
   try {
     poll._id = ObjectId(poll._id);
     const collection = await dbService.getCollection("poll");

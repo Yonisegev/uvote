@@ -1,5 +1,5 @@
 @import "../../../assets/styles/setup/variables";
-.fold {
+.homepage-heading {
     background: radial-gradient(
         circle at 50% 50%,
         #50dd84,
@@ -11,39 +11,90 @@
         #48c878,
         #48c777
     );
-    min-height: 70vh;
     position: relative;
+    min-height: 80vh;
+    margin-bottom: 20px;
 
-    .text {
-        color: $white;
-        height: 100%;
+    .fold {
+        position: absolute;
+        z-index: 5;
+        top: 50%;
         width: 100%;
-        padding-top: 7rem;
-        h1 {
-            font-size: 4.5rem;
-            font-family: Quicksand-SemiBold, sans-serif;
-            font-weight: 400;
+        max-width: 1140px;
+        transform: translateY(-50%);
+        .text {
+            flex-basis: 50%;
+            color: $white;
+            height: 100%;
+            width: 100%;
+            h1 {
+                font-size: 5rem;
+                font-family: Quicksand-SemiBold, sans-serif;
+                font-weight: 400;
 
-            &:first-of-type {
-                margin-bottom: -0.5rem;
+                &:first-of-type {
+                    margin-bottom: -0.5rem;
+                }
+
+                &:last-of-type {
+                    margin-bottom: 1rem;
+                }
+
+                span {
+                    text-decoration: underline;
+                    text-underline-offset: 5px;
+                }
             }
 
-            &:last-of-type {
-                margin-bottom: 1rem;
+            p {
+                font-size: 2.5rem;
+                text-align: center;
+                margin-bottom: 1.5rem;
             }
 
-            span {
-                text-decoration: underline;
-                text-underline-offset: 5px;
+            .cta-btn {
+                font-size: 3rem;
+                font-family: Quicksand-Medium, sans-serif;
+                background-color: #059bff;
+                border-radius: 6px;
+                padding: 10px 30px;
+                position: relative;
+                overflow: hidden;
+
+                transition: all 0.2s ease;
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -200%;
+                    width: 200%;
+                    height: 100%;
+                    transform: skewX(-20deg);
+                    background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+                }
+
+                &:hover:after {
+                    animation: shine 1.6s ease;
+                }
+
+                &:active {
+                    transform: translateY(1px);
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+                }
             }
         }
 
-        p {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
+        .vector {
+            margin-left: 5rem;
+            flex-basis: 50%;
+            img {
+                height: 350px;
+                min-width: 450px;
+            }
         }
     }
+
     .curve {
         position: absolute;
         bottom: 0;
@@ -53,7 +104,7 @@
         line-height: 0;
     }
 
-    .curve svg {
+    .curve .shape {
         position: relative;
         display: block;
         width: calc(100% + 1.3px);
@@ -63,4 +114,107 @@
     .curve .shape-fill {
         fill: $bg-color;
     }
+}
+
+@keyframes shine {
+    100% {
+        left: 200%;
+    }
+}
+
+.heading {
+    font-family: Quicksand-SemiBold, sans-serif;
+    font-weight: 400;
+    font-size: 3.5rem;
+    margin-bottom: 28px;
+}
+
+.card-heading {
+    font-size: 1.5rem;
+    font-family: Quicksand-SemiBold, sans-serif;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+.intro {
+    margin-bottom: 70px;
+    .container {
+        .cards {
+            .card {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                word-break: break-word;
+                text-align: center;
+                width: 300px;
+                padding: 10px 20px;
+                box-shadow: rgba(0, 0, 0, 0.28) 0px 1px 4px;
+                border-radius: 3px;
+
+                fa-icon {
+                    margin-bottom: 5px;
+                    font-size: 2.5rem;
+                }
+                p {
+                    font-size: 1.2rem;
+                    margin-bottom: 3px;
+                }
+            }
+            .arrow-icon {
+                align-self: center;
+                font-size: 2rem;
+                margin-left: 2rem;
+                margin-right: 2rem;
+            }
+        }
+    }
+}
+
+.features {
+    margin-bottom: 20px;
+    .container {
+        .cards {
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            width: 700px;
+
+            .feature-card {
+                height: 201px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                flex-basis: 49%;
+                margin-bottom: 15px;
+                box-shadow: rgba(0, 0, 0, 0.28) 0px 1px 4px;
+                border-radius: 3px;
+                padding: 10px 20px;
+
+                &:nth-of-type(even) {
+                    margin-left: 10px;
+                }
+                img {
+                    width: 100px;
+                    height: 100px;
+                    margin-bottom: 5px;
+                }
+            }
+            p {
+                font-size: 1.2rem;
+                margin-bottom: 3px;
+            }
+        }
+    }
+    .browse-btn {
+        background-color: $cta-color;
+        color: $white;
+        font-size: 1.3rem;
+    }
+}
+
+footer {
+    background-color: #333;
+    color: #eee;
+    padding: 20px 0;
 }

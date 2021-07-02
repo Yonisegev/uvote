@@ -5,11 +5,14 @@
       >{{ poll.totalVotes ? poll.totalVotes : 0 }} votes</span
     >
   </div>
-  <section class="graphical-info flex justify-center">
+  <section class="graphical-info flex   justify-center">
     <div class="text-info flex column justify-center align-center">
       <div
         class="container"
-        *ngFor="let option of sortedPollByOptionsDescending.options; let i = index"
+        *ngFor="
+          let option of sortedPollByOptionsDescending.options;
+          let i = index
+        "
       >
         <div class="option-heading flex space-between">
           <span class="option-txt">{{ option.txt }} </span>
@@ -27,16 +30,29 @@
         </div>
       </div>
     </div>
-    <div class="pie-chart">
-      <p-chart
+    <div class="charts flex">
+
+      <div class="votes-chart">
+        <p-chart
         type="pie"
         [data]="data"
-        width="30vw"
+        width="20vw"
         height="30vh"
         [options]="options"
-      ></p-chart>
-    </div>
+        ></p-chart>
+      </div>
+      <div class="countries-chart">
+        <p-chart type="doughnut"
+        [data]="countriesChartData"
+        width="20vw"
+        height="30vh"
+        [options]="countriesOptions"
+        
+        ></p-chart>
+      </div>
+  </div>
   </section>
+
 </section>
 <section class="info">
   <share></share>

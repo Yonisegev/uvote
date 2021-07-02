@@ -8,6 +8,7 @@ import { UtilService } from './util.service';
 import { LoggedUser } from '../models/logged-user';
 import { Router } from '@angular/router';
 import { SocketService } from './socket.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,24 +22,26 @@ export class PollService {
     private socketService: SocketService
   ) {}
 
-  private BASE_URL: string = 'http://localhost:3030/api/poll';
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject([]);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
-  private _totalPollsCount$: BehaviorSubject<number> = new BehaviorSubject(100)
-  public totalPollsCount$: Observable<number> = this._totalPollsCount$.asObservable()
+  private _totalPollsCount$: BehaviorSubject<number> = new BehaviorSubject(100);
+  public totalPollsCount$: Observable<number> =
+    this._totalPollsCount$.asObservable();
 
   public query(pageNumber = 1, sortBy = 'newest'): void {
-    console.log('from query', sortBy)
+    console.log('from query', sortBy);
     const query = { page: '' + pageNumber, sortBy };
-    this.http.get<any>(`${this.BASE_URL}`, {params: query}).subscribe((res: {data: Poll[], total: number}) => {
-      const polls = res.data.filter((poll) => !poll.isPrivate);
-      this._polls$.next(polls);
-      this._totalPollsCount$.next(res.total)
-    });
+    this.http
+      .get<any>(`${environment.pollURL}`, { params: query })
+      .subscribe((res: { data: Poll[]; total: number }) => {
+        const polls = res.data.filter((poll) => !poll.isPrivate);
+        this._polls$.next(polls);
+        this._totalPollsCount$.next(res.total);
+      });
   }
 
   public getById(pollId: string): Observable<Poll> {
-    return this.http.get<Poll>(`${this.BASE_URL}/${pollId}`).pipe(
+    return this.http.get<Poll>(`${environment.pollURL}/${pollId}`).pipe(
       catchError((errorRes) => {
         this.router.navigateByUrl('/404');
         return throwError(`Failed to get poll ${pollId}, ${errorRes}`);
@@ -63,9 +66,10 @@ export class PollService {
     });
 
     poll.totalVotes += selectedOptions.length;
-    poll.voters[userIp] = true;
     if (loggedUser) {
-      poll.voters[loggedUser._id] = true;
+      poll.voters[loggedUser._id] = loggedUser.country || 'Unknown Country';
+    } else {
+      poll.voters[userIp] = guestData.country;
     }
     this.socketService.emit('update poll', poll);
     return this.update(poll._id, poll);
@@ -111,15 +115,17 @@ export class PollService {
 
   private create(poll: Poll) {
     console.log('From create, the poll to add is', poll);
-    return this.http.post<Poll>(this.BASE_URL, poll);
+    return this.http.post<Poll>(environment.pollURL, poll);
   }
 
   private update(pollId: string, poll: Poll) {
-    return this.http.put<Poll>(`${this.BASE_URL}/${pollId}`, poll);
+    return this.http.put<Poll>(`${environment.pollURL}/${pollId}`, poll, {
+      withCredentials: true,
+    });
   }
 
   public remove(pollId: string) {
-    return this.http.delete(`${this.BASE_URL}/${pollId}`, {
+    return this.http.delete(`${environment.pollURL}/${pollId}`, {
       withCredentials: true,
     });
   }

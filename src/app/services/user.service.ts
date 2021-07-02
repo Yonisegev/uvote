@@ -16,6 +16,7 @@ import { catchError, map } from 'rxjs/operators';
 import { LoggedUser } from '../models/logged-user';
 import { User } from '../models/user';
 import { UtilService } from './util.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -28,8 +29,6 @@ export class UserService {
     this.utilService.loadFromStorage('user')
   );
   public loggedInUser$: Observable<any> = this._loggedInUser$.asObservable();
-  private BASE_URL: string = 'http://localhost:3030/api/auth';
-  private USER_URL: string = 'http://localhost:3030/api/user';
 
   public getGuestData() {
     const cachedUserInfo = this.utilService.loadFromStorage('user-info');
@@ -39,7 +38,7 @@ export class UserService {
     }
     this.http
       .get(
-        'https://ipgeolocation.abstractapi.com/v1/?api_key=a73f9c3ddf2a4da6ba8f13d7a88898f4',
+        `https://ipgeolocation.abstractapi.com/v1/?api_key=${environment.apiKey}`,
         {
           headers: null,
         }
@@ -64,15 +63,21 @@ export class UserService {
     password: string | number;
   }): Observable<LoggedUser> {
     return this.http
-      .post<LoggedUser>(`${this.BASE_URL}/login`, credentials, {
+      .post<LoggedUser>(`${environment.authURL}/login`, credentials, {
         withCredentials: true,
       })
       .pipe(catchError((err) => throwError(err)));
   }
 
-  public getById(userId: string, pageNumber = 1, sortBy = 'newest'): Observable<User> {
+  public getById(
+    userId: string,
+    pageNumber = 1,
+    sortBy = 'newest'
+  ): Observable<User> {
     const query = { page: '' + pageNumber, sortBy };
-    return this.http.get<User>(`${this.USER_URL}/${userId}`, { params: query });
+    return this.http.get<User>(`${environment.userURL}/${userId}`, {
+      params: query,
+    });
   }
 
   public registerUser(userInfo: User): Subscription {
@@ -86,7 +91,9 @@ export class UserService {
     }
     console.log('from service', userInfo);
     return this.http
-      .post(`${this.BASE_URL}/signup`, userInfo, { withCredentials: true })
+      .post(`${environment.authURL}/signup`, userInfo, {
+        withCredentials: true,
+      })
       .subscribe((loggedInUser) => {
         this.utilService.saveToStorage('user', loggedInUser);
         this._loggedInUser$.next(loggedInUser);
@@ -114,7 +121,7 @@ export class UserService {
     localStorage.removeItem('user');
     this._loggedInUser$.next(null);
     this.http
-      .post(`${this.BASE_URL}/logout`, {}, { withCredentials: true })
+      .post(`${environment.authURL}/logout`, {}, { withCredentials: true })
       .subscribe();
   }
 

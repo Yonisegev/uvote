@@ -16,9 +16,14 @@ export class PollResultsComponent implements OnInit {
     private socketService: SocketService
   ) {}
   poll: Poll;
+  countriesCount: number[];
+  countriesLabels: string[];
   data: any;
+  countriesChartData: any;
   options: any;
+  countriesOptions: any;
   colors: string[];
+
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       if (!data.poll) this.router.navigateByUrl('/404');
@@ -27,17 +32,19 @@ export class PollResultsComponent implements OnInit {
       this.socketService.emit('join poll', data.poll._id);
       this.socketService.on('poll updated').subscribe((updatedPoll: Poll) => {
         this.poll = updatedPoll;
-        this.populateChart();
+        this.populateResultsChart();
       });
     });
+    this.getCountriesData();
     this.populateColors();
-    this.populateChart();
+    this.populateResultsChart();
+    this.populateCountriesChart();
   }
 
-  populateChart() {
+  populateResultsChart() {
     const dataToShow = this.voteCount;
     this.data = {
-      labels: dataToShow ? this.labelNames : ['No data yet!'],
+      labels: dataToShow ? this.optionsLabelNames : ['No data yet!'],
       datasets: [
         {
           data: dataToShow || ['100'],
@@ -49,6 +56,35 @@ export class PollResultsComponent implements OnInit {
     this.options = {
       legend: {
         display: false,
+      },
+      title: {
+        text: 'Votes',
+        display: true,
+      },
+      responsive: true,
+      maintainAspectRatio: true,
+    };
+  }
+
+  populateCountriesChart() {
+    const dataToShow = this.countriesCount;
+    this.countriesChartData = {
+      labels: dataToShow ? this.countriesLabels : ['No data yet!'],
+      datasets: [
+        {
+          data: dataToShow || ['Unknown'],
+          backgroundColor: this.colors,
+        },
+      ],
+    };
+
+    this.countriesOptions = {
+      legend: {
+        display: false,
+      },
+      title: {
+        text: 'Voters by country',
+        display: true,
       },
     };
   }
@@ -63,21 +99,44 @@ export class PollResultsComponent implements OnInit {
     this.poll = updatedPoll;
   }
 
-  get labelNames() {
+  get optionsLabelNames(): string[] {
     const labelNames = this.sortedPollByOptionsDescending.options.map(
       (option) => option.txt
     );
     return labelNames;
   }
 
-  get voteCount() {
+  get voteCount(): number[] | boolean {
     let voteCount = this.sortedPollByOptionsDescending.options.map((option) => {
       return option.votes;
     });
     if (voteCount.every((item) => item === 0)) {
       return false;
     }
+    console.log('vote count', voteCount);
     return voteCount;
+  }
+
+  getCountriesData() {
+    const voters = this.sortedPollByOptionsDescending.voters;
+    const countries = [];
+    for (const key in voters) {
+      countries.push(voters[key]);
+    }
+    const countriesCountMap = {};
+    countries.forEach((country) => {
+      countriesCountMap[country]
+        ? (countriesCountMap[country] += 1)
+        : (countriesCountMap[country] = 1);
+    });
+    const labels = [];
+    const count = [];
+    for (const country in countriesCountMap) {
+      labels.push(country);
+      count.push(countriesCountMap[country]);
+    }
+    this.countriesLabels = labels;
+    this.countriesCount = count;
   }
 
   get sortedPollByOptionsDescending(): Poll {

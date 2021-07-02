@@ -1,18 +1,23 @@
-<section class="fold">
-  <div class="text flex column align-center">
-    <!-- <h1>Create Polls, instantly.</h1> -->
-    <!-- <h1>A simple way to create polls instantly.</h1> -->
-    <h1>Got a <span>question</span>?</h1>
-    <h1>Create a <span>poll</span>.</h1>
-    <p>
-      Easily create an online poll
-      <br />
-      and share it across any device to collect feedback.
-    </p>
-    <a class="cta-btn" routerLink="/poll">Click here to see all polls</a>
+<section class="homepage-heading flex column align-center">
+  <div class="fold flex">
+    <div class="text flex column align-center">
+      <h1>Got a <span>question</span>?</h1>
+      <h1>Create a <span>poll</span>.</h1>
+      <p>
+        Easily create an online poll
+        <br />
+        and share it across any device to collect feedback.
+      </p>
+      <a class="cta-btn" href="#/create" routerLink="/create">Start Now </a>
+    </div>
+    <div class="vector flex justify-center align-center">
+      <img src="../../../assets/imgs/homepage.svg" alt="" />
+    </div>
   </div>
+
   <div class="curve">
     <svg
+      class="shape"
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1200 120"
@@ -25,3 +30,67 @@
     </svg>
   </div>
 </section>
+<section class="intro">
+  <div class="container flex column align-center">
+    <h3 class="heading">How does it work?</h3>
+    <div class="cards flex">
+      <div class="card card-1">
+        <fa-icon class="pencil-icon" [icon]="pencilIcon"></fa-icon>
+        <h4 class="card-heading">Create</h4>
+
+        <p>Type your question and add answers. No signup is required</p>
+      </div>
+      <fa-icon class="arrow-icon" [icon]="arrowIcon"></fa-icon>
+
+      <div class="card card-2">
+        <fa-icon class="users-icon" [icon]="usersIcon"></fa-icon>
+        <h4 class="card-heading">Share</h4>
+
+        <p>Share your poll via social media or by link</p>
+      </div>
+      <fa-icon class="arrow-icon" [icon]="arrowIcon"></fa-icon>
+
+      <div class="card card-3">
+        <fa-icon class="poll-icon" [icon]="pollIcon"></fa-icon>
+        <h4 class="card-heading">Collect</h4>
+
+        <p>Collect results and see votes in real-time</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="features">
+  <div class="container flex column align-center">
+    <h3 class="heading">Uvote Features</h3>
+    <div class="cards flex justify-center">
+      <div class="feature-card card-1">
+        <img src="../../../assets/imgs/accuracy.png" alt="" />
+        <h4 class="card-heading">IP Duplication Check</h4>
+        <p>A secure method to ensure vote accuracy.</p>
+      </div>
+      <div class="feature-card card-2">
+        <img src="../../../assets/imgs/calendar.png" alt="" />
+        <h4 class="card-heading">Deadline</h4>
+        <p>Set a deadline for your poll or let it run forever</p>
+      </div>
+      <div class="feature-card card-3">
+        <img src="../../../assets/imgs/private.png" alt="" />
+        <h4 class="card-heading">Private Polls</h4>
+        <p>Decide if you want your poll to be public or private</p>
+      </div>
+      <div class="feature-card card-4">
+        <img src="../../../assets/imgs/chat.png" alt="" />
+        <h4 class="card-heading">Comments</h4>
+        <p>People can comment their thoughts on polls</p>
+      </div>
+    </div>
+    <a class="regular-btn browse-btn" href="#/poll?page=1&sort=newest"
+      >Browse Public Polls</a
+    >
+  </div>
+</section>
+<footer class="flex align-center justify-center">
+  <a href="https://www.linkedin.com/in/yehonathan-segev/"
+    >® 2021 Uvote | Yehonathan Segev</a
+  >
+</footer>
