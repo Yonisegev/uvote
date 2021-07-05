@@ -41,9 +41,7 @@ async function deletePoll(req, res) {
 async function updatePoll(req, res) {
   try {
     let poll = req.body;
-    const user = req.session.user;
-    console.log("The req is:", poll);
-    poll = await pollService.update(poll, user);
+    poll = await pollService.update(poll);
     res.send(poll);
   } catch (err) {
     logger.error("Failed to update poll", err);

@@ -3,6 +3,9 @@
 .poll-list {
     width: 600px;
     margin: 0 auto;
+    @media screen and (max-width: 630px) {
+        width: 90%;
+    }
     .list-header {
         margin-bottom: rem(15px);
         h3 {
@@ -13,6 +16,9 @@
             line-height: 1.7;
             padding-left: 2px;
             margin-bottom: 5px;
+            @media screen and (max-width: 480px) {
+                font-size: 1.7rem;
+            }
         }
         .p-dropdown:not(.p-disabled).p-focus {
             box-shadow: none !important;

@@ -144,14 +144,4 @@ export class UserService {
       );
     };
   }
-
-  private saveToStorage(key: string, val: any) {
-    const str = JSON.stringify(val);
-    localStorage.setItem(key, str);
-  }
-
-  private loadFromStorage(key: string) {
-    const str = localStorage.getItem(key);
-    return JSON.parse(str);
-  }
 }

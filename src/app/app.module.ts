@@ -12,7 +12,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { ChartModule } from 'primeng/chart';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import {
   SocialLoginModule,
@@ -40,6 +40,7 @@ import { ShareComponent } from './cmps/share/share.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { PollListComponent } from './cmps/poll-list/poll-list.component';
+import { AddHeaderInterceptor } from './helpers/interceptors/add-header.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,6 +99,7 @@ import { PollListComponent } from './cmps/poll-list/poll-list.component';
         ],
       } as SocialAuthServiceConfig,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

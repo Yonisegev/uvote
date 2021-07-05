@@ -15,6 +15,10 @@ html {
   background-color: $bg-color;
   margin: 0;
   padding: 0;
+
+  @media screen and (max-width: 1130px) {
+    font-size: 13px;
+  }
 }
 
 body {
