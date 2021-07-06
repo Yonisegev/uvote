@@ -3,7 +3,6 @@
 
 .comments-section {
     margin: 0 auto;
-    // padding: 10px 40px;
     width: 550px;
     .comments-heading {
         font-size: 2rem;
@@ -16,7 +15,7 @@
         position: relative;
         padding: 20px 0;
         margin-bottom: rem(28.532px);
-        width: 550px;
+        width: 100%;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         textarea {
             border: 1px solid darken($bg-color, 4%);
@@ -31,6 +30,10 @@
             width: 370px;
             &::placeholder {
                 color: unset;
+            }
+
+            @media (max-width: 460px) {
+                width: 90%;
             }
         }
         button {
@@ -108,5 +111,9 @@
                 color: darken(#cacaca, 35%);
             }
         }
+    }
+
+    @media (max-width: 580px) {
+        width: 90%;
     }
 }

@@ -43,27 +43,18 @@
                 background-color: #4267b2;
             }
             &.twitter-icon {
-                background-color: #1DA1F2;
+                background-color: #1da1f2;
             }
             &.whatsapp-icon {
-                background-color: #25D366;
+                background-color: #25d366;
             }
             &.mail-icon {
                 background-color: #333;
             }
         }
+    }
 
-        // .fb-icon {
-        //     background-color: #4267B2;
-        // }
-        // .twitter-icon {
-        //     background-color: #1DA1F2;
-        // }
-        // .whatsapp-icon {
-        //     background-color: #25D366;
-        // }
-        // .mail-icon {
-        //     background-color: #4285F4;
-        // }
+    @media (max-width: 580px) {
+        width: 90%;
     }
 }

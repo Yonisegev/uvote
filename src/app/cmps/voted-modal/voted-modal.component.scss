@@ -2,8 +2,8 @@
 @import "../../../assets/styles/setup/functions";
 
 .voted-modal {
-    height: rem(300px);
-    width: rem(700px);
+    height: 300px;
+    width: 700px;
     background-color: $bg-color;
     box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
     border-radius: 3px;
@@ -13,7 +13,7 @@
     transform: translate(-50%, -50%);
     z-index: 10;
 
-    transition: all .3s;
+    transition: all 0.3s;
 
     &.hide {
         opacity: 0;
@@ -33,7 +33,6 @@
         margin-bottom: 8px;
     }
     .actions {
-        margin-bottom: 8px;
         width: 100%;
         padding: 0 20px;
         .btn-container {
@@ -55,7 +54,20 @@
         .buttons {
             flex-grow: 2;
             justify-content: flex-start;
+        }
+    }
 
+    @media (max-width: 730px) {
+        width: 90%;
+        height: 260px;
+        justify-content: space-around;
+
+        img {
+            height: 100px;
+        }
+
+        .actions {
+            margin-bottom: 8px;
         }
     }
 }

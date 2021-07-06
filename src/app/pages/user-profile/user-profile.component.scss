@@ -6,12 +6,21 @@
     .container {
         width: 980px;
         margin: 0 auto;
+
+        @media (max-width: 980px) {
+            width: 100%;
+        }
+
         & > * {
             width: 100%;
         }
         .heading {
             margin-bottom: rem(30px);
             width: 500px;
+
+            @media (max-width: 520px) {
+                width: 90%;
+            }
             .logo {
                 width: 125px;
                 height: 125px;
@@ -30,6 +39,15 @@
                     font-size: 4.5rem;
                     color: $white;
                 }
+
+                @media (max-width: 520px) {
+                    width: 70px;
+                    height: 70px;
+
+                    span {
+                        font-size: 3rem;
+                    }
+                }
             }
             .info-container {
                 flex-basis: 73%;
@@ -38,6 +56,9 @@
                 font-size: 2rem;
                 font-family: Quicksand-Bold, sans-serif;
                 flex-basis: 75%;
+                @media (max-width: 520px) {
+                    font-size: 1.8rem;
+                }
             }
             .country {
                 align-self: flex-start;
@@ -53,6 +74,9 @@
                     font-size: 2rem;
                     text-align: center;
                 }
+                p {
+                    text-align: center;
+                }
             }
         }
         .user-polls {
@@ -62,7 +86,6 @@
                 font-family: Quicksand-SemiBold, sans-serif;
                 letter-spacing: 0.8px;
                 line-height: 1.7;
-
             }
         }
     }
