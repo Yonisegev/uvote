@@ -36,7 +36,7 @@
         <p-chart
         type="pie"
         [data]="data"
-        width="20vw"
+        [width]="chartSize"
         height="30vh"
         [options]="options"
         ></p-chart>
@@ -44,7 +44,7 @@
       <div class="countries-chart">
         <p-chart type="doughnut"
         [data]="countriesChartData"
-        width="20vw"
+        [width]="chartSize"
         height="30vh"
         [options]="countriesOptions"
         

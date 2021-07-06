@@ -3,6 +3,11 @@
 
 .user-profile {
     padding-top: 30px;
+
+    @media (max-width: 980px) {
+        width: 90%;
+        margin: 0 auto;
+    }
     .container {
         width: 980px;
         margin: 0 auto;

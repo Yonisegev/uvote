@@ -10,8 +10,7 @@
   form {
     position: relative;
     background-color: $bg-color;
-    box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.1),
-      0 0px 0 1px rgba(10, 10, 10, 0.02);
+    box-shadow: 0 0.5em 1em 0.5em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
     width: 600px;
     height: clamp(600px, 600px, auto);
     padding: 30px;
@@ -79,6 +78,26 @@
       & > *:not(:first-child) {
         margin-left: 10px;
       }
+
+      .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+        box-shadow: none !important;
+      }
+
+      @media (max-width: 560px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-left: 4px;
+
+        & > *:not(:first-child) {
+          margin-left: unset;
+        }
+
+        & > *:not(:last-child) {
+          margin-bottom: 5px;
+        }
+      }
     }
 
     .calendar {
@@ -118,11 +137,25 @@
         text-transform: capitalize;
       }
     }
+
+    @media (max-width: 640px) {
+      width: 100%;
+    }
   }
 
   .form-container {
     max-width: 980px;
     margin: 0 auto;
+
+    @media (max-width: 640px) {
+      max-width: unset;
+      width: 90%;
+      margin: 20px auto;
+
+      .question {
+        font-size: 1.65rem;
+      }
+    }
   }
 }
 
@@ -138,6 +171,15 @@
   background-size: cover;
   background-color: transparent;
   fill: transparent;
+
+  @media (max-width: 1160px) {
+    width: 250px;
+    height: 250px;
+  }
+
+  @media (max-width: 1040px) {
+    display: none;
+  }
 }
 
 .mb-checkbox {

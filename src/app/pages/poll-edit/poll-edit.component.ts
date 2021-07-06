@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnInit,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   trigger,
@@ -27,6 +28,7 @@ import { Title } from '@angular/platform-browser';
   selector: 'poll-edit',
   templateUrl: './poll-edit.component.html',
   styleUrls: ['./poll-edit.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('input', [
       state('in', style({ opacity: 1 })),
@@ -70,9 +72,8 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     }
     console.log('The poll to edit is:', this.pollToEdit);
     this.fillForm();
-    const tabTitle = (this.pollToEdit) ? 'Edit Poll' : 'Create Poll'
-    this.titleService.setTitle(tabTitle)
-
+    const tabTitle = this.pollToEdit ? 'Edit Poll' : 'Create Poll';
+    this.titleService.setTitle(tabTitle);
   }
 
   ngAfterViewInit() {

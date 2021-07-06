@@ -28,9 +28,7 @@
             "aot": true,
             "assets": ["src/favicon.ico", "src/assets"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/styles/setup/_variables.scss"
-              ]
+              "includePaths": ["src/assets/styles/setup/_variables.scss"]
             },
             "styles": [
               "node_modules/primeicons/primeicons.css",
@@ -38,7 +36,8 @@
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss"
             ],
-            "scripts": ["node_modules/chart.js/dist/Chart.js"]
+            "scripts": ["node_modules/chart.js/dist/Chart.js"],
+            "allowedCommonJsDependencies": ["lodash", "chart.js"]
           },
           "configurations": {
             "production": {

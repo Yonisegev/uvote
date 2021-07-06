@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Poll } from 'src/app/models/poll';
 import { cloneDeep } from 'lodash';
@@ -23,8 +23,10 @@ export class PollResultsComponent implements OnInit {
   options: any;
   countriesOptions: any;
   colors: string[];
+  scrWidth: number;
 
   ngOnInit(): void {
+    // this.getChartSize();
     this.route.data.subscribe((data) => {
       if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
@@ -39,6 +41,12 @@ export class PollResultsComponent implements OnInit {
     this.populateColors();
     this.populateResultsChart();
     this.populateCountriesChart();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.scrWidth = window.innerWidth;
+    console.log('width:', this.scrWidth);
   }
 
   populateResultsChart() {
@@ -188,5 +196,13 @@ export class PollResultsComponent implements OnInit {
       '#a05195',
       '#d6ec91',
     ];
+  }
+
+  get chartSize() {
+    if ('' + this.scrWidth > '1080') {
+      return '285px';
+    } else {
+      return '90vw';
+    }
   }
 }
