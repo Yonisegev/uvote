@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Poll } from 'src/app/models/poll';
 import { PollService } from 'src/app/services/poll.service';
 import * as moment from 'moment';
@@ -17,7 +24,7 @@ export class PollCommentsComponent implements OnInit {
   error: boolean = false;
   page: number = 1;
   @Input() poll: Poll;
-  @Input() onUpdatePoll: any;
+  @Output() updatePoll = new EventEmitter(true);
 
   ngOnInit(): void {}
 
@@ -26,7 +33,7 @@ export class PollCommentsComponent implements OnInit {
     const pollCopy = cloneDeep(this.poll);
     this.pollService
       .addComment(this.commentValue, pollCopy)
-      .subscribe((updatedPoll) => this.onUpdatePoll(updatedPoll));
+      .subscribe((updatedPoll) => this.updatePoll.emit(updatedPoll));
     this.error = false;
     this.commentValue = '';
   }

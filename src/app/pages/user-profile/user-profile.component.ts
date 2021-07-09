@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
@@ -34,19 +34,17 @@ export class UserProfileComponent implements OnInit {
 
   getUser() {
     this.router.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      console.log(data);
       this.user = data.user.user;
       this.totalPolls = data.user.total;
     });
   }
 
-  handlePageChange({ev, sortBy}) {
+  handlePageChange({ ev, sortBy }) {
     this.pageNumber = ev;
     this.userService
       .getById(this.user._id, this.pageNumber, sortBy)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
-        console.log('res', res);
         this.user = res.user;
         this.totalPolls = res.total;
       });

@@ -46,7 +46,6 @@ export class PollResultsComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   getScreenSize() {
     this.scrWidth = window.innerWidth;
-    console.log('width:', this.scrWidth);
   }
 
   populateResultsChart() {
@@ -121,7 +120,6 @@ export class PollResultsComponent implements OnInit {
     if (voteCount.every((item) => item === 0)) {
       return false;
     }
-    console.log('vote count', voteCount);
     return voteCount;
   }
 

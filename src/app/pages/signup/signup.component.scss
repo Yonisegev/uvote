@@ -10,18 +10,7 @@
     background-size: cover;
 
     .signup-rabbit {
-        position: absolute;
-        z-index: 1;
-        background-image: url("../../../assets/imgs/signup-rabbit.svg");
-        width: 250px;
-        height: 250px;
-        background-position: center;
-        background-size: cover;
-        background-color: transparent;
-        fill: transparent;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        top: -12%;
+        @include wave-rabbit;
     }
     form {
         @include login-signup-container;

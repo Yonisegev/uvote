@@ -19,9 +19,18 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session);
+// HTTPS only middleware
+function requireHTTPS(req, res, next) {
+  // The 'x-forwarded-proto' check is for Heroku
+  if (process.env.NODE_ENV === 'production' && !req.secure && req.get("x-forwarded-proto") !== "https") {
+    return res.redirect("https://" + req.get("host") + req.url);
+  }
+  next();
+}
+app.use(requireHTTPS);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "public")));
+  app.use(express.static(path.resolve(__dirname, "dist")));
 } else {
   const corsOptions = {
     origin: ["http://localhost:4200"],

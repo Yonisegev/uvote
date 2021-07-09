@@ -19,10 +19,8 @@ function connectSockets(http, session) {
     })
   );
   gIo.on("connection", (socket) => {
-    // console.log("socket.handshake", socket.handshake);
     gSocketBySessionIdMap[socket.handshake.sessionID] = socket;
     socket.on("disconnect", (socket) => {
-      console.log("Someone disconnected");
       if (socket.handshake) {
         gSocketBySessionIdMap[socket.handshake.sessionID] = null;
       }
@@ -35,11 +33,9 @@ function connectSockets(http, session) {
       socket.join(pollId);
       // logger.debug('Session ID is', socket.handshake.sessionID)
       socket.pollId = pollId;
-      console.log('socket pollid', socket.pollId)
     });
 
     socket.on("update poll", (savedPoll) => {
-      console.log("socket poll update", socket.pollId);
       socket.to(socket.pollId).emit("poll updated", savedPoll);
     });
   });

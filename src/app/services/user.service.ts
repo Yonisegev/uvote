@@ -89,7 +89,6 @@ export class UserService {
       userInfo.country = guestData.country;
       userInfo.flag = guestData.flag.svg;
     }
-    console.log('from service', userInfo);
     return this.http
       .post(`${environment.authURL}/signup`, userInfo, {
         withCredentials: true,
@@ -103,14 +102,12 @@ export class UserService {
   public socialRegister(socialUser: any): void {
     this.checkifEmailExists(socialUser.email).subscribe(
       (isRegistred) => {
-        console.log(isRegistred, 'need to log in!');
         this.login(socialUser).subscribe((loggedInUser) =>
           this._loggedInUser$.next(loggedInUser)
         );
       },
       (err) => {
         if (err.status === 500) {
-          console.log('signing up!');
           this.registerUser(socialUser);
         }
       }

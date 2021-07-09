@@ -51,7 +51,10 @@
         ></p-chart>
       </div>
   </div>
-  </section>
+  <div class="go-back">
+  </div>
+</section>
+<button>Go back to poll</button>
 
 </section>
 <section class="info">
@@ -59,6 +62,6 @@
   <poll-comments
     *ngIf="poll.isComments"
     [poll]="poll"
-    [onUpdatePoll]="onUpdatePoll"
+    (updatePoll)="onUpdatePoll($event)"
   ></poll-comments>
 </section>

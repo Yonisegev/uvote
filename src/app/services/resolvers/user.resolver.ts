@@ -12,8 +12,6 @@ export class UserResolver {
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const { id } = route.params;
     const page = route.queryParams.page || 1
-    console.log('page', page)
-    console.log(route.params);
     if (!id) {
       this.router.navigateByUrl('/404');
       return null;

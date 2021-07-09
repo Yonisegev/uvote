@@ -29,7 +29,6 @@ export class PollService {
     this._totalPollsCount$.asObservable();
 
   public query(pageNumber = 1, sortBy = 'newest'): void {
-    console.log('from query', sortBy);
     const query = { page: '' + pageNumber, sortBy };
     this.http
       .get<any>(`${environment.pollURL}`, { params: query })
@@ -76,12 +75,9 @@ export class PollService {
   }
 
   public submitPoll(poll: Poll): any {
-    console.log('On poll submit:', poll);
     if (poll._id) {
-      console.log('EDIT!', poll, poll._id);
       return this.update(poll._id, poll);
     } else {
-      console.log('CREATE!');
       delete poll._id;
       return this.create(poll);
     }
@@ -99,22 +95,19 @@ export class PollService {
       author = {
         _id: 'guest',
         name: 'Guest',
-        country: guestData.country,
-        flag: guestData.flag.svg,
+        country: guestData?.country || 'Unknown',
+        flag: guestData?.flag.svg,
         logoColor:
           this.userService.loggedUserValue?.logoColor ||
           this.utilService.getRandomLightColor(),
       };
     }
-    console.log('the author is', author);
     commentToAdd.author = author;
     poll.comments = [commentToAdd, ...poll.comments];
-    console.log('the comments are', poll.comments);
     return this.update(poll._id, poll);
   }
 
   private create(poll: Poll) {
-    console.log('From create, the poll to add is', poll);
     return this.http.post<Poll>(environment.pollURL, poll);
   }
 

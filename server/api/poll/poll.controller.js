@@ -5,7 +5,6 @@ const pollService = require("./poll.service");
 async function getPolls(req, res) {
   try {
     const pageNumber = parseInt(req.query.page || 1);
-    console.log("req query", req.query);
     const { sortBy } = req.query;
     const polls = await pollService.query({}, pageNumber, sortBy);
     res.send(polls);
@@ -28,7 +27,6 @@ async function getPoll(req, res) {
 async function deletePoll(req, res) {
   try {
     const user = req.session.user;
-    console.log("THE USER FROM DELETE POLL IS", user);
     await pollService.remove(req.params.id, user);
     res.send({ msg: "Deleted successfully" });
   } catch (err) {
@@ -51,9 +49,7 @@ async function updatePoll(req, res) {
 
 async function addPoll(req, res) {
   try {
-    console.log("Inside add poll controller");
     let poll = req.body;
-    console.log("The poll to add is", poll);
     poll = await pollService.add(poll);
     res.send(poll);
   } catch (err) {

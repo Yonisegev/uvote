@@ -70,7 +70,6 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     if (!this.loggedInUser) {
       this.userService.getGuestData();
     }
-    console.log('The poll to edit is:', this.pollToEdit);
     this.fillForm();
     const tabTitle = this.pollToEdit ? 'Edit Poll' : 'Create Poll';
     this.titleService.setTitle(tabTitle);
@@ -91,8 +90,6 @@ export class PollEditComponent implements OnInit, AfterViewInit {
   }
 
   onOptionFocus(idx: number) {
-    console.log('the i is', idx);
-    console.log('the options length is', this.pollForm.controls.options.value);
     if (idx + 1 === this.pollForm.controls.options.value.length) {
       this.onAddOption();
     }
@@ -107,7 +104,6 @@ export class PollEditComponent implements OnInit, AfterViewInit {
 
   onResetForm(): void {
     this.pollForm.reset();
-    console.log(this.pollForm);
     this.pollForm.controls.isComments.setValue(true);
     this.submitted = false;
   }
@@ -138,9 +134,6 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     this.pollService.submitPoll(pollToSubmit).subscribe((poll: Poll) => {
       this.router.navigateByUrl(`poll/${poll._id}`);
     });
-    console.log('owner', pollToSubmit.owner);
-    // console.log('form value is', formValue);
-    console.log('poll to submit is', pollToSubmit);
 
     this.submitted = false;
   }
@@ -177,7 +170,6 @@ export class PollEditComponent implements OnInit, AfterViewInit {
     const options = [];
     for (let i = 0; i < formValue.options.length; i++) {
       if (!formValue.options[i]) continue;
-      console.log('The I is', i);
       const option = {
         txt: formValue.options[i],
         votes: existingPoll?.options[i]?.votes

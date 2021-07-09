@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.socialAuthService.authState.subscribe((googleUser) => {
-      console.log('google user', googleUser);
 
       const userToSignIn = {
         email: googleUser.email,

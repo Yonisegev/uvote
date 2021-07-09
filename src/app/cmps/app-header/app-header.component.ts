@@ -13,28 +13,40 @@ import { UserService } from 'src/app/services/user.service';
 export class AppHeaderComponent implements OnInit, OnDestroy {
   loggedInUser: User;
   userSub: Subscription;
-  constructor(private userService: UserService, private socialAuthService: SocialAuthService, private router: Router) {}
+  isMenuOpen: boolean = false;
+  constructor(
+    private userService: UserService,
+    private socialAuthService: SocialAuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.userSub = this.userService.loggedInUser$.subscribe((user) => {
       this.loggedInUser = user;
     });
   }
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+  }
 
   onLogout(): void {
     this.userService.logout();
-    this.socialAuthService.signOut()
+    this.socialAuthService.signOut();
   }
 
   discoverNavigate() {
-    this.router.navigateByUrl('/poll?page=1&sort=newest')
+    this.router.navigateByUrl('/poll?page=1&sort=newest');
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false
   }
 
   get profileLink(): string {
-    return `#/u/${this.loggedInUser._id}`
-  }
-
-  ngOnDestroy() {
-    this.userSub.unsubscribe()
+    return `#/u/${this.loggedInUser._id}`;
   }
 }

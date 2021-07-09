@@ -7,7 +7,8 @@ export const environment = {
   pollURL: 'http://localhost:3030/api/poll',
   authURL: 'http://localhost:3030/api/auth',
   userURL: 'http://localhost:3030/api/user',
-  apiKey: 'a73f9c3ddf2a4da6ba8f13d7a88898f4'
+  socketURL: 'http://localhost:3030',
+  apiKey: 'a73f9c3ddf2a4da6ba8f13d7a88898f4',
 };
 
 /*

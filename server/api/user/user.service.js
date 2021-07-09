@@ -35,7 +35,6 @@ async function getById(userId, pageNumber, sortBy) {
     const user = await collection.findOne({ _id: ObjectId(userId) });
     delete user.password;
     const userPolls = await pollService.query({ userId }, pageNumber, sortBy);
-    console.log(userPolls);
     user.polls = userPolls.data;
     const res = {
       user,
@@ -103,7 +102,6 @@ async function update(user) {
 
 async function add(user) {
   try {
-    console.log("from user service", user);
     const collection = await dbService.getCollection("user");
     await collection.insertOne(user);
     return user;

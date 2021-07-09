@@ -9,15 +9,20 @@
           >{{ user.name }}
           <div class="country flex">
             <img
+              *ngIf="user.flag"
               class="user-country"
               [src]="user.flag"
               [alt]="user.country"
               [title]="user.country"
             />
+            <img
+              *ngIf="!user.flag"
+              src="../../../assets/imgs/question-mark.svg"
+              title="Unknown Country"
+            />
           </div>
         </span>
         <div class="count-container">
-
           <div class="polls-count flex column justify-center">
             <h3>{{ totalPolls || 0 }}</h3>
             <p>Polls created</p>

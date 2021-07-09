@@ -157,6 +157,9 @@
 
         &:hover {
           background-color: $cta-color;
+          @media (max-width: 400px) {
+            background-color: #eee;
+          }
         }
         &.input {
           display: none;

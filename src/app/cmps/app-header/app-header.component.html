@@ -1,11 +1,20 @@
-<header class="app-header main-container flex align-center">
+<header
+  class="app-header main-container flex align-center"
+  [class.open]="isMenuOpen"
+>
+  <div (click)="closeMenu()" class="screen"></div>
   <div class="logo">
-    <h1 routerLink="/"><a href="/">Uvote</a></h1>
+    <h1 routerLink="/"><a href="#/">Uvote</a></h1>
   </div>
-  <ul class="flex align-center">
-    <li routerLink="/create" class="create-btn">
-      <a href="#/create">Create Poll</a>
-    </li>
+  <div routerLink="/create" class="create-btn">
+    <a href="#/create">Create Poll</a>
+  </div>
+  <button class="hamburger-menu" (click)="toggleMenu()">
+    <span class="line line-1"></span>
+    <span class="line line-2"></span>
+    <span class="line line-3"></span>
+  </button>
+  <ul (click)="closeMenu()" class="flex align-center">
     <li (click)="discoverNavigate()">
       <a href="#/poll?page=1&sort=newest">Discover</a>
     </li>

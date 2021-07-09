@@ -23,7 +23,6 @@ export class ShareComponent implements OnInit {
   mailIcon = faEnvelope;
 
   ngOnInit(): void {
-    console.log(window.location.href);
     const link = window.location.href;
     const endIndex = link.indexOf('/results');
     if (endIndex > 0) {

@@ -2,10 +2,8 @@ const dbService = require("../../services/db.service");
 const ObjectId = require("mongodb").ObjectId;
 
 async function query(filterBy = {}, page = 1, sortBy = "newest") {
-  // console.log("filterby", filterBy);
   const PAGE_SIZE = 5;
   const skip = (page - 1) * PAGE_SIZE;
-  // console.log("page", page);
   try {
     const criteria = _buildCriteria(filterBy);
     const collection = await dbService.getCollection("poll");
@@ -21,8 +19,6 @@ async function query(filterBy = {}, page = 1, sortBy = "newest") {
       .skip(skip)
       .limit(PAGE_SIZE);
     const total = await polls.count();
-    console.log(total);
-    // console.log('Polls from service', polls)
     const res = {
       data: await polls.toArray(),
       total,
@@ -37,7 +33,6 @@ async function query(filterBy = {}, page = 1, sortBy = "newest") {
 
 async function getById(pollId) {
   try {
-    console.log("Inside get by id", pollId);
     const collection = await dbService.getCollection("poll");
     const poll = await collection.findOne({ _id: ObjectId(pollId) });
     return poll;
@@ -48,8 +43,6 @@ async function getById(pollId) {
 }
 
 async function update(poll) {
-  console.log("due date", new Date(poll.dueDate));
-  console.log("now", new Date(Date.now()));
   try {
     poll._id = ObjectId(poll._id);
     const collection = await dbService.getCollection("poll");
@@ -58,7 +51,6 @@ async function update(poll) {
       { $set: poll },
       { upsert: true, returnOriginal: false }
     );
-    console.log("the saved poll is", savedPoll.value);
     return savedPoll.value;
   } catch (err) {
     logger.error(`cannot update poll ${poll._id}`, err);
@@ -83,7 +75,6 @@ async function remove(pollId, user) {
     // remove only if user is owner/admin
     const query = { _id: ObjectId(pollId) };
     const poll = await collection.findOne({ _id: ObjectId(pollId) });
-    console.log("THE POLL IS ", poll);
     if (poll.owner._id !== user._id) throw new Error("Not the owner");
     return await collection.deleteOne(query);
   } catch (err) {

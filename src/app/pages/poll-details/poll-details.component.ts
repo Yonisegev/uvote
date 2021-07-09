@@ -43,7 +43,6 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
       if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
       this.titleService.setTitle(`${data.poll.title} | Uvote`);
-      console.log(this.poll);
       this.socketService.on('connection')
       this.socketService.emit('join poll', data.poll._id)
     });
@@ -119,7 +118,6 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   }
 
   onPollDelete(ev: any) {
-    console.log(ev);
     if (ev) {
       this.pollService.remove(this.poll._id).subscribe(() => {
         this.router.navigateByUrl('/poll');
@@ -128,7 +126,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     this.isConfirmModalOpen = false;
   }
 
-  onUpdatePoll(updatedPoll: Poll) {
+  updatePoll(updatedPoll: Poll) {
     this.poll = updatedPoll;
   }
 

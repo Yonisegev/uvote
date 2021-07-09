@@ -2,7 +2,7 @@
 @import "../../../assets/styles/setup/functions";
 .results {
     width: 1140px;
-    min-height: 80vh;
+    min-height: 50vh;
     margin: 0 auto;
     padding-top: 30px;
     .heading {
@@ -13,7 +13,7 @@
             margin-bottom: 3px;
             text-align: center;
 
-            @media(max-width: 1080px) {
+            @media (max-width: 1080px) {
                 font-size: 3rem;
                 margin-bottom: 8px;
             }
@@ -72,6 +72,7 @@
             .charts {
                 flex-direction: column;
                 align-items: center;
+                margin-left: 0;
             }
         }
     }

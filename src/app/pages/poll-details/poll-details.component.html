@@ -85,7 +85,7 @@
       <poll-comments
         *ngIf="poll.isComments"
         [poll]="poll"
-        [onUpdatePoll]="onUpdatePoll"
+        (updatePoll)="updatePoll($event)"
       ></poll-comments>
     </section>
   </div>
