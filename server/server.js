@@ -34,7 +34,7 @@ function requireHTTPS(req, res, next) {
 app.use(requireHTTPS);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "/dist/uvote")));
+  app.use(express.static(__dirname, "dist", "uvote"));
 }
 const corsOptions = {
   origin: ["http://localhost:4200", "https://uvote-app.herokuapp.com/"],
@@ -53,8 +53,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 connectSockets(http, session);
 
-app.get("/**", (req, res) => {
-  res.sendFile(path.join(__dirname + "/dist/uvote/index.html"));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "uvote","index.html"));
 });
 
 const logger = require("./services/logger.service");
