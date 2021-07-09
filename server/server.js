@@ -22,7 +22,11 @@ app.use(session);
 // HTTPS only middleware
 function requireHTTPS(req, res, next) {
   // The 'x-forwarded-proto' check is for Heroku
-  if (process.env.NODE_ENV === 'production' && !req.secure && req.get("x-forwarded-proto") !== "https") {
+  if (
+    process.env.NODE_ENV === "production" &&
+    !req.secure &&
+    req.get("x-forwarded-proto") !== "https"
+  ) {
     return res.redirect("https://" + req.get("host") + req.url);
   }
   next();
@@ -30,14 +34,13 @@ function requireHTTPS(req, res, next) {
 app.use(requireHTTPS);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "dist")));
-} else {
-  const corsOptions = {
-    origin: ["http://localhost:4200"],
-    credentials: true,
-  };
-  app.use(cors(corsOptions));
+  app.use(express.static(path.resolve(__dirname, "/dist/uvote")));
 }
+const corsOptions = {
+  origin: ["http://localhost:4200", "https://uvote-app.herokuapp.com/"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 const pollRoutes = require("./api/poll/poll.routes");
 const authRoutes = require("./api/auth/auth.routes");
@@ -50,11 +53,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 connectSockets(http, session);
 
-// Make every server-side-route to match the index.html
-// so when requesting http://localhost:3000/index.html/car/123 it will still respond with
-// our SPA (single page app) (the index.html file) and allow react-router to take it from there
 app.get("/**", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname + "/dist/uvote/index.html"));
 });
 
 const logger = require("./services/logger.service");
