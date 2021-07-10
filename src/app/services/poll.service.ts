@@ -20,7 +20,7 @@ export class PollService {
     private utilService: UtilService,
     private router: Router,
     private socketService: SocketService
-  ) {}
+  ) { }
 
   private _polls$: BehaviorSubject<Poll[]> = new BehaviorSubject([]);
   public polls$: Observable<Poll[]> = this._polls$.asObservable();
@@ -51,7 +51,7 @@ export class PollService {
   public addVote(poll: Poll, selectedOptions: any[]): Observable<Poll> {
     const guestData = this.userService.guestDataValue;
     const loggedUser: LoggedUser = this.userService.loggedUserValue;
-    const userIp: string = guestData.ip_address;
+    const userIp: string = guestData?.ip_address;
 
     if (poll.voters[userIp] || poll.voters[loggedUser?._id]) {
       return throwError((err: Error) => new Error('User already voted'));
@@ -67,8 +67,10 @@ export class PollService {
     poll.totalVotes += selectedOptions.length;
     if (loggedUser) {
       poll.voters[loggedUser._id] = loggedUser.country || 'Unknown Country';
-    } else {
+    } else if (userIp) {
       poll.voters[userIp] = guestData.country;
+    } else {
+      return
     }
     this.socketService.emit('update poll', poll);
     return this.update(poll._id, poll);

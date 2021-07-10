@@ -14,7 +14,7 @@ export class PollResultsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private socketService: SocketService
-  ) {}
+  ) { }
   poll: Poll;
   countriesCount: number[];
   countriesLabels: string[];
@@ -26,7 +26,6 @@ export class PollResultsComponent implements OnInit {
   scrWidth: number;
 
   ngOnInit(): void {
-    // this.getChartSize();
     this.route.data.subscribe((data) => {
       if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
@@ -106,22 +105,7 @@ export class PollResultsComponent implements OnInit {
     this.poll = updatedPoll;
   }
 
-  get optionsLabelNames(): string[] {
-    const labelNames = this.sortedPollByOptionsDescending.options.map(
-      (option) => option.txt
-    );
-    return labelNames;
-  }
 
-  get voteCount(): number[] | boolean {
-    let voteCount = this.sortedPollByOptionsDescending.options.map((option) => {
-      return option.votes;
-    });
-    if (voteCount.every((item) => item === 0)) {
-      return false;
-    }
-    return voteCount;
-  }
 
   getCountriesData() {
     const voters = this.sortedPollByOptionsDescending.voters;
@@ -152,6 +136,32 @@ export class PollResultsComponent implements OnInit {
     });
     return pollCopy;
   }
+
+  get optionsLabelNames(): string[] {
+    const labelNames = this.sortedPollByOptionsDescending.options.map(
+      (option) => option.txt
+    );
+    return labelNames;
+  }
+
+  get voteCount(): number[] | boolean {
+    let voteCount = this.sortedPollByOptionsDescending.options.map((option) => {
+      return option.votes;
+    });
+    if (voteCount.every((item) => item === 0)) {
+      return false;
+    }
+    return voteCount;
+  }
+
+  get chartSize(): string {
+    if ('' + this.scrWidth > '1080') {
+      return '285px';
+    } else {
+      return '90vw';
+    }
+  }
+
 
   populateColors() {
     this.colors = [
@@ -196,11 +206,5 @@ export class PollResultsComponent implements OnInit {
     ];
   }
 
-  get chartSize() {
-    if ('' + this.scrWidth > '1080') {
-      return '285px';
-    } else {
-      return '90vw';
-    }
-  }
+
 }
