@@ -32,23 +32,25 @@ function requireHTTPS(req, res, next) {
 }
 app.use(requireHTTPS);
 
-app.all("*", function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "URLs to trust of allow");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  if ("OPTIONS" == req.method) {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
+if (process.env.NODE_ENV === "production") {
+  app.all("*", function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "URLs to trust of allow");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    );
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    if ("OPTIONS" == req.method) {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  });
+}
 
-// if (process.env.NODE_ENV === "production") {
-app.use(express.static(path.join(__dirname, "public")));
-// }
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "public")));
+}
 const corsOptions = {
   origin: ["http://localhost:4200", "https://uvote-app.herokuapp.com/"],
   credentials: true,
