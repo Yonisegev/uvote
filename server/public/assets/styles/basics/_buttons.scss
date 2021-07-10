@@ -1,0 +1,51 @@
+button {
+  border: none;
+  font-family: Quicksand, sans-serif;
+}
+.create-btn {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  background-color: $cta-color;
+  padding: 4px 10px;
+  border-radius: 3px;
+
+  transition: background-color, 0.2s;
+
+  &:hover {
+    background-color: lighten($cta-color, 5%);
+  }
+}
+.submit-btn {
+  padding: 4px 20px;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-family: Quicksand-SemiBold;
+  background-color: #3bd975;
+  color: #fff;
+  border-radius: 3px;
+
+  transition: background-color, 0.2s;
+
+  &:hover {
+    background-color: lighten($cta-color, 5%);
+  }
+
+  &:disabled {
+    background-color: #3bd9757a;
+    cursor: not-allowed;
+  }
+}
+
+.regular-btn {
+  padding: 6px 10px;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s;
+  font-size: 0.98rem;
+  &:hover {
+    background-color: darken(#f0f0f0, 5%);
+  }
+}
