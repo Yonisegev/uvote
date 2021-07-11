@@ -34,6 +34,7 @@ export class PollResultsComponent implements OnInit {
       this.socketService.on('poll updated').subscribe((updatedPoll: Poll) => {
         this.poll = updatedPoll;
         this.populateResultsChart();
+        this.populateCountriesChart();
       });
     });
     this.getCountriesData();

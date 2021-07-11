@@ -16,7 +16,7 @@ export class UserProfileComponent implements OnInit {
     private router: ActivatedRoute,
     private titleService: Title,
     private userService: UserService
-  ) {}
+  ) { }
 
   user: User;
   totalPolls: number;
@@ -30,6 +30,11 @@ export class UserProfileComponent implements OnInit {
       });
     this.getUser();
     this.titleService.setTitle(`${this.user.name} | Uvote`);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   getUser() {
@@ -52,10 +57,5 @@ export class UserProfileComponent implements OnInit {
 
   get listTitle() {
     return `Public polls made by ${this.user.name}`;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
   }
 }

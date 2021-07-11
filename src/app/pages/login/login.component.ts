@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private socialAuthService: SocialAuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -42,6 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       };
       this.onLogin(userToSignIn);
     });
+  }
+
+  ngOnDestroy() {
+    this.loginSub?.unsubscribe();
   }
 
   onLogin(socialUser = null) {
@@ -73,9 +77,5 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onGoogleSignin() {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
-
-  ngOnDestroy() {
-    this.loginSub?.unsubscribe();
   }
 }

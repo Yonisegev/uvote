@@ -17,7 +17,7 @@ export class PollAppComponent implements OnInit, OnDestroy {
     private pollService: PollService,
     private titleService: Title,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   polls$: Observable<Poll[]>;
   destroy$: Subject<boolean> = new Subject<boolean>();
   pageNumber: number;
@@ -36,6 +36,11 @@ export class PollAppComponent implements OnInit, OnDestroy {
     this.titleService.setTitle('Discover Polls | Uvote');
   }
 
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
   onPageChange({ ev, sortBy }) {
     this.pageNumber = ev;
     this.pollService.query(this.pageNumber, sortBy);
@@ -43,10 +48,5 @@ export class PollAppComponent implements OnInit, OnDestroy {
 
   getPolls() {
     this.polls$ = this.pollService.polls$;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
   }
 }

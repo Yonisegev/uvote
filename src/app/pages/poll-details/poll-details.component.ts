@@ -23,7 +23,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private titleService: Title,
     private socketService: SocketService
-  ) {}
+  ) { }
   poll: Poll;
   selectedOptions: string[] = [];
   isPopoverOpen: boolean = false;
@@ -51,6 +51,9 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     this.dueDateString; // invoked here to avoid erratic UI behavior after CD runs (NG0100)
   }
 
+  ngOnDestroy() {
+    if (this.savedPollSub) this.savedPollSub.unsubscribe();
+  }
 
   toggleChecked(optionId: string) {
     const optionIdx = this.selectedOptions.indexOf(optionId);
@@ -71,7 +74,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
 
   onSelectOption(optionId: string) {
     const optionIdx = this.selectedOptions.indexOf(optionId);
-    if(this.poll.allowMultiple) {
+    if (this.poll.allowMultiple) {
       if (optionIdx === -1) {
         this.selectedOptions.push(optionId);
       } else {
@@ -85,7 +88,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
   onSubmitVote() {
     this.pollSubmitted = true
     this.error = ''
-    if(!this.selectedOptions.length) {
+    if (!this.selectedOptions.length) {
       this.error = 'Please select at least one option'
       return
     }
@@ -99,7 +102,7 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
           this.error = 'You have already voted on this poll.';
         }
       );
-      this.pollSubmitted = false
+    this.pollSubmitted = false
   }
 
   onSettingsClick(ev: HTMLFormElement) {
@@ -159,9 +162,8 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     if (this.poll.owner._id === 'guest') {
       return `by a guest · <span>${this.getCreatedTime()}</span>`;
     } else {
-      return `by <a routerLink="${this.userProfileLink}" href="${
-        this.userProfileLink
-      }">${this.poll.owner.name}</a> · <span>${this.getCreatedTime()}</span>`;
+      return `by <a routerLink="${this.userProfileLink}" href="${this.userProfileLink
+        }">${this.poll.owner.name}</a> · <span>${this.getCreatedTime()}</span>`;
     }
   }
 
@@ -177,9 +179,5 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
         return `Voting ended ${formattedDueDate}.`;
       }
     }
-  }
-
-  ngOnDestroy() {
-    if (this.savedPollSub) this.savedPollSub.unsubscribe();
   }
 }
