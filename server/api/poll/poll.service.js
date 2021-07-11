@@ -85,12 +85,12 @@ async function remove(pollId, user) {
 
 function _buildCriteria(filterBy) {
   const criteria = {};
+  criteria.$or = [{'isPrivate': false}]
   if (filterBy.userId) {
-    criteria.$or = [{ "owner._id": filterBy.userId }];
+    criteria.$or.push({ "owner._id": filterBy.userId })
   }
   return criteria;
 }
-
 module.exports = {
   query,
   getById,

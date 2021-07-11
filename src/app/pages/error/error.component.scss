@@ -1,5 +1,6 @@
 .error {
     height: 100vh;
+    height: calc(100vh - 40px);
     background-image: url("../../../assets/imgs/Sea\ of\ Clouds-10s-1536px.svg");
     background-size: cover;
     background-position: center;

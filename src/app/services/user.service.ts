@@ -128,7 +128,7 @@ export class UserService {
   }
 
   public checkifEmailExists(email: string): Observable<object> {
-    return this.http.get(`http://localhost:3030/api/user/email/${email}`);
+    return this.http.get(`${environment.userURL}/email/${email}`);
   }
 
   public emailValidator(): AsyncValidatorFn {

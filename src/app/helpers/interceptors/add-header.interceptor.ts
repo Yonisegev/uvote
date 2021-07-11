@@ -9,13 +9,17 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AddHeaderInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor() { }
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const clonedRequest = req.clone({ setHeaders: { 'allowed': 'Uvote' } });
-    return next.handle(clonedRequest);
+    if (req.url.indexOf('abstractapi') === -1) {
+      const clonedRequest = req.clone({ setHeaders: { 'allowed': 'Uvote' } });
+      return next.handle(clonedRequest);
+    } else {
+      return next.handle(req)
+    }
   }
 }
