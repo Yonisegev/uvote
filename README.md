@@ -1,6 +1,7 @@
 # Uvote
 
 Uvote is a straw poll application built with Angular 11, MongoDB, Express and Node.js.
+<br>
 **[Link to app](https://uvote-app.herokuapp.com/#/)**
 
 # Getting started locally
