@@ -50,6 +50,7 @@ export class PollResultsComponent implements OnInit {
 
   populateResultsChart() {
     const dataToShow = this.voteCount;
+    console.log('results', dataToShow)
     this.data = {
       labels: dataToShow ? this.optionsLabelNames : ['No data yet!'],
       datasets: [
@@ -75,11 +76,12 @@ export class PollResultsComponent implements OnInit {
 
   populateCountriesChart() {
     const dataToShow = this.countriesCount;
+    console.log('countries', dataToShow)
     this.countriesChartData = {
-      labels: dataToShow ? this.countriesLabels : ['No data yet!'],
+      labels: dataToShow.length ? this.countriesLabels : ['No data yet!'],
       datasets: [
         {
-          data: dataToShow || ['Unknown'],
+          data: dataToShow.length || ['100'],
           backgroundColor: this.colors,
         },
       ],
@@ -93,6 +95,8 @@ export class PollResultsComponent implements OnInit {
         text: 'Voters by country',
         display: true,
       },
+      responsive: true,
+      maintainAspectRatio: true,
     };
   }
 
@@ -128,6 +132,7 @@ export class PollResultsComponent implements OnInit {
     }
     this.countriesLabels = labels;
     this.countriesCount = count;
+
   }
 
   get sortedPollByOptionsDescending(): Poll {
