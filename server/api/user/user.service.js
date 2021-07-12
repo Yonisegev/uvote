@@ -34,6 +34,7 @@ async function getById(userId, pageNumber, sortBy) {
     const collection = await dbService.getCollection("user");
     const user = await collection.findOne({ _id: ObjectId(userId) });
     delete user.password;
+    delete user.email;
     const userPolls = await pollService.query({ userId }, pageNumber, sortBy);
     user.polls = userPolls.data;
     const res = {
