@@ -42,7 +42,10 @@ async function getById(pollId) {
   }
 }
 
-async function update(poll) {
+async function update(poll, user) {
+  if(!user || user._id !== poll.owner._id) {
+    throw new Error('Not owner!')
+  }
   try {
     poll._id = ObjectId(poll._id);
     const collection = await dbService.getCollection("poll");
@@ -89,7 +92,7 @@ function _buildCriteria(filterBy) {
   if (filterBy.userId) {
     criteria.$or = [{ "owner._id": filterBy.userId }]
   }
-  criteria.isPrivate = {$in: [false]}
+  criteria.isPrivate = { $in: [false] }
   return criteria;
 }
 module.exports = {

@@ -78,7 +78,7 @@ export class PollResultsComponent implements OnInit {
     this.countriesOptions = this.chartOptions('Voters by country')
   }
 
-  chartOptions(title) {
+  chartOptions(title: string) {
     return {
       legend: {
         display: false,

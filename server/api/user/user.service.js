@@ -20,6 +20,7 @@ async function query(filterBy = {}) {
     var users = await collection.find(criteria).toArray();
     users = users.map((user) => {
       delete user.password;
+      delete user.email;
       return user;
     });
     return users;

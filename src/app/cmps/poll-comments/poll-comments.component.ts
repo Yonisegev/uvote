@@ -29,7 +29,11 @@ export class PollCommentsComponent implements OnInit {
   ngOnInit(): void {}
 
   onCommentPost() {
-    if (!this.commentValue) this.error = true;
+    console.log('comment', this.commentValue)
+    if (!this.commentValue || !this.commentValue.trim() ) {
+      this.error = true;
+      return
+    }
     const pollCopy = cloneDeep(this.poll);
     this.pollService
       .addComment(this.commentValue, pollCopy)

@@ -63,13 +63,16 @@ export class PollEditComponent implements OnInit, AfterViewInit {
   @ViewChild('question') questionInput: ElementRef;
 
   ngOnInit(): void {
-    this.route.data.subscribe((data) => {
-      this.pollToEdit = data.poll;
-    });
     this.loggedInUser = this.userService.loggedUserValue;
     if (!this.loggedInUser) {
       this.userService.getGuestData();
     }
+    this.route.data.subscribe((data) => {
+      this.pollToEdit = data.poll;
+      if(data.poll && this.loggedInUser._id !== this.pollToEdit?.owner._id) {
+        this.router.navigateByUrl('/404')
+      }
+    });
     this.fillForm();
     const tabTitle = this.pollToEdit ? 'Edit Poll' : 'Create Poll';
     this.titleService.setTitle(tabTitle);

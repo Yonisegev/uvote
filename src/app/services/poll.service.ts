@@ -114,7 +114,8 @@ export class PollService {
   }
 
   private update(pollId: string, poll: Poll) {
-    return this.http.put<Poll>(`${environment.pollURL}/${pollId}`, poll, {
+    const user = this.userService.loggedUserValue
+    return this.http.put<Poll>(`${environment.pollURL}/${pollId}`, { poll, user }, {
       withCredentials: true,
     });
   }
