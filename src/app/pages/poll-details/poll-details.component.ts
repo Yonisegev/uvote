@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
-import { Meta, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -23,7 +23,6 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private titleService: Title,
     private socketService: SocketService,
-    private metaTagService: Meta
   ) { }
   poll: Poll;
   selectedOptions: string[] = [];
@@ -44,7 +43,6 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
       if (!data.poll) this.router.navigateByUrl('/404');
       this.poll = data.poll;
       this.titleService.setTitle(`${data.poll.title} | Uvote`);
-      this.createMetaTags()
       this.socketService.on('connection')
       this.socketService.emit('join poll', data.poll._id)
     });
@@ -146,18 +144,6 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
     } else {
       return 'option';
     }
-  }
-
-  createMetaTags() {
-    this.metaTagService.addTags([
-      { name: 'title', content: this.poll.title },
-      { property: 'og:title', content: this.poll.title },
-      { name: 'description', content: this.poll.description || '' },
-      { property: 'og:description', content: this.poll.description || '' },
-      { property: 'og:image', content: 'https://i.imgur.com/m1gbKry.png' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: window.location.href }
-    ])
   }
 
   get resultsLink() {

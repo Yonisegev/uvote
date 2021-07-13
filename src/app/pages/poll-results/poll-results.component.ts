@@ -60,37 +60,31 @@ export class PollResultsComponent implements OnInit {
       ],
     };
 
-    this.options = {
-      legend: {
-        display: false,
-      },
-      title: {
-        text: 'Votes',
-        display: true,
-      },
-      responsive: true,
-      maintainAspectRatio: true,
-    };
+    this.options = this.chartOptions('Votes')
   }
 
   populateCountriesChart() {
     const dataToShow = this.countriesCount;
     this.countriesChartData = {
-      labels: dataToShow ? this.countriesLabels : ['No data yet!'],
+      labels: dataToShow.length ? this.countriesLabels : ['No data yet!'],
       datasets: [
         {
-          data: dataToShow || ['100'],
-          backgroundColor: this.colors,
+          data: dataToShow.length ? dataToShow : ['100'],
+          backgroundColor: this.colors.slice().reverse(),
         },
       ],
     };
 
-    this.countriesOptions = {
+    this.countriesOptions = this.chartOptions('Voters by country')
+  }
+
+  chartOptions(title) {
+    return {
       legend: {
         display: false,
       },
       title: {
-        text: 'Voters by country',
+        text: title,
         display: true,
       },
       responsive: true,
@@ -202,13 +196,8 @@ export class PollResultsComponent implements OnInit {
       '#795548',
       '#f95d6a',
       '#ffeb3b',
-      '#4caf50',
-      '#3d9c73',
-      '607d8b',
       '#a05195',
-      '#d6ec91',
+      '#4caf50',
     ];
   }
-
-
 }
