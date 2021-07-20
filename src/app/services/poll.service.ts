@@ -54,7 +54,7 @@ export class PollService {
     const userIp: string = guestData?.ip_address;
 
     if (poll.voters[userIp] || poll.voters[loggedUser?._id]) {
-      return throwError((err: Error) => new Error('User already voted'));
+      return throwError((err: Error) => new Error('User already voted' + err));
     }
 
     selectedOptions.forEach((selectionId) => {
@@ -73,7 +73,7 @@ export class PollService {
       return
     }
     this.socketService.emit('update poll', poll);
-    return this.update(poll._id, poll);
+    return this.updateVotes(poll._id, poll);
   }
 
   public submitPoll(poll: Poll): any {
@@ -119,6 +119,12 @@ export class PollService {
       withCredentials: true,
     });
   }
+
+  private updateVotes(pollId: string, poll: Poll) {
+    return this.http.put<Poll>(`${environment.pollURL}/${pollId}/vote`, { poll }, { withCredentials: true })
+  }
+
+
 
   public remove(pollId: string) {
     return this.http.delete(`${environment.pollURL}/${pollId}`, {

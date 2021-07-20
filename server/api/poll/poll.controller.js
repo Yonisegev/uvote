@@ -49,6 +49,18 @@ async function updatePoll(req, res) {
   }
 }
 
+async function updateVotes(req, res) {
+  try {
+    let { poll } = req.body
+    poll = await pollService.addVotes(poll)
+    res.send(poll)
+
+  } catch (err) {
+    logger.error("Failed to update poll votes", err);
+    res.status(500).send({ err: "Failed to update poll votes" });
+  }
+}
+
 async function addPoll(req, res) {
   try {
     let poll = req.body;
@@ -65,5 +77,6 @@ module.exports = {
   getPoll,
   addPoll,
   updatePoll,
+  updateVotes,
   deletePoll,
 };

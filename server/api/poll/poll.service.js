@@ -43,7 +43,7 @@ async function getById(pollId) {
 }
 
 async function update(poll, user) {
-  if(!user || user._id !== poll.owner._id) {
+  if (!user || user._id !== poll.owner._id) {
     throw new Error('Not owner!')
   }
   try {
@@ -58,6 +58,22 @@ async function update(poll, user) {
   } catch (err) {
     logger.error(`cannot update poll ${poll._id}`, err);
     throw err;
+  }
+}
+
+async function addVotes(poll) {
+  try {
+    poll._id = ObjectId(poll._id)
+    const collection = await dbService.getCollection("poll")
+    const savedPoll = await collection.findOneAndUpdate(
+      { _id: poll._id },
+      { $set: poll },
+      { upsert: true, returnOriginal: false }
+    )
+    return savedPoll.value;
+  } catch (err) {
+    logger.error(`cannot add votes ${poll._id}`, err)
+    throw err
   }
 }
 
@@ -101,4 +117,5 @@ module.exports = {
   remove,
   add,
   update,
+  addVotes,
 };
