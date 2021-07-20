@@ -15,8 +15,9 @@ import { MessageService } from 'primeng/api';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShareComponent implements OnInit {
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
   link: string;
+  socialLink: string;
   fbIcon = faFacebookF;
   twitterIcon = faTwitter;
   whatsAppIcon = faWhatsapp;
@@ -24,23 +25,33 @@ export class ShareComponent implements OnInit {
 
   ngOnInit(): void {
     const link = window.location.href;
+    const hashIdx = link.indexOf('#')
+    const linkStart = link.substring(0, hashIdx)
+    const linkEnd = link.slice(hashIdx + 1)
+    const shareLink = `${linkStart}%23${linkEnd}`
+
     const endIndex = link.indexOf('/results');
     if (endIndex > 0) {
       this.link = link.slice(0, endIndex);
-    } else this.link = link;
+      this.socialLink = shareLink.slice(0, endIndex)
+    } else {
+      this.link = link;
+      this.socialLink = shareLink
+    }
   }
 
   getShareLink(type: string): string {
     const link = this.link
+    const socialLink = this.socialLink
     switch (type) {
       case 'fb':
-        return `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+        return `https://www.facebook.com/sharer/sharer.php?u=${socialLink}`;
       case 'twitter':
-        return `https://twitter.com/intent/tweet?url=${link}`;
+        return `https://twitter.com/intent/tweet?url=${socialLink}&text=Check this poll on Uvote!`;
       case 'whatsapp':
-        return `https://api.whatsapp.com/send?text=Check this poll on Uvote!%20-%20${link}`;
+        return `https://api.whatsapp.com/send?text=Check this poll on Uvote!%20-%20${socialLink}`;
       case 'email':
-        return `mailto:?subject=Check this poll on Uvote!&body=${link}`;
+        return `mailto:?subject=Check this poll on Uvote!&body=${socialLink}`;
       default:
         return link;
     }
