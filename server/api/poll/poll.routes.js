@@ -16,7 +16,7 @@ router.get("/", checkHeader, log, getPolls);
 router.get("/:id", getPoll);
 router.post("/", addPoll);
 router.put("/:id", checkHeader, updatePoll);
-router.put("/:id/vote", checkHeader, updateVotes)
+router.put("/:id/content", checkHeader, updateVotes)
 router.delete("/:id", requireAuth, deletePoll);
 
 module.exports = router;

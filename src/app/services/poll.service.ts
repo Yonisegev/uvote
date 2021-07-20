@@ -73,7 +73,7 @@ export class PollService {
       return
     }
     this.socketService.emit('update poll', poll);
-    return this.updateVotes(poll._id, poll);
+    return this.updatePollContent(poll._id, poll);
   }
 
   public submitPoll(poll: Poll): any {
@@ -106,7 +106,7 @@ export class PollService {
     }
     commentToAdd.author = author;
     poll.comments = [commentToAdd, ...poll.comments];
-    return this.update(poll._id, poll);
+    return this.updatePollContent(poll._id, poll);
   }
 
   private create(poll: Poll) {
@@ -120,8 +120,8 @@ export class PollService {
     });
   }
 
-  private updateVotes(pollId: string, poll: Poll) {
-    return this.http.put<Poll>(`${environment.pollURL}/${pollId}/vote`, { poll }, { withCredentials: true })
+  private updatePollContent(pollId: string, poll: Poll) {
+    return this.http.put<Poll>(`${environment.pollURL}/${pollId}/content`, { poll }, { withCredentials: true })
   }
 
 

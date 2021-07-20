@@ -29,7 +29,6 @@ export class PollCommentsComponent implements OnInit {
   ngOnInit(): void {}
 
   onCommentPost() {
-    console.log('comment', this.commentValue)
     if (!this.commentValue || !this.commentValue.trim() ) {
       this.error = true;
       return
