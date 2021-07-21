@@ -3,44 +3,34 @@
   <div class="container flex column">
     <div class="add-comment flex column">
       <h4 class="comments-heading">Add a comment</h4>
-      <textarea
-        [(ngModel)]="commentValue"
-        name="comments"
-        id="comments"
-        placeholder="Share your thoughts"
-      ></textarea>
+      <textarea [(ngModel)]="commentValue" name="comments" id="comments" placeholder="Share your thoughts"></textarea>
       <button (click)="onCommentPost()">Post comment</button>
     </div>
     <div *ngIf="poll.comments.length > 3" class="pagination">
-      <pagination-controls
-        previousLabel="Previous"
-        nextLabel="Next"
-        responsive="true"
-        (pageChange)="handlePageChange($event)"
-      >
+      <pagination-controls previousLabel="Previous" nextLabel="Next" responsive="true"
+        (pageChange)="handlePageChange($event)">
       </pagination-controls>
     </div>
     <div *ngIf="poll.comments.length" class="comment-list">
-      <div
-        *ngFor="
+      <div *ngFor="
           let comment of poll.comments
             | paginate
               : {
                   itemsPerPage: 3,
                   currentPage: page
                 }
-        "
-        class="comment-preview"
-      >
+        " class="comment-preview">
         <div class="comment-heading">
-          <h5>{{ comment.author.name }}</h5>
+          <h5 *ngIf="comment.author._id === 'guest' else userLink">{{ comment.author.name }}</h5>
+          <ng-template #userLink>
+            <a [href]="getUserProfileLink(comment.author._id, true)">
+              {{comment.author.name}}
+            </a>
+          </ng-template>
           <span> - {{ getCommentDate(comment) }}</span>
         </div>
         <p class="comment-txt">{{ comment.txt }}</p>
-        <div
-          [style.background-color]="comment.author.logoColor"
-          class="author-logo flex justify-center align-center"
-        >
+        <div [style.background-color]="comment.author.logoColor" class="author-logo flex justify-center align-center">
           <span>{{ comment.author.name.charAt(0) }}</span>
         </div>
       </div>

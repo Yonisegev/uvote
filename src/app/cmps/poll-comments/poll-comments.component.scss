@@ -65,11 +65,15 @@
             background-color: #fff;
             .comment-heading {
                 margin-bottom: 5px;
-                h5 {
+                h5,
+                a {
                     display: inline-block;
                     font-size: 1.3rem;
                     font-family: Quicksand-SemiBold, sans-serif;
                     font-weight: 400;
+                }
+                a {
+                    color: darken($primary-color, 10%);
                 }
             }
             .comment-txt {
