@@ -8,8 +8,10 @@ Uvote is a straw poll application built with Angular 11, MongoDB, Express and No
 
     git clone https://github.com/Yonisegev/uvote.git
     cd uvote
+    npm i
     npm run start:dev
     open new terminal && cd server
+    npm i
     npm start
 
 ![Creating a poll](https://i.imgur.com/QIzntog.png)
