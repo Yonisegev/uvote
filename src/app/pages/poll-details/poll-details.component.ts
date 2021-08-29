@@ -45,6 +45,9 @@ export class PollDetailsComponent implements OnInit, OnDestroy {
       this.titleService.setTitle(`${data.poll.title} | Uvote`);
       this.socketService.on('connection')
       this.socketService.emit('join poll', data.poll._id)
+      this.socketService.on('poll updated').subscribe((updatedPoll: Poll) => {
+        this.poll = updatedPoll;
+      });
     });
     this.userService.getGuestData();
     this.loggedUser = this.userService.loggedUserValue;

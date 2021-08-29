@@ -15,5 +15,15 @@
     form {
         @include login-signup-container;
         position: relative;
+
+        @media (max-width: 600px) {
+            &:focus-within {
+                .signup-rabbit {
+                    width: 120px;
+                    height: 80px;
+                    top: 3%
+                }
+            }
+        }
     }
 }

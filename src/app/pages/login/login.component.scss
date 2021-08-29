@@ -24,5 +24,12 @@
     }
     @media (max-width: 600px) {
         background-position: left;
+        form:focus-within {
+            .login-rabbit {
+                width: 150px;
+                height: 100px;
+                top: 5%;
+            }
+        }
     }
 }
